@@ -7,11 +7,11 @@ import { useState, useTransition } from "react";
 import { signIn } from "next-auth/react";
 
 import FormStatusText from "./FormStatusText";
-import { LoginSchema } from "../../_schemas/zod/schema";
-import { login } from "@/actions/auth";
+import { ResetPasswordSchema } from "../../_schemas/zod/schema";
+import { login, resetPassword } from "@/actions/auth";
 import Link from "next/link";
 
-const LoginForm = () => {
+const ResetPasswordForm = () => {
   const [pending, setPending] = useState(false);
   // const [isPending, startTransistion] = useTransition();
   const [success, setSuccess] = useState("");
@@ -22,19 +22,19 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: { email: "", password: "" },
+    resolver: zodResolver(ResetPasswordSchema),
+    defaultValues: { email: "" },
   });
 
-  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ResetPasswordSchema>) => {
     setPending(true);
     setError("");
     setSuccess("");
 
-    const res = await login(data);
-
+    const res = await resetPassword(data);
     if (res?.error) setError(res.error);
     if (res?.success) setSuccess(res.success);
+
     setPending(false);
   };
 
@@ -49,18 +49,12 @@ const LoginForm = () => {
           helperText={errors.email?.message}
           placeholder="example@email.com"
         />
-        <TextField
-          label="Password"
-          {...register("password")}
-          error={errors.password ? true : false}
-          helperText={errors.password?.message}
-          placeholder="********"
-        />
+
         <Button>
-          <Link href="/auth/reset-password">Forgot Password</Link>
+          <Link href="/auth/login">Login</Link>
         </Button>
         <Button type="submit" variant="contained" disabled={pending}>
-          Submit
+          Send reset email
         </Button>
       </Box>
       {success && <FormStatusText message={success} status="success" />}
@@ -68,4 +62,4 @@ const LoginForm = () => {
     </Stack>
   );
 };
-export default LoginForm;
+export default ResetPasswordForm;

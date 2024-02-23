@@ -7,7 +7,7 @@ import { Box, Button, Stack, TextField } from "@mui/material";
 import FormStatusText from "./FormStatusText";
 import { createUser } from "@/actions/auth";
 import { useState } from "react";
-import { RegisterSchema } from "../../../../prisma/schema";
+import { RegisterSchema } from "../../_schemas/zod/schema";
 
 const RegisterForm = () => {
   const [pending, setPending] = useState(false);
