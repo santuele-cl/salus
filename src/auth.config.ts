@@ -13,6 +13,7 @@ export default {
         email: {},
         password: {},
       },
+      //
       async authorize(credentials) {
         console.log(credentials);
 
