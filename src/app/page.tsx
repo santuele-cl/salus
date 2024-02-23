@@ -1,6 +1,6 @@
-import { Button, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 
-export default function Home() {
+export default async function Home() {
   return (
     <main>
       <Typography variant="h1">Salus</Typography>

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
+import { NextAuthSessionProvider } from "./_context/Session";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +23,9 @@ export default function RootLayout({
       <AppRouterCacheProvider>
         <ThemeProvider theme={theme}>
           <CssBaseline />
-          <body className={inter.className}>{children}</body>
+          <body className={inter.className}>
+            <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
+          </body>
         </ThemeProvider>
       </AppRouterCacheProvider>
     </html>

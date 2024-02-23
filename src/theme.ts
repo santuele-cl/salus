@@ -32,9 +32,13 @@ const theme = createTheme({
     },
     error: {
       main: error[700],
+      dark: error[800],
+      light: error[100],
     },
     success: {
-      main: green[800],
+      main: green[700],
+      dark: green[800],
+      light: green[100],
     },
   },
   typography: {
