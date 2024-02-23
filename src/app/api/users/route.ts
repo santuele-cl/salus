@@ -1,24 +1,24 @@
-import { db } from "@/lib/db";
+import { db } from "@/app/_lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { getUserByEmail } from "@/app/_util/users";
 
-import { RegisterSchema } from "@/schemas";
-import * as yup from "yup";
+import * as z from "zod";
+import { RegisterSchema } from "../../../../prisma/schema";
 
 export async function POST(request: Request) {
   const requestData = await request.json();
 
-  const isRequestDataValid = await RegisterSchema.strict().isValid(requestData);
+  const validatedData = RegisterSchema.safeParse(request);
 
-  if (!isRequestDataValid) {
+  if (!validatedData.success) {
     return NextResponse.json(
       { message: "Invalid request data." },
       { status: 400 }
     );
   }
 
-  const { email, password, fname, lname } = requestData;
+  const { email, password, fname, lname } = validatedData.data;
 
   const isEmailTaken = await getUserByEmail(email);
 

@@ -8,11 +8,13 @@ import {
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
+console.log(NextAuth(authConfig));
 
 export default auth((req) => {
+  // console.log(req);
   const { nextUrl } = req;
-  const isLoggedIn = !!req.auth;
-  console.log("isLoggedIn", isLoggedIn);
+  const isLoggedIn = !!req?.auth;
+  // console.log("isLoggedIn", isLoggedIn);
 
   const isApiAuthRoute = nextUrl.pathname.startsWith(apiRoutePrefix);
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
@@ -41,5 +43,3 @@ export default auth((req) => {
 export const config = {
   matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
 };
-
-// export const { auth: middleware } = NextAuth(authConfig);

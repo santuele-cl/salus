@@ -25,4 +25,4 @@ export const apiRoutePrefix = "/api/auth";
  * The default redirect route after loggin in
  * @type {string}
  */
-export const DEFAULT_LOGIN_REDIRECT = "/test";
+export const DEFAULT_LOGIN_REDIRECT = "/dashboard";

@@ -1,36 +1,41 @@
 "use client";
 import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { RegisterSchema } from "@/schemas";
+import * as z from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack, TextField } from "@mui/material";
-import * as yup from "yup";
-import FormStatusText from "../FormStatusText";
-import { login } from "@/actions/auth/login";
+
+import FormStatusText from "./FormStatusText";
+import { createUser } from "@/actions/auth";
+import { useState } from "react";
+import { RegisterSchema } from "../../../../prisma/schema";
 
 const RegisterForm = () => {
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(RegisterSchema),
+    resolver: zodResolver(RegisterSchema),
     defaultValues: { email: "", password: "", fname: "", lname: "" },
   });
 
   // console.log("register errors", errors);
 
-  const onSubmit = async (data: yup.InferType<typeof RegisterSchema>) => {
-    const res = await fetch("/api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
-    console.log(await res.json());
-    console.log("register submitted");
-    // console.log("register data", data);
-    // login(data);
+  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+    setError("");
+    setSuccess("");
+
+    setPending(true);
+
+    const { error, success } = await createUser(data);
+    if (error) setError(error);
+    if (success) setSuccess(success);
+
+    setPending(false);
   };
 
   return (
@@ -66,11 +71,16 @@ const RegisterForm = () => {
           placeholder="********"
         />
 
-        <Button type="submit" variant="contained">
+        <Button type="submit" variant="contained" disabled={pending}>
           Submit
         </Button>
       </Box>
-      <FormStatusText message="hello" status="success" />
+      {(error || success) && (
+        <FormStatusText
+          message={error ? error : success}
+          status={error ? "error" : "success"}
+        />
+      )}
     </Stack>
   );
 };

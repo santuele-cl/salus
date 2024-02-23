@@ -1,4 +1,11 @@
-const page = () => {
-  return <div>Register</div>;
+import RegisterForm from "@/app/_ui/auth/RegisterForm";
+
+const RegisterPage = () => {
+  return (
+    <div>
+      <h1>Register</h1>
+      <RegisterForm />
+    </div>
+  );
 };
-export default page;
+export default RegisterPage;
