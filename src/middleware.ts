@@ -8,7 +8,7 @@ import {
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
-console.log(NextAuth(authConfig));
+// console.log(NextAuth(authConfig));
 
 export default auth((req) => {
   // console.log(req);

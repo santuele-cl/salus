@@ -3,15 +3,18 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Box, Button, Stack, TextField } from "@mui/material";
-import { useState, useTransition } from "react";
-import { signIn } from "next-auth/react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
 import FormStatusText from "./FormStatusText";
-import { LoginSchema } from "../../_schemas/zod/schema";
-import { login } from "@/actions/auth";
+import { NewPasswordSchema } from "../../_schemas/zod/schema";
+import { updatePassword } from "@/actions/auth";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-const LoginForm = () => {
+const NewPasswordForm = () => {
+  const searchParams = useSearchParams();
+  const token = searchParams.get("token");
+
   const [pending, setPending] = useState(false);
   // const [isPending, startTransistion] = useTransition();
   const [success, setSuccess] = useState("");
@@ -22,19 +25,19 @@ const LoginForm = () => {
     handleSubmit,
     formState: { errors },
   } = useForm({
-    resolver: zodResolver(LoginSchema),
-    defaultValues: { email: "", password: "" },
+    resolver: zodResolver(NewPasswordSchema),
+    defaultValues: { newPassword: "" },
   });
 
-  const onSubmit = async (data: z.infer<typeof LoginSchema>) => {
+  const onSubmit = async (data: z.infer<typeof NewPasswordSchema>) => {
     setPending(true);
     setError("");
     setSuccess("");
 
-    const res = await login(data);
-
+    const res = await updatePassword(data, token);
     if (res?.error) setError(res.error);
     if (res?.success) setSuccess(res.success);
+
     setPending(false);
   };
 
@@ -42,25 +45,18 @@ const LoginForm = () => {
     <Stack gap={2}>
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
-          type="email"
-          label="Email"
-          {...register("email")}
-          error={errors.email ? true : false}
-          helperText={errors.email?.message}
-          placeholder="example@email.com"
-        />
-        <TextField
-          label="Password"
-          {...register("password")}
-          error={errors.password ? true : false}
-          helperText={errors.password?.message}
+          label="New Password"
+          {...register("newPassword")}
+          error={errors.newPassword ? true : false}
+          helperText={errors.newPassword?.message}
           placeholder="********"
         />
+
         <Button>
-          <Link href="/auth/reset-password">Forgot Password</Link>
+          <Link href="/auth/login">Login</Link>
         </Button>
         <Button type="submit" variant="contained" disabled={pending}>
-          Submit
+          Update password
         </Button>
       </Box>
       {success && <FormStatusText message={success} status="success" />}
@@ -68,4 +64,4 @@ const LoginForm = () => {
     </Stack>
   );
 };
-export default LoginForm;
+export default NewPasswordForm;

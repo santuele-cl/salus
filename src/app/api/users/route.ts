@@ -1,10 +1,10 @@
 import { db } from "@/app/_lib/db";
 import { NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { getUserByEmail } from "@/app/_util/users";
 
 import * as z from "zod";
-import { RegisterSchema } from "../../../../prisma/schema";
+import { RegisterSchema } from "../../_schemas/zod/schema";
+import { getUserByEmail } from "@/app/_data/user";
 
 export async function POST(request: Request) {
   const requestData = await request.json();

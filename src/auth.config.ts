@@ -1,9 +1,9 @@
 import Credentials from "next-auth/providers/credentials";
 
 import type { NextAuthConfig } from "next-auth";
-import { getUserByEmail } from "./app/_util/users";
 import { compare } from "bcryptjs";
-import { LoginSchema } from "../prisma/schema";
+import { LoginSchema } from "./app/_schemas/zod/schema";
+import { getUserByEmail } from "./app/_data/user";
 
 export default {
   providers: [
@@ -14,7 +14,7 @@ export default {
         password: {},
       },
       async authorize(credentials) {
-        console.log(credentials);
+        // console.log("credentials", credentials);
 
         const validatedCredentials = LoginSchema.safeParse(credentials);
 
