@@ -65,7 +65,7 @@ export const {
       }
 
       if (session.user) {
-        session.user.isOAuth = token.isOauth as boolean;
+        session.user.isOAuth = token.isOAuth as boolean;
         session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
         session.user.name = token.name;
         session.user.email = token.email;
