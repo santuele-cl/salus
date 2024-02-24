@@ -8,6 +8,7 @@ import FormStatusText from "./FormStatusText";
 import { createUser } from "@/actions/auth";
 import { useState } from "react";
 import { RegisterSchema } from "../../_schemas/zod/schema";
+import MultiStepForm from "./register/MultiStepForm";
 
 const RegisterForm = () => {
   const [pending, setPending] = useState(false);
@@ -40,6 +41,7 @@ const RegisterForm = () => {
 
   return (
     <Stack gap={2}>
+      <MultiStepForm />
       <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="First Name"
