@@ -5,11 +5,26 @@ import shadows from "@mui/material/styles/shadows";
 import colors from "./color";
 import { green } from "@mui/material/colors";
 
+declare module "@mui/material/styles" {
+  interface Palette {
+    gray: Palette["primary"];
+  }
+
+  interface PaletteOptions {
+    gray?: PaletteOptions["primary"];
+  }
+}
+
 const { neutral, primary, secondary, error, success, warning } = colors;
 const inter = Inter({ subsets: ["latin"] });
 
 const theme = createTheme({
   palette: {
+    gray: {
+      main: neutral[500],
+      dark: neutral[800],
+      light: neutral[100],
+    },
     common: {
       white: neutral[100],
       black: neutral[800],

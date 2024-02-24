@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
-  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
 enum UserRole {
@@ -59,7 +59,6 @@ model Profile {
   civilStatus           CivilStatus
   occupation            String?
   contactNumber         String
-  email                 String      @unique
   address               String
   alertMedication       String?
   allergies             String? // TODO: Create Allergies Table

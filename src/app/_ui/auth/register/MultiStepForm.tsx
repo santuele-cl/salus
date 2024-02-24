@@ -1,5 +1,4 @@
-import { Children, useState } from "react";
-
+import { useState } from "react";
 import {
   Stepper,
   Step,
@@ -9,78 +8,41 @@ import {
   Stack,
   Box,
   Container,
-  StepContent,
   TextField,
+  Paper,
 } from "@mui/material";
-import PersonalInfoStep from "./PersonalInfoStep";
-import AccountDetailsStep from "./AccountDetailsStep";
-import ConfirmStep from "./ConfirmStep";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+
 import { RegisterSchema } from "@/app/_schemas/zod/schema";
-import * as z from "zod";
-
-interface StepFormType {
-  id: number;
-  label: keyof Partial<z.infer<typeof RegisterSchema>>;
-}
-
-interface STEPSType {
-  id: number;
-  label: string;
-  form: () => React.ReactNode;
-  fields: StepFormType[];
-}
-
-const STEPS: STEPSType[] = [
-  {
-    id: 0,
-    label: "Personal Info",
-    form: () => <PersonalInfoStep />,
-    fields: [
-      { id: 1, label: "fname" },
-      { id: 2, label: "mname" },
-      { id: 3, label: "lname" },
-    ],
-  },
-  {
-    id: 1,
-    label: "Account Details",
-    form: () => <AccountDetailsStep />,
-    fields: [{ id: 1, label: "fname" }],
-  },
-  {
-    id: 2,
-    label: "Consent",
-    form: () => <ConfirmStep />,
-    fields: [{ id: 1, label: "fname" }],
-  },
-];
+import { STEPS } from "@/app/_data/constant";
 
 const MultiStepForm = () => {
   const [activeStep, setActiveStep] = useState(0);
+  const currentStepDetails = STEPS[activeStep];
 
   const totalSteps = STEPS.length;
-  const isLastStep = activeStep === STEPS.length - 1;
+  const isLastStep = activeStep === totalSteps - 1;
 
   const {
     register,
     handleSubmit,
+    watch,
     trigger,
     reset,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(RegisterSchema),
-    defaultValues: { email: "", password: "", fname: "", lname: "" },
   });
 
   const next = async () => {
-    if (activeStep === 0) {
-      const activeFields = STEPS[activeStep].fields.map((field) => field.label);
-      const output = await trigger(activeFields);
+    // const activeFields = currentStepDetails.fields.map((field) => field.id);
+    // const output = await trigger(activeFields, {
+    //   shouldFocus: true,
+    // });
 
-      if (!output) return;
-    }
+    // if (!output) return;
 
     if (activeStep < totalSteps - 1) setActiveStep((prevStep) => prevStep + 1);
   };
@@ -91,6 +53,7 @@ const MultiStepForm = () => {
 
   const onSubmit = (data: any) => {
     console.log(data);
+    reset();
   };
 
   console.log(errors);
@@ -99,91 +62,66 @@ const MultiStepForm = () => {
       <Typography variant="h4" sx={{ textTransform: "uppercase" }}>
         Register
       </Typography>
-      <Box sx={{ border: "1px solid red", p: 4 }}>
+      <Stack sx={{ border: "1px solid red", p: 4 }} spacing={2}>
+        {/* STEPPER NAV */}
         <Stepper activeStep={activeStep} alternativeLabel>
-          {STEPS.map(({ label, form: Form, id }) => (
+          {STEPS.map(({ label, id }) => (
             <Step key={id}>
               <StepLabel>{label}</StepLabel>
-              {/* <Form /> */}
             </Step>
           ))}
         </Stepper>
-        <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-          {/**
-           *  Personal Information
-           */}
-          {activeStep === 0 && (
-            <>
-              <TextField
-                label="First Name"
-                {...register("fname")}
-                error={errors.fname ? true : false}
-                helperText={errors.fname?.message}
-                placeholder="Juan"
-              />
-              <TextField
-                label="Last Name"
-                {...register("lname")}
-                error={errors.lname ? true : false}
-                helperText={errors.lname?.message}
-                placeholder="Dela Cruz"
-              />
-            </>
-          )}
-          {/**
-           *  Account details
-           */}
-          {activeStep === 1 && (
-            <>
-              <TextField
-                label="Email"
-                {...register("email")}
-                error={errors.fname ? true : false}
-                helperText={errors.fname?.message}
-                placeholder="Juan"
-              />
-              <TextField
-                label="Password"
-                {...register("password")}
-                error={errors.lname ? true : false}
-                helperText={errors.lname?.message}
-                placeholder="Dela Cruz"
-              />
-            </>
-          )}
-          {/**
-           *  Personal Information
-           */}
-          {activeStep === 2 && (
-            <>
-              <TextField
-                label="First Name"
-                {...register("fname")}
-                error={errors.fname ? true : false}
-                helperText={errors.fname?.message}
-                placeholder="Juan"
-              />
-              <TextField
-                label="Last Name"
-                {...register("lname")}
-                error={errors.lname ? true : false}
-                helperText={errors.lname?.message}
-                placeholder="Dela Cruz"
-              />
-            </>
-          )}
-          {/* <Button type="submit">Submit</Button> */}
-        </Box>
 
-        <Button onClick={previous} disabled={activeStep === 0}>
-          Previous
-        </Button>
-        {isLastStep ? (
-          <Button>Confirm</Button>
-        ) : (
-          <Button onClick={next}>Next</Button>
-        )}
-      </Box>
+        {/* FORM */}
+        <Paper elevation={2}>
+          <Stack
+            component="form"
+            onSubmit={handleSubmit(onSubmit)}
+            p={3}
+            spacing={4}
+          >
+            <Box>
+              <Stack gap={4}>
+                <Stack>
+                  <Typography variant="h5">
+                    {currentStepDetails.label}
+                  </Typography>
+                  <Typography color="gray.main">
+                    {currentStepDetails.description}
+                  </Typography>
+                </Stack>
+                <Grid2 container direction="row" spacing={3}>
+                  {currentStepDetails.fields.map(
+                    ({ label, id, placeholder }) => (
+                      <Grid2 xs={12} md={6} key={id}>
+                        <TextField
+                          label={label}
+                          {...register(id)}
+                          error={errors[id] ? true : false}
+                          helperText={errors[id]?.message as string}
+                          placeholder={placeholder}
+                          fullWidth
+                        />
+                      </Grid2>
+                    )
+                  )}
+                </Grid2>
+              </Stack>
+            </Box>
+            {/* STEP NAVIGATION */}
+            <Stack direction="row">
+              <Button onClick={previous} disabled={activeStep === 0}>
+                Back
+              </Button>
+              {isLastStep ? (
+                <Button>Confirm</Button>
+              ) : (
+                <Button onClick={next}>Next</Button>
+              )}
+            </Stack>
+          </Stack>
+        </Paper>
+      </Stack>
     </Container>
   );
 };
