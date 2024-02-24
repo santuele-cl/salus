@@ -1,11 +1,15 @@
+import crypto from "crypto";
 import { v4 as uuid } from "uuid";
+
 import { getVerificationTokenByEmail } from "../_data/verification-token";
 import { db } from "./db";
 import { getPasswordResetTokenByEmail } from "../_data/password-reset-token";
+import { getTwoFactorTokenByEmail } from "../_data/two-factor";
+import { EXPIRES_IN_15_MIN } from "../_data/constant";
 
 export const generateVerficationToken = async (email: string) => {
   const token = uuid();
-  const expires = new Date(new Date().getTime() + 3600 * 1000);
+  const expires = EXPIRES_IN_15_MIN;
   const existingToken = await getVerificationTokenByEmail(email);
 
   if (existingToken) {
@@ -23,7 +27,7 @@ export const generateVerficationToken = async (email: string) => {
 
 export const generatePasswordResetToken = async (email: string) => {
   const token = uuid();
-  const expires = new Date(new Date().getTime() + 3600 * 1000);
+  const expires = EXPIRES_IN_15_MIN;
   const existingToken = await getPasswordResetTokenByEmail(email);
 
   if (existingToken) {
@@ -37,4 +41,27 @@ export const generatePasswordResetToken = async (email: string) => {
   });
 
   return passwordResetToken;
+};
+
+export const generateTwoFactorToken = async (email: string) => {
+  const token = crypto.randomInt(100_000, 1_000_000).toString();
+  const expires = EXPIRES_IN_15_MIN;
+
+  const existingToken = await getTwoFactorTokenByEmail(email);
+
+  if (existingToken) {
+    await db.twoFactorToken.delete({
+      where: { id: existingToken.id },
+    });
+  }
+
+  const twoFactorToken = await db.twoFactorToken.create({
+    data: {
+      email,
+      token,
+      expires,
+    },
+  });
+
+  return twoFactorToken;
 };

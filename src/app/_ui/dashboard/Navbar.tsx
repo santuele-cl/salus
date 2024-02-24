@@ -25,7 +25,8 @@ import { Dispatch, SetStateAction } from "react";
 // import Logo from "../common/Logo";
 import Link from "next/link";
 import Logo from "./Logo";
-import { signOut, useSession } from "next-auth/react";
+import useCurrentUser from "@/app/_hooks/useCurrentUser";
+import { logout } from "@/actions/auth";
 
 const customIconBtnStyle = {
   // all: "unset",
@@ -37,7 +38,7 @@ export default function Navbar({
 }: {
   setShowTemporarySidebar: Dispatch<SetStateAction<boolean>>;
 }) {
-  const session = useSession();
+  const session = useCurrentUser();
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isXsScreen = useMediaQuery(theme.breakpoints.down("sm"));
@@ -119,13 +120,15 @@ export default function Navbar({
                       height: "1.5rem",
                     }}
                   >
-                    {session?.data?.user?.name && session?.data?.user?.name[0]}
+                    {session?.name && session?.name[0]}
                   </Avatar>
                   {/* USER NAME */}
-                  <Typography>{session?.data?.user?.email}</Typography>
+                  <Typography>
+                    {session?.name ? session.name : session?.email}
+                  </Typography>
                 </Stack>
                 {/* LOG OUT BUTTON */}
-                <Button onClick={() => signOut()}>Logout</Button>
+                <Button onClick={() => logout()}>Logout</Button>
                 {/* USER MORE INFO */}
                 <IconButton onClick={() => setShowTemporarySidebar(true)}>
                   <ExpandMoreIcon />
