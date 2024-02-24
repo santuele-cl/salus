@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -12,8 +9,22 @@ datasource db {
 }
 
 enum UserRole {
-  USER
+  PATIENT
+  NURSE
+  PHARMACIST
+  MEDICAL_TECHNOLOGIST
+  MEDICAL_ASSISTANT
+  SURGEON
+  DENTIST
+  PHYSICIAN
   ADMIN
+}
+
+enum CivilStatus {
+  SINGLE
+  MARRIED
+  WIDOWED
+  SEPARATED
 }
 
 model User {
@@ -23,10 +34,163 @@ model User {
   emailVerified         DateTime?
   image                 String?
   password              String?
-  role                  UserRole               @default(USER)
+  role                  UserRole               @default(PATIENT)
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+
+  profile    Profile?
+  Evaluation Evaluation[]
+  Vitals     Vitals[]
+}
+
+model Profile {
+  id                    String      @id @default(nanoid(8))
+  user                  User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId                String      @unique
+  fname                 String
+  mname                 String
+  lname                 String
+  nameSuffix            String?
+  bdate                 DateTime
+  bplace                String
+  civilStatus           CivilStatus
+  occupation            String?
+  contactNumber         String
+  email                 String      @unique
+  address               String
+  alertMedication       String?
+  allergies             String? // TODO: Create Allergies Table
+  isSmoking             Boolean     @default(false)
+  isCovidVaccinated     Boolean     @default(false)
+  isDengvaxiaVaccinated Boolean     @default(false)
+  createdAt             DateTime    @default(now())
+  updatedAt             DateTime    @updatedAt
+
+  healthcareProfessionalInfo HealthcareProfessionalInfo? @relation(fields: [healthcareProfessionalId], references: [id], onDelete: Cascade)
+  healthcareProfessionalId   String?                     @unique
+  clinicalDepartment         ClinicalDepartment?         @relation(fields: [clinicalDepartmentId], references: [id])
+  clinicalDepartmentId       String?
+  chart                      Chart?
+}
+
+model Address {
+  id          String   @id @default(uuid())
+  houseNumber String
+  street      String
+  barangay    String
+  city        String
+  province    String
+  region      String
+  country     String
+  zipCode     String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model HealthcareProfessionalInfo {
+  id             String   @id @default(uuid())
+  licenseNumber  String
+  dateRegistered DateTime
+  profile        Profile?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model ClinicalDepartment {
+  id               String    @id @default(nanoid(4))
+  clinicalDeptName String    @unique
+  clinicalDeptHead String
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
+  profiles         Profile[]
+}
+
+model Chart {
+  id String @id @default(nanoid(10))
+
+  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId String  @unique
+
+  visits Visit[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ServiceDepartment {
+  id String @id @default(nanoid(4))
+
+  serviceDeptName String @unique
+  serviceDeptHead String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  visit     Visit[]
+}
+
+model Visit {
+  id String @id @default(nanoid(16))
+
+  chart   Chart?  @relation(fields: [chartId], references: [id], onDelete: Cascade)
+  chartId String?
+
+  accompaniedBy  String?
+  chiefComplaint String
+  hpi            String
+
+  serviceDepartment   ServiceDepartment? @relation(fields: [serviceDepartmentId], references: [id])
+  serviceDepartmentId String?
+
+  vitals Vitals?
+
+  evaluation Evaluation?
+
+  // prescription   Prescription @relation(fields: [prescriptionId], references: [id])
+  // prescriptionId String       @unique
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Evaluation {
+  id String @id @default(nanoid(16))
+
+  physician   User?   @relation(fields: [physicianId], references: [id])
+  physicianId String?
+
+  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId String @unique
+
+  physicalExamination String
+  diagnosis           String
+  treatment           String
+  prescription        String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Vitals {
+  id String @id @default(nanoid(16))
+
+  nurse   User   @relation(fields: [nurseId], references: [id])
+  nurseId String
+
+  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId String @unique
+
+  heightInCm               Int
+  weightInKl               Int
+  bloodPressure            String
+  pulseRate                String
+  respiratoryRate          String
+  bodyTemperatureInCelsius Int
+  oxygenSaturation         String
+  createdAt                DateTime @default(now())
+  updatedAt                DateTime @updatedAt
+  // Visit                    Visit[]
 }
 
 model TwoFactorConfirmation {
