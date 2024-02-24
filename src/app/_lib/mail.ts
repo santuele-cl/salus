@@ -7,7 +7,7 @@ export const sendVerificationEmail = async (email: string, token: string) => {
   const confirmLink = `${
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_PUBLIC_APP_URL_DEV
-      : process.env.NEXT_PUBLIC_APP_PROD
+      : process.env.NEXT_PUBLIC_APP_URL_PROD
   }/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
@@ -22,7 +22,7 @@ export const sendPasswordResetEmail = async (email: string, token: string) => {
   const resetLink = `${
     process.env.NODE_ENV === "development"
       ? process.env.NEXT_PUBLIC_APP_URL_DEV
-      : process.env.NEXT_PUBLIC_APP_PROD
+      : process.env.NEXT_PUBLIC_APP_URL_PROD
   }/auth/new-password?token=${token}`;
 
   await resend.emails.send({
