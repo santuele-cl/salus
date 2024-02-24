@@ -1,33 +1,36 @@
 import type { Metadata } from "next";
+import { SessionProvider } from "next-auth/react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
-import { NextAuthSessionProvider } from "./_context/Session";
+import { auth } from "@/auth";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Salus",
-  description: "Electronin Health Record System by Triz",
+  description: "Electronic Health Record System by Triz",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
-    <html lang="en">
-      <AppRouterCacheProvider>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <body className={inter.className}>
-            <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
-          </body>
-        </ThemeProvider>
-      </AppRouterCacheProvider>
-    </html>
+    <SessionProvider session={session}>
+      <html lang="en">
+        <AppRouterCacheProvider>
+          <ThemeProvider theme={theme}>
+            <CssBaseline />
+            <body className={inter.className}>{children}</body>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </html>
+    </SessionProvider>
   );
 }

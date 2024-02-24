@@ -1,7 +1,8 @@
-import { auth } from "@/auth";
+"use client";
+import useCurrentUser from "../_hooks/useCurrentUser";
 
-const UsersPage = async () => {
-  const session = await auth();
+const UsersPage = () => {
+  const session = useCurrentUser();
 
   return <div>{JSON.stringify(session)}</div>;
 };

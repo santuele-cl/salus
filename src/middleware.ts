@@ -8,10 +8,9 @@ import {
 } from "./routes";
 
 const { auth } = NextAuth(authConfig);
-// console.log(NextAuth(authConfig));
 
 export default auth((req) => {
-  // console.log(req);
+  // console.log("req : ", req);
   const { nextUrl } = req;
   const isLoggedIn = !!req?.auth;
   // console.log("isLoggedIn", isLoggedIn);
@@ -33,7 +32,16 @@ export default auth((req) => {
   }
 
   if (!isLoggedIn && !isPublicRoute) {
-    return Response.redirect(new URL("/auth/login", nextUrl));
+    let callbackUrl = nextUrl.pathname;
+    if (nextUrl.search) {
+      callbackUrl += nextUrl.search;
+    }
+
+    const encodedCallbackUrl = encodeURIComponent(callbackUrl);
+
+    return Response.redirect(
+      new URL(`/auth/login?callbackUrl=${encodedCallbackUrl}`, nextUrl)
+    );
   }
 
   return null;
