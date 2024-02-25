@@ -13,12 +13,12 @@ enum UserRole {
   EMPLOYEE
 }
 
-enum CivilStatus {
-  SINGLE
-  MARRIED
-  WIDOWED
-  SEPARATED
-}
+// enum CivilStatus {
+//   SINGLE
+//   MARRIED
+//   WIDOWED
+//   SEPARATED
+// }
 
 model User {
   id                    String                 @id @default(cuid())
@@ -31,6 +31,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
+  consent               Boolean
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
 
@@ -55,18 +56,19 @@ model Profile {
   // chartId String?
 }
 
-enum Gender {
-  MALE
-  FEMALE
-  PREFER_NOT_TO_SAY
-}
+// enum Gender {
+//   MALE
+//   FEMALE
+//   PREFER_NOT_TO_SAY
+// }
 
 model Employee {
   id          String       @id @default(nanoid(8))
   fname       String
   mname       String
   lname       String
-  gender      Gender
+  gender      String
+  // gender      Gender
   bdate       DateTime
   age         Int
   contactInfo ContactInfo?
@@ -100,11 +102,13 @@ model Patient {
   mname         String
   lname         String
   nameSuffix    String?
-  gender        Gender
+  gender        String
+  // gender        Gender
   age           Int
   bdate         DateTime
   bplace        String
-  civilStatus   CivilStatus
+  civilStatus   String
+  // civilStatus   CivilStatus
   occupation    String?
   contactInfo   ContactInfo?
   allergies     Allergies[]

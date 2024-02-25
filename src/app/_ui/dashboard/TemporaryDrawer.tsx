@@ -37,7 +37,7 @@ export default function TemporaryDrawer({
                 sx={{ textDecoration: "none", color: "common.black" }}
                 fontWeight={900}
               >
-                modernize
+                salus
               </Typography>
             </Grow>
           </Stack>

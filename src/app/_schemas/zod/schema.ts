@@ -1,4 +1,4 @@
-import { CivilStatus } from "@prisma/client";
+// import { CivilStatus } from "@prisma/client";
 import * as z from "zod";
 
 export const SettingsSchema = z.object({
@@ -13,53 +13,42 @@ export const NewPasswordSchema = z.object({
   newPassword: z.string().min(6, "Minimum of 6 character!"),
 });
 
-// export const RegisterSchema = z.object({
-//   fname: z.string().min(1, "First Name is required"),
-//   lname: z.string().min(1, "Last Name is required"),
-//   email: z.string().email("Email is required."),
-//   password: z.string().min(1, "Password is required."),
-// });
-
 export const RegisterSchema = z.object({
+  // PERSONAL
   fname: z.string().min(1, "First Name is required!"),
   mname: z.string().min(1, "Middle Name is required!"),
   lname: z.string().min(1, "Last Name is required!"),
   nameSuffix: z.optional(z.string()),
-  bdate: z.date({
-    required_error: "Please select a date and time",
-    invalid_type_error: "That's not a date!",
-  }),
+  gender: z.string(),
+  age: z.coerce.number(),
+  bdate: z.coerce.date(),
   bplace: z.string().min(1, "Birth place is required!"),
   civilStatus: z.string().min(1, "Civil status is required"),
   occupation: z.string().min(1, "Occupation is required"),
-  contactNumber: z.string().min(1, "Contact number is required"),
-  address: z.string().min(1, "Address is required"),
-  alertMedication: z.string().min(1, "Alert medication is required"),
-  allergies: z.string().min(1, "Allergies is required"),
-  isSmoking: z.string().min(1, "Smoking status is required"),
-  isCovidVaccinated: z.string().min(1, "Covid vaccination status is required"),
-  isDengvaxiaVaccinated: z
-    .string()
-    .min(1, "Dengvaxia vaccination status is required"),
-
+  // CONTACT
+  phone: z.string().min(1, "Phone is required"),
+  // ADDRESS
+  houseNumber: z.string().min(1, "House number is required"),
+  street: z.string().min(1, "Street is required"),
+  barangay: z.string().min(1, "Barangay is required"),
+  city: z.string().min(1, "City is required"),
+  province: z.string().min(1, "Province is required"),
+  region: z.string().min(1, "Region is required"),
+  country: z.string().min(1, "Country is required"),
+  zipCode: z.string().min(1, "Zip code is required"),
+  // HEALTH RELATED
+  // isSmoking: z.string().refine((value) => value === "true"),
+  // isSmoking: z.enum(["true", "false"]),
+  // isCovidVaccinated: z.enum(["true", "false"]),
+  // isDengvaxiaVaccinated: z.enum(["true", "false"]),
+  isSmoking: z.coerce.boolean(),
+  isCovidVaccinated: z.coerce.boolean(),
+  isDengvaxiaVaccinated: z.coerce.boolean(),
+  // ACCOUNT
+  username: z.string().min(1, "Username is required!"),
   email: z.string().email("Email is required!"),
   password: z.string().min(1, "Password is required!"),
-
-  // nameSuffix            String?
-  // bdate                 DateTime
-  // bplace                String
-  // civilStatus           CivilStatus
-  // occupation            String?
-  // contactNumber         String
-  // email                 String      @unique
-  // address               String
-  // alertMedication       String?
-  // allergies             String? // TODO: Create Allergies Table
-  // isSmoking             Boolean     @default(false)
-  // isCovidVaccinated     Boolean     @default(false)
-  // isDengvaxiaVaccinated Boolean     @default(false)
-  // createdAt             DateTime    @default(now())
-  // updatedAt             DateTime    @updatedAt
+  confirmPassword: z.string().min(1, "Password is required!"),
 });
 
 export const LoginSchema = z.object({

@@ -24,9 +24,9 @@ const RegisterForm = () => {
     defaultValues: { email: "", password: "", fname: "", lname: "" },
   });
 
-  // console.log("register errors", errors);
+  console.log("register errors", errors);
 
-  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (data: any) => {
     setError("");
     setSuccess("");
 
@@ -42,7 +42,7 @@ const RegisterForm = () => {
   return (
     <Stack gap={2}>
       <MultiStepForm />
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      {/* <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="First Name"
           {...register("fname")}
@@ -82,7 +82,7 @@ const RegisterForm = () => {
           message={error ? error : success}
           status={error ? "error" : "success"}
         />
-      )}
+      )} */}
     </Stack>
   );
 };
