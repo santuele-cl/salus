@@ -21,6 +21,9 @@ import { STEPS } from "@/app/_data/constant";
 import * as z from "zod";
 import { createUser } from "@/actions/auth";
 import FormStatusText from "../FormStatusText";
+import Link from "next/link";
+import Logo from "../../dashboard/Logo";
+import SideLogo from "./SideLogo";
 
 const MultiStepForm = () => {
   const [pending, setPending] = useState(false);
@@ -83,27 +86,27 @@ const MultiStepForm = () => {
   console.log(errors);
   // console.log(getValues());
   return (
-    <Container maxWidth="lg">
-      <Typography variant="h4" sx={{ textTransform: "uppercase" }}>
-        Register
-      </Typography>
-      <Stack sx={{ border: "1px solid red", p: 4 }} spacing={2}>
-        {/* STEPPER NAV */}
-        <Stepper activeStep={activeStep} alternativeLabel>
-          {STEPS.map(({ label, id }) => (
-            <Step key={id}>
-              <StepLabel>{label}</StepLabel>
-            </Step>
-          ))}
-        </Stepper>
-
-        {/* FORM */}
-        <Paper elevation={2}>
+    <Grid2 container p={4} direction="row" spacing={4}>
+      <Grid2 xs={12} sm={6} md={3}>
+        <SideLogo />
+      </Grid2>
+      <Grid2 xs={12} sm={6} md={9} p={4}>
+        <Paper elevation={3}>
+          {/* STEPPER NAV */}
+          <Stepper activeStep={activeStep} alternativeLabel sx={{ p: 4 }}>
+            {STEPS.map(({ label, id }) => (
+              <Step key={id}>
+                <StepLabel>{label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+          {/* FORM */}
           <Stack
             component="form"
             onSubmit={handleSubmit(onSubmit)}
-            p={3}
-            spacing={4}
+            p={4}
+            pt={1}
+            spacing={2}
           >
             <Box>
               <Stack gap={4}>
@@ -172,7 +175,6 @@ const MultiStepForm = () => {
                           </Grid2>
                         );
                       }
-
                       return (
                         <Grid2 xs={12} sm={6} key={id}>
                           <TextField
@@ -191,14 +193,19 @@ const MultiStepForm = () => {
               </Stack>
             </Box>
             {/* STEP NAVIGATION */}
-            <Stack direction="row" justifyContent="space-between">
-              <Button
-                onClick={previous}
-                disabled={activeStep === 0}
-                variant="outlined"
-              >
-                Back
-              </Button>
+            <Stack
+              direction="row"
+              justifyContent={activeStep !== 0 ? "space-between" : "flex-end"}
+            >
+              {activeStep !== 0 && (
+                <Button
+                  onClick={previous}
+                  disabled={activeStep === 0}
+                  variant="outlined"
+                >
+                  Back
+                </Button>
+              )}
               {isLastStep ? (
                 <Button variant="contained" type="submit">
                   Confirm
@@ -217,8 +224,8 @@ const MultiStepForm = () => {
             )}
           </Stack>
         </Paper>
-      </Stack>
-    </Container>
+      </Grid2>
+    </Grid2>
   );
 };
 export default MultiStepForm;

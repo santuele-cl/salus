@@ -2,7 +2,14 @@
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Stack, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  Container,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 import FormStatusText from "./FormStatusText";
 import { createUser } from "@/actions/auth";
@@ -39,51 +46,6 @@ const RegisterForm = () => {
     setPending(false);
   };
 
-  return (
-    <Stack gap={2}>
-      <MultiStepForm />
-      {/* <Box component="form" onSubmit={handleSubmit(onSubmit)}>
-        <TextField
-          label="First Name"
-          {...register("fname")}
-          error={errors.fname ? true : false}
-          helperText={errors.fname?.message}
-          placeholder="Juan"
-        />
-        <TextField
-          label="Last Name"
-          {...register("lname")}
-          error={errors.lname ? true : false}
-          helperText={errors.lname?.message}
-          placeholder="Dela Cruz"
-        />
-        <TextField
-          type="email"
-          label="Email"
-          {...register("email")}
-          error={errors.email ? true : false}
-          helperText={errors.email?.message}
-          placeholder="example@email.com"
-        />
-        <TextField
-          label="Password"
-          {...register("password")}
-          error={errors.password ? true : false}
-          helperText={errors.password?.message}
-          placeholder="********"
-        />
-
-        <Button type="submit" variant="contained" disabled={pending}>
-          Submit
-        </Button>
-      </Box>
-      {(error || success) && (
-        <FormStatusText
-          message={error ? error : success}
-          status={error ? "error" : "success"}
-        />
-      )} */}
-    </Stack>
-  );
+  return <MultiStepForm />;
 };
 export default RegisterForm;
