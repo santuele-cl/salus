@@ -15,7 +15,7 @@ declare module "@mui/material/styles" {
   }
 }
 
-const { neutral, primary, secondary, error, success, warning } = colors;
+const { neutral, primary, secondary, error, success, warning, common } = colors;
 const inter = Inter({ subsets: ["latin"] });
 
 const theme = createTheme({
@@ -36,7 +36,7 @@ const theme = createTheme({
       main: secondary[800],
     },
     text: {
-      primary: neutral[800],
+      primary: common["black"],
     },
     background: {
       paper: "#fff",

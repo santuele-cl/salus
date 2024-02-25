@@ -1,8 +1,8 @@
 import { SvgIcon } from "@mui/material";
 
-export default function Logo() {
+export default function Logo({ size = 30 }: { size?: number }) {
   return (
-    <SvgIcon sx={{ fontSize: 30 }}>
+    <SvgIcon sx={{ fontSize: size }}>
       <svg
         width="42"
         height="42"

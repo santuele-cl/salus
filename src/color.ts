@@ -1,4 +1,10 @@
 const colors = {
+  common: {
+    // black: "#1e1e1e",
+    // black: "#383636",
+    black: "#544141",
+    white: "#f6f6f6",
+  },
   neutral: {
     800: "#131523",
     700: "#333752",

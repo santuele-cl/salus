@@ -120,7 +120,7 @@ const MultiStepForm = () => {
                     ({ label, id, placeholder, type, options }) => {
                       if (type === "select") {
                         return (
-                          <Grid2 xs={12} md={6} key={id}>
+                          <Grid2 xs={12} sm={6} key={id}>
                             <TextField
                               select
                               label={label}
@@ -145,7 +145,7 @@ const MultiStepForm = () => {
                         );
                       } else if (type === "date") {
                         return (
-                          <Grid2 xs={12} md={6} key={id}>
+                          <Grid2 xs={12} sm={6} key={id}>
                             <TextField
                               type="date"
                               label={label}
@@ -159,7 +159,7 @@ const MultiStepForm = () => {
                         );
                       } else if (type === "number") {
                         return (
-                          <Grid2 xs={12} md={6} key={id}>
+                          <Grid2 xs={12} sm={6} key={id}>
                             <TextField
                               type="number"
                               label={label}
@@ -174,7 +174,7 @@ const MultiStepForm = () => {
                       }
 
                       return (
-                        <Grid2 xs={12} md={6} key={id}>
+                        <Grid2 xs={12} sm={6} key={id}>
                           <TextField
                             label={label}
                             {...register(id)}
