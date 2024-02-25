@@ -8,6 +8,7 @@ import FormStatusText from "./FormStatusText";
 import { createUser } from "@/actions/auth";
 import { useState } from "react";
 import { RegisterSchema } from "../../_schemas/zod/schema";
+import MultiStepForm from "./register/MultiStepForm";
 
 const RegisterForm = () => {
   const [pending, setPending] = useState(false);
@@ -23,9 +24,9 @@ const RegisterForm = () => {
     defaultValues: { email: "", password: "", fname: "", lname: "" },
   });
 
-  // console.log("register errors", errors);
+  console.log("register errors", errors);
 
-  const onSubmit = async (data: z.infer<typeof RegisterSchema>) => {
+  const onSubmit = async (data: any) => {
     setError("");
     setSuccess("");
 
@@ -40,7 +41,8 @@ const RegisterForm = () => {
 
   return (
     <Stack gap={2}>
-      <Box component="form" onSubmit={handleSubmit(onSubmit)}>
+      <MultiStepForm />
+      {/* <Box component="form" onSubmit={handleSubmit(onSubmit)}>
         <TextField
           label="First Name"
           {...register("fname")}
@@ -80,7 +82,7 @@ const RegisterForm = () => {
           message={error ? error : success}
           status={error ? "error" : "success"}
         />
-      )}
+      )} */}
     </Stack>
   );
 };

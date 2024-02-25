@@ -128,7 +128,33 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     return { error: "Invalid register data." };
   }
 
-  const { email, password, fname, lname } = validatedData.data;
+  const {
+    fname,
+    mname,
+    lname,
+    nameSuffix,
+    gender,
+    age,
+    bdate,
+    bplace,
+    civilStatus,
+    occupation,
+    phone,
+    houseNumber,
+    street,
+    barangay,
+    city,
+    province,
+    region,
+    country,
+    zipCode,
+    isSmoking,
+    isCovidVaccinated,
+    isDengvaxiaVaccinated,
+    username,
+    email,
+    password,
+  } = validatedData.data;
 
   const isEmailTaken = await getUserByEmail(email);
 
@@ -142,6 +168,47 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     data: {
       email,
       password: hashedPassword,
+      username,
+      consent: true,
+      profile: {
+        create: {
+          patient: {
+            create: {
+              isSmoking,
+              isCovidVaccinated,
+              isDengvaxiaVaccinated,
+              fname,
+              mname,
+              lname,
+              nameSuffix,
+              gender,
+              age,
+              bdate,
+              bplace,
+              civilStatus,
+              occupation,
+              contactInfo: {
+                create: {
+                  phone,
+                  email,
+                  address: {
+                    create: {
+                      houseNumber,
+                      street,
+                      barangay,
+                      city,
+                      province,
+                      region,
+                      country,
+                      zipCode,
+                    },
+                  },
+                },
+              },
+            },
+          },
+        },
+      },
     },
   });
 

@@ -1,3 +1,4 @@
+// import { CivilStatus } from "@prisma/client";
 import * as z from "zod";
 
 export const SettingsSchema = z.object({
@@ -13,10 +14,41 @@ export const NewPasswordSchema = z.object({
 });
 
 export const RegisterSchema = z.object({
-  fname: z.string().min(1, "First Name is required"),
-  lname: z.string().min(1, "Last Name is required"),
-  email: z.string().email("Email is required."),
-  password: z.string().min(1, "Password is required."),
+  // PERSONAL
+  fname: z.string().min(1, "First Name is required!"),
+  mname: z.string().min(1, "Middle Name is required!"),
+  lname: z.string().min(1, "Last Name is required!"),
+  nameSuffix: z.optional(z.string()),
+  gender: z.string(),
+  age: z.coerce.number(),
+  bdate: z.coerce.date(),
+  bplace: z.string().min(1, "Birth place is required!"),
+  civilStatus: z.string().min(1, "Civil status is required"),
+  occupation: z.string().min(1, "Occupation is required"),
+  // CONTACT
+  phone: z.string().min(1, "Phone is required"),
+  // ADDRESS
+  houseNumber: z.string().min(1, "House number is required"),
+  street: z.string().min(1, "Street is required"),
+  barangay: z.string().min(1, "Barangay is required"),
+  city: z.string().min(1, "City is required"),
+  province: z.string().min(1, "Province is required"),
+  region: z.string().min(1, "Region is required"),
+  country: z.string().min(1, "Country is required"),
+  zipCode: z.string().min(1, "Zip code is required"),
+  // HEALTH RELATED
+  // isSmoking: z.string().refine((value) => value === "true"),
+  // isSmoking: z.enum(["true", "false"]),
+  // isCovidVaccinated: z.enum(["true", "false"]),
+  // isDengvaxiaVaccinated: z.enum(["true", "false"]),
+  isSmoking: z.coerce.boolean(),
+  isCovidVaccinated: z.coerce.boolean(),
+  isDengvaxiaVaccinated: z.coerce.boolean(),
+  // ACCOUNT
+  username: z.string().min(1, "Username is required!"),
+  email: z.string().email("Email is required!"),
+  password: z.string().min(1, "Password is required!"),
+  confirmPassword: z.string().min(1, "Password is required!"),
 });
 
 export const LoginSchema = z.object({
