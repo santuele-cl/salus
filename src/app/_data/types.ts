@@ -11,7 +11,7 @@ export interface Field {
 
 export interface Step {
   id: number;
-  label: string;
-  description: string;
+  label?: string;
+  description?: string;
   fields: Field[];
 }

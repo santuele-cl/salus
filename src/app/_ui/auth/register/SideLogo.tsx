@@ -5,11 +5,14 @@ import Logo from "../../dashboard/Logo";
 const SideLogo = () => {
   return (
     <Stack
-      justifyContent="center"
-      // textAlign="center"
-      // alignItems="center"
-      height="100%"
-      spacing={4}
+      sx={{
+        justifyContent: "center",
+        alignItems: "center",
+        textAlign: "center",
+        height: "100%",
+        // height: { sm: "100%" },
+      }}
+      spacing={2}
     >
       <Stack
         direction="row"

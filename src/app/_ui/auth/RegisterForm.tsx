@@ -46,6 +46,22 @@ const RegisterForm = () => {
     setPending(false);
   };
 
-  return <MultiStepForm />;
+  return (
+    <Box
+      sx={{
+        // display: "flex",
+        // alignContent: "stretch",
+        // justifySelf: "stretch",
+
+        // border: "1px solid green",
+        // alignItems: "center",
+        // justifyContent: "center",
+        height: "100%",
+        // width: "100%",
+      }}
+    >
+      <MultiStepForm />
+    </Box>
+  );
 };
 export default RegisterForm;

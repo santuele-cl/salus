@@ -94,8 +94,14 @@ export const STEPS: Step[] = [
   },
   {
     id: 3,
-    label: "Confirm",
-    description: "Confirm",
-    fields: [{ id: "fname", label: "First Name" }],
+
+    fields: [
+      {
+        id: "consent",
+        label:
+          "I confirm that I have read and understood the Salus Privacy and Consent Form, and I voluntarily consent to the collection, use, and disclosure of my personal health information as described herein.",
+        type: "checkbox",
+      },
+    ],
   },
 ];

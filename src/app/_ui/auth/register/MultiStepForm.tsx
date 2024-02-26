@@ -11,9 +11,14 @@ import {
   TextField,
   Paper,
   MenuItem,
+  FormGroup,
+  FormControlLabel,
+  Checkbox,
+  FormControl,
+  FormLabel,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { RegisterSchema } from "@/app/_schemas/zod/schema";
@@ -24,13 +29,14 @@ import FormStatusText from "../FormStatusText";
 import Link from "next/link";
 import Logo from "../../dashboard/Logo";
 import SideLogo from "./SideLogo";
+import Consent from "./Consent";
 
 const MultiStepForm = () => {
   const [pending, setPending] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [activeStep, setActiveStep] = useState(0);
+  const [activeStep, setActiveStep] = useState(3);
   const currentStepDetails = STEPS[activeStep];
 
   const totalSteps = STEPS.length;
@@ -43,6 +49,7 @@ const MultiStepForm = () => {
     trigger,
     getValues,
     reset,
+    control,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(RegisterSchema),
@@ -63,121 +70,114 @@ const MultiStepForm = () => {
     if (activeStep > 0) setActiveStep((prevStep) => prevStep - 1);
   };
 
-  const onSubmit = async (data: any) => {
-    // const val = RegisterSchema.safeParse(data);
+  const onSubmit = async (values: any) => {
+    const validatedFields = RegisterSchema.safeParse(values);
     // console.log(val);
-    // // console.log("data", data);
+    // console.log("data", data);
     setError("");
     setSuccess("");
 
-    setPending(true);
+    if (validatedFields.success) {
+      setPending(true);
 
-    const { error, success } = await createUser(data);
-    if (error) setError(error);
-    if (success) setSuccess(success);
+      const { error, success } = await createUser(validatedFields.data);
+      if (error) setError(error);
+      if (success) setSuccess(success);
 
-    setPending(false);
-    if (success) {
-      reset();
-      setActiveStep(0);
+      setPending(false);
+      // if (success) {
+      //   reset();
+      //   setActiveStep(0);
+      // }
     }
   };
 
-  console.log(errors);
+  console.log("errors", errors);
   // console.log(getValues());
   return (
-    <Grid2 container p={4} direction="row" spacing={4}>
-      <Grid2 xs={12} sm={6} md={3}>
-        <SideLogo />
-      </Grid2>
-      <Grid2 xs={12} sm={6} md={9} p={4}>
-        <Paper elevation={3}>
-          {/* STEPPER NAV */}
-          <Stepper activeStep={activeStep} alternativeLabel sx={{ p: 4 }}>
-            {STEPS.map(({ label, id }) => (
-              <Step key={id}>
-                <StepLabel>{label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-          {/* FORM */}
-          <Stack
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            p={4}
-            pt={1}
-            spacing={2}
+    <Paper
+      elevation={3}
+      sx={{
+        // border: "1px solid orange",
+        height: "100%",
+      }}
+    >
+      <Stack height="100%">
+        {/* STEPPER NAV */}
+        <Stepper
+          activeStep={activeStep}
+          alternativeLabel
+          sx={{ p: 4, pb: 1, height: "120px" }}
+        >
+          {STEPS.map(({ label, id }) => (
+            <Step key={id}>
+              <StepLabel>{label}</StepLabel>
+            </Step>
+          ))}
+        </Stepper>
+        {/* FORM */}
+        <Stack
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          p={4}
+          pt={1}
+          spacing={2}
+          flexGrow="1"
+          flexShrink="1"
+          // sx={{
+          // overflowY: "auto",
+          // }}
+          // overflowY="auto"
+          height="450px"
+          justifyContent="space-between"
+        >
+          <Box
+            sx={{
+              // maxHeight: "320px",
+              overflowY: "auto",
+              p: 2,
+            }}
           >
-            <Box>
-              <Stack gap={4}>
-                <Stack>
-                  <Typography variant="h5">
-                    {currentStepDetails.label}
-                  </Typography>
-                  <Typography color="gray.main">
-                    {currentStepDetails.description}
-                  </Typography>
-                </Stack>
-                <Grid2 container direction="row" spacing={3}>
-                  {currentStepDetails.fields.map(
-                    ({ label, id, placeholder, type, options }) => {
-                      if (type === "select") {
-                        return (
-                          <Grid2 xs={12} sm={6} key={id}>
-                            <TextField
-                              select
-                              label={label}
-                              {...register(id)}
-                              error={errors[id] ? true : false}
-                              helperText={errors[id]?.message as string}
-                              placeholder={placeholder}
-                              fullWidth
-                            >
-                              {options &&
-                                options?.map(({ label, value }, i) => (
-                                  <MenuItem
-                                    value={value}
-                                    key={i}
-                                    defaultChecked={i === 0}
-                                  >
-                                    {label}
-                                  </MenuItem>
-                                ))}
-                            </TextField>
-                          </Grid2>
-                        );
-                      } else if (type === "date") {
-                        return (
-                          <Grid2 xs={12} sm={6} key={id}>
-                            <TextField
-                              type="date"
-                              label={label}
-                              {...register(id)}
-                              error={errors[id] ? true : false}
-                              helperText={errors[id]?.message as string}
-                              placeholder={placeholder}
-                              fullWidth
-                            />
-                          </Grid2>
-                        );
-                      } else if (type === "number") {
-                        return (
-                          <Grid2 xs={12} sm={6} key={id}>
-                            <TextField
-                              type="number"
-                              label={label}
-                              {...register(id)}
-                              error={errors[id] ? true : false}
-                              helperText={errors[id]?.message as string}
-                              placeholder={placeholder}
-                              fullWidth
-                            />
-                          </Grid2>
-                        );
-                      }
+            <Stack gap={4}>
+              <Stack>
+                <Typography variant="h5">{currentStepDetails.label}</Typography>
+                <Typography color="gray.main">
+                  {currentStepDetails.description}
+                </Typography>
+              </Stack>
+              <Grid2 container direction="row" spacing={3}>
+                {currentStepDetails.fields.map(
+                  ({ label, id, placeholder, type, options }) => {
+                    if (type === "select") {
                       return (
                         <Grid2 xs={12} sm={6} key={id}>
                           <TextField
+                            select
+                            label={label}
+                            {...register(id)}
+                            error={errors[id] ? true : false}
+                            helperText={errors[id]?.message as string}
+                            placeholder={placeholder}
+                            fullWidth
+                          >
+                            {options &&
+                              options?.map(({ label, value }, i) => (
+                                <MenuItem
+                                  value={value}
+                                  key={i}
+                                  defaultChecked={i === 0}
+                                >
+                                  {label}
+                                </MenuItem>
+                              ))}
+                          </TextField>
+                        </Grid2>
+                      );
+                    } else if (type === "date") {
+                      return (
+                        <Grid2 xs={12} sm={6} key={id}>
+                          <TextField
+                            type="date"
                             label={label}
                             {...register(id)}
                             error={errors[id] ? true : false}
@@ -187,45 +187,92 @@ const MultiStepForm = () => {
                           />
                         </Grid2>
                       );
+                    } else if (type === "number") {
+                      return (
+                        <Grid2 xs={12} sm={6} key={id}>
+                          <TextField
+                            type="number"
+                            label={label}
+                            {...register(id)}
+                            error={errors[id] ? true : false}
+                            helperText={errors[id]?.message as string}
+                            placeholder={placeholder}
+                            fullWidth
+                          />
+                        </Grid2>
+                      );
+                    } else if (type === "checkbox") {
+                      return (
+                        <Grid2 xs={12} key={id} width="100%">
+                          <Consent />
+                        </Grid2>
+                      );
                     }
-                  )}
-                </Grid2>
-              </Stack>
-            </Box>
-            {/* STEP NAVIGATION */}
-            <Stack
-              direction="row"
-              justifyContent={activeStep !== 0 ? "space-between" : "flex-end"}
-            >
-              {activeStep !== 0 && (
-                <Button
-                  onClick={previous}
-                  disabled={activeStep === 0}
-                  variant="outlined"
-                >
-                  Back
-                </Button>
-              )}
-              {isLastStep ? (
-                <Button variant="contained" type="submit">
-                  Confirm
-                </Button>
-              ) : (
-                <Button onClick={next} variant="contained">
-                  Next
-                </Button>
-              )}
+                    return (
+                      <Grid2 xs={12} sm={6} key={id}>
+                        <TextField
+                          label={label}
+                          {...register(id)}
+                          error={errors[id] ? true : false}
+                          helperText={errors[id]?.message as string}
+                          placeholder={placeholder}
+                          fullWidth
+                        />
+                      </Grid2>
+                    );
+                  }
+                )}
+              </Grid2>
             </Stack>
-            {(error || success) && (
-              <FormStatusText
-                message={error ? error : success}
-                status={error ? "error" : "success"}
-              />
+          </Box>
+          {isLastStep && (
+            <Box sx={{ p: 2 }}>
+              {currentStepDetails.fields.map(({ id, label }, i) => (
+                <FormGroup key={i}>
+                  <FormControlLabel
+                    {...register(id)}
+                    control={<Checkbox />}
+                    label={label}
+                  />
+                </FormGroup>
+              ))}
+            </Box>
+          )}
+          {/* STEP NAVIGATION */}
+          <Stack
+            direction="row"
+            p={1}
+            justifyContent={activeStep !== 0 ? "space-between" : "flex-end"}
+            height="50px"
+          >
+            {activeStep !== 0 && (
+              <Button
+                onClick={previous}
+                disabled={activeStep === 0}
+                variant="outlined"
+              >
+                Back
+              </Button>
+            )}
+            {isLastStep ? (
+              <Button variant="contained" type="submit">
+                Confirm
+              </Button>
+            ) : (
+              <Button onClick={next} variant="contained">
+                Next
+              </Button>
             )}
           </Stack>
-        </Paper>
-      </Grid2>
-    </Grid2>
+          {(error || success) && (
+            <FormStatusText
+              message={error ? error : success}
+              status={error ? "error" : "success"}
+            />
+          )}
+        </Stack>
+      </Stack>
+    </Paper>
   );
 };
 export default MultiStepForm;

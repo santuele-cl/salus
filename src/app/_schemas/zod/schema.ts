@@ -36,11 +36,11 @@ export const RegisterSchema = z.object({
   region: z.string().min(1, "Region is required"),
   country: z.string().min(1, "Country is required"),
   zipCode: z.string().min(1, "Zip code is required"),
+  // CONSENT
+  consent: z.boolean().refine((value) => value === true, {
+    message: "Consent required!",
+  }),
   // HEALTH RELATED
-  // isSmoking: z.string().refine((value) => value === "true"),
-  // isSmoking: z.enum(["true", "false"]),
-  // isCovidVaccinated: z.enum(["true", "false"]),
-  // isDengvaxiaVaccinated: z.enum(["true", "false"]),
   isSmoking: z.coerce.boolean(),
   isCovidVaccinated: z.coerce.boolean(),
   isDengvaxiaVaccinated: z.coerce.boolean(),
