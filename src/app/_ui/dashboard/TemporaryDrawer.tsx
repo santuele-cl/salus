@@ -13,7 +13,7 @@ export default function TemporaryDrawer({
   isSmallScreen: boolean;
   setShowTemporarySidebar: Dispatch<SetStateAction<boolean>>;
 }) {
-  console.log(showTemporarySidebar, isSmallScreen);
+  // console.log(showTemporarySidebar, isSmallScreen);
   return (
     <Drawer
       anchor="left"

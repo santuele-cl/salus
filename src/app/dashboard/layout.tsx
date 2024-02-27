@@ -54,9 +54,9 @@ export default function DashboardLayout({
           </Stack>
         </Box>
         <Box flexGrow="1" p={4} bgcolor="#F5F6FA">
-          <Paper elevation={1} sx={{ p: 2 }}>
-            {children}
-          </Paper>
+          {/* <Paper elevation={1} sx={{ p: 2 }}> */}
+          {children}
+          {/* </Paper> */}
         </Box>
       </Stack>
     </Box>

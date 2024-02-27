@@ -31,7 +31,7 @@ const RegisterForm = () => {
     defaultValues: { email: "", password: "", fname: "", lname: "" },
   });
 
-  console.log("register errors", errors);
+  // console.log("register errors", errors);
 
   const onSubmit = async (data: any) => {
     setError("");

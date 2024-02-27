@@ -2,7 +2,7 @@ import { useSession } from "next-auth/react";
 
 const useGetUserInfo = () => {
   const session = useSession();
-  console.log(session);
+  // console.log(session);
 
   return session.data?.user;
 };

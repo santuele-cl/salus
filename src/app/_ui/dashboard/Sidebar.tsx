@@ -39,6 +39,10 @@ const sidebarLinks: SidebarLink = {
     label: "",
     links: [
       {
+        label: "Patients",
+        icon: () => <HomeOutlinedIcon />,
+      },
+      {
         label: "Dashboard",
         icon: () => <HomeOutlinedIcon />,
       },

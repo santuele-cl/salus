@@ -29,7 +29,7 @@ export const {
   },
   callbacks: {
     async signIn({ user, account }) {
-      console.log("user", user, "account: ", account);
+      // console.log("user", user, "account: ", account);
 
       if (account?.provider !== "credentials") return true;
 
@@ -54,7 +54,7 @@ export const {
     },
 
     async session({ session, token }) {
-      console.log("token : ", token);
+      // console.log("token : ", token);
 
       if (token.sub && session.user) {
         session.user.id = token.sub;

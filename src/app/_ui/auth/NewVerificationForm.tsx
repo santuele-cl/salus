@@ -30,7 +30,7 @@ const NewVerificationForm = () => {
       setError("Something went wrong!");
     }
 
-    console.log(token);
+    // console.log(token);
   }, [token]);
 
   useEffect(() => {
