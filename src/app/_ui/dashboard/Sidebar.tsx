@@ -104,7 +104,7 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
       sx={{
         height: "100%",
         width: 250,
-        bgcolor: "background.paper",
+
         p: 2,
       }}
       component="nav"

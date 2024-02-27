@@ -34,7 +34,14 @@ export default function DashboardLayout({
         showTemporarySidebar={showTemporarySidebar}
         setShowTemporarySidebar={setShowTemporarySidebar}
       />
-      <Stack direction="row" position="relative" height="calc(100dvh - 70px)">
+      <Stack
+        direction="row"
+        position="relative"
+        height="calc(100dvh - 70px)"
+        // border="1px solid red"
+
+        bgcolor="background.paper"
+      >
         <Box>
           <Stack
             direction="row"
@@ -53,7 +60,22 @@ export default function DashboardLayout({
             </Collapse>
           </Stack>
         </Box>
-        <Box flexGrow="1" p={4} bgcolor="#F5F6FA">
+        <Box
+          flexGrow="1"
+          p={2}
+          bgcolor="#F5F6FA"
+          // maxWidth="calc(100vw - 250px)"
+          overflow="auto"
+          sx={{
+            height: "100%",
+            width: {
+              sm: "max(100%, calc(100vw - 250px))",
+            },
+            // maxWidth: {
+            //   md: "calc(100vw - 250px)",
+            // },
+          }}
+        >
           {/* <Paper elevation={1} sx={{ p: 2 }}> */}
           {children}
           {/* </Paper> */}

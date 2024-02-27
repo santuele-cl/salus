@@ -162,22 +162,6 @@ const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
           </Table>
         </TableContainer>
       </Paper>
-
-      <Tabs value={`/dashboard/patients/${pathnameArr[4]}`}>
-        {TABS.map(({ label, href }, i) => (
-          <Tab
-            label={label}
-            key={i}
-            LinkComponent={Link}
-            href={`/dashboard/patients/${selectedPatientId}/${href}`}
-            value={`/dashboard/patients/${pathnameArr[4]}`}
-          />
-        ))}
-      </Tabs>
-
-      {/* <Paper elevation={1} sx={{ p: 2 }}>
-        {children}
-      </Paper> */}
     </Stack>
   );
 };

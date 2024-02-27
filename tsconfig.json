@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "src/components/auth/LoginForm copy.bak",
-    "src/app/dashboard/patients/pagebakb.bak"
+    "src/app/dashboard/patients/pagebakb.bak",
+    "src/app/dashboard/patients/pagebackd.bak"
   ],
   "exclude": ["node_modules"]
 }

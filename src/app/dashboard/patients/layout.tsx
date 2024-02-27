@@ -1,5 +1,7 @@
-// const Layout = ({ children }: { children: React.ReactNode }) => {
-//   return <div>{children}</div>;
-// };
+import { Box } from "@mui/material";
 
-// export default Layout;
+const Layout = ({ children }: { children: React.ReactNode }) => {
+  return <Box height="100%">{children}</Box>;
+};
+
+export default Layout;

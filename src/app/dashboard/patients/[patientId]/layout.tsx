@@ -1,12 +1,10 @@
 "use client";
-import { Box, Tab, Tabs, Typography } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs, styled } from "@mui/material";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
+import { useState } from "react";
+import PortraitOutlinedIcon from "@mui/icons-material/PortraitOutlined";
 const TABS = [
-  {
-    label: "Current Visit",
-    href: "current",
-  },
   {
     label: "Profile",
     href: "profile",
@@ -23,25 +21,54 @@ const Layout = ({
   children: React.ReactNode;
   params: { patientId: string };
 }) => {
-  const pathname = usePathname();
-  const pathnameArr = pathname.split("/");
-  console.log(pathnameArr);
-  const router = useRouter();
+  const [activeTab, setActiveTab] = useState(0);
+  console.log(patientId);
   return (
-    <Box>
-      <Tabs value={`/dashboard/patients/${pathnameArr[4]}`}>
-        {TABS.map(({ label, href }, i) => (
+    <Stack direction="row" spacing={3} height="100%">
+      <Paper>
+        <Stack sx={{ p: 2 }} spacing={2}>
+          <PortraitOutlinedIcon sx={{ fontSize: 200 }} />
+          <hr />
+          <Stack></Stack>
+        </Stack>
+      </Paper>
+
+      <Stack>
+        <Tabs
+          textColor="primary"
+          indicatorColor="primary"
+          value={activeTab}
+          sx={{
+            "&Mui-selected": {
+              color: "red",
+            },
+          }}
+        >
           <Tab
-            label={label}
-            key={i}
+            onClick={() => setActiveTab(0)}
+            label="Current Visit"
             LinkComponent={Link}
-            href={`/dashboard/patients/${patientId}/${href}`}
-            value={`/dashboard/patients/${pathnameArr[4]}`}
+            href={`/dashboard/patients/${patientId}`}
+            value={0}
           />
-        ))}
-      </Tabs>
-      <Box>{children}</Box>
-    </Box>
+          {TABS.map(({ label, href }, i) => {
+            return (
+              <Tab
+                onClick={() => setActiveTab(i + 1)}
+                label={label}
+                key={i}
+                LinkComponent={Link}
+                href={`/dashboard/patients/${patientId}/${href}`}
+                value={i + 1}
+              />
+            );
+          })}
+        </Tabs>
+        <Paper elevation={1} sx={{ p: 2, overflow: "auto" }}>
+          {children}
+        </Paper>
+      </Stack>
+    </Stack>
   );
 };
 
