@@ -140,6 +140,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     civilStatus,
     occupation,
     phone,
+    consent,
     houseNumber,
     street,
     barangay,
@@ -169,7 +170,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
       email,
       password: hashedPassword,
       username,
-      consent: true,
+      consent,
       profile: {
         create: {
           patient: {
