@@ -37,17 +37,14 @@ export default function DashboardLayout({
       <Stack
         direction="row"
         position="relative"
-        height="calc(100dvh - 70px)"
-        // border="1px solid red"
-
+        height="calc(100vh - 70px)"
         bgcolor="background.paper"
       >
         <Box>
           <Stack
             direction="row"
             height="100%"
-            flexGrow="1"
-            sx={{ overflowX: "hidden" }}
+            sx={{ overflowY: "auto", overflowX: "hidden" }}
             bgcolor="general"
             borderRight="1px solid rgba(0,0,0,.1)"
           >
@@ -61,24 +58,19 @@ export default function DashboardLayout({
           </Stack>
         </Box>
         <Box
-          flexGrow="1"
-          p={2}
-          bgcolor="#F5F6FA"
-          // maxWidth="calc(100vw - 250px)"
-          overflow="auto"
           sx={{
-            height: "100%",
+            flexGrow: "1",
             width: {
-              sm: "max(100%, calc(100vw - 250px))",
+              xs: "100%",
+              sm: "calc(100vw - 250px)",
             },
-            // maxWidth: {
-            //   md: "calc(100vw - 250px)",
-            // },
+            p: 2,
+            bgcolor: "gray.light",
+            overflowX: "hidden",
+            overflowY: "auto",
           }}
         >
-          {/* <Paper elevation={1} sx={{ p: 2 }}> */}
           {children}
-          {/* </Paper> */}
         </Box>
       </Stack>
     </Box>

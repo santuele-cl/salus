@@ -227,54 +227,91 @@ model ServiceDepartment {
 }
 
 model Visit {
-  id String @id @default(nanoid(16))
-
-  chart   Chart?  @relation(fields: [chartId], references: [id], onDelete: Cascade)
-  chartId String?
-
+  id             String   @id @default(nanoid(16))
   accompaniedBy  String?
   chiefComplaint String
   hpi            String
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
 
-  serviceDepartment   ServiceDepartment? @relation(fields: [serviceDepartmentId], references: [id])
+  chart               Chart?                @relation(fields: [chartId], references: [id], onDelete: Cascade)
+  chartId             String?
+  vitals              Vitals?
+  physicalExamination PhysicalExamination[]
+  evaluation          Evaluation?
+  prescriptions       Presciption[]
+  laboratoryRequest   LaboratoryRequest[]
+  serviceDepartment   ServiceDepartment?    @relation(fields: [serviceDepartmentId], references: [id])
   serviceDepartmentId String?
+}
 
-  vitals Vitals?
-
-  evaluation    Evaluation?
-  prescriptions Presciption[]
-
+model PhysicalExamination {
+  id        String   @id @default(nanoid(16))
+  category  String
+  isNormal  Boolean
+  remarks   String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId String @unique
+}
+
+model LaboratoryRequest {
+  id         String    @id @default(uuid())
+  clinicName String?
+  result     String?   @db.Text
+  date       DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+
+  // chart          Chart?         @relation(fields: [chartId], references: [id], onDelete: Cascade)
+  // chartId        String?
+
+  Visit   Visit?  @relation(fields: [visitId], references: [id])
+  visitId String?
+
+  laboratoryProcedure LaboratoryProcedures? @relation(fields: [labProcedureId], references: [id])
+  labProcedureId      String?
+  // requestingPhysician   User?                 @relation(fields: [requestingPhysicianId], references: [id])
+  // requestingPhysicianId String?
+}
+
+model LaboratoryProcedures {
+  id            String   @id @default(uuid())
+  procedureName String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  laboratoryProcedureCategory LaboratoryProcedureCategory? @relation(fields: [labProcedureCategoryId], references: [id])
+  labProcedureCategoryId      String?
+  LaboratoryRequest           LaboratoryRequest[]
+}
+
+model LaboratoryProcedureCategory {
+  id           String   @id @default(uuid())
+  categoryName String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  laboratoryProcedures LaboratoryProcedures[]
 }
 
 model Evaluation {
-  id String @id @default(nanoid(16))
+  id        String   @id @default(nanoid(16))
+  diagnosis String
+  treatment String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   physician   Employee? @relation(fields: [physicianId], references: [id])
   physicianId String?
-
-  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
-  visitId String @unique
-
-  physicalExamination String
-  diagnosis           String
-  treatment           String
-  prescription        String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  visit       Visit     @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId     String    @unique
 }
 
 model Vitals {
-  id String @id @default(nanoid(16))
-
-  nurse   Employee @relation(fields: [nurseId], references: [id])
-  nurseId String
-
-  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
-  visitId String @unique
-
+  id                       String   @id @default(nanoid(16))
   heightInCm               Int
   weightInKl               Int
   bloodPressure            String
@@ -284,6 +321,12 @@ model Vitals {
   oxygenSaturation         String
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
+
+  nurse   Employee @relation(fields: [nurseId], references: [id])
+  nurseId String
+
+  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId String @unique
 }
 
 model TwoFactorConfirmation {

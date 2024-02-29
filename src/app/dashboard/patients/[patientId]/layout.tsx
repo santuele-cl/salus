@@ -1,9 +1,11 @@
 "use client";
-import { Box, Paper, Stack, Tab, Tabs, styled } from "@mui/material";
+import { Box, Paper, Stack, Tab, Tabs, useTheme } from "@mui/material";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useState } from "react";
-import PortraitOutlinedIcon from "@mui/icons-material/PortraitOutlined";
+import { useEffect, useState } from "react";
+import { getPatientByid } from "@/actions/patients";
+import { Patient } from "@prisma/client";
+import ProfileSidebar from "@/app/_ui/dashboard/patients/ProfileSidebar";
+
 const TABS = [
   {
     label: "Profile",
@@ -22,27 +24,56 @@ const Layout = ({
   params: { patientId: string };
 }) => {
   const [activeTab, setActiveTab] = useState(0);
-  console.log(patientId);
+  const [profile, setProfile] = useState<Patient | undefined>(undefined);
+
+  useEffect(() => {
+    const getProfile = async () => {
+      const patientProfile = await getPatientByid(patientId);
+      if (patientProfile.success) setProfile(patientProfile.data);
+    };
+
+    getProfile();
+  }, []);
+
+  // console.log(patientId);
+  // console.log("profile", profile);
   return (
-    <Stack direction="row" spacing={3} height="100%">
-      <Paper>
-        <Stack sx={{ p: 2 }} spacing={2}>
-          <PortraitOutlinedIcon sx={{ fontSize: 200 }} />
-          <hr />
-          <Stack></Stack>
-        </Stack>
+    <Stack
+      sx={{
+        gap: 3,
+        height: "100%",
+        width: "100%",
+        flexDirection: {
+          xs: "column",
+          xl: "row",
+        },
+        position: "relative",
+      }}
+    >
+      {/* PROFILE SIDEBAR */}
+      <Paper
+        sx={{
+          alignItems: "start",
+          overflowY: "auto",
+          flexShrink: "0",
+          width: {
+            xs: "100%",
+            xl: 300,
+          },
+        }}
+      >
+        <ProfileSidebar profile={profile} />
       </Paper>
 
-      <Stack>
+      <Stack flexGrow="1">
+        {/* NAV */}
         <Tabs
+          sx={{ width: "100%" }}
           textColor="primary"
           indicatorColor="primary"
           value={activeTab}
-          sx={{
-            "&Mui-selected": {
-              color: "red",
-            },
-          }}
+          variant="scrollable"
+          scrollButtons="auto"
         >
           <Tab
             onClick={() => setActiveTab(0)}
@@ -64,8 +95,15 @@ const Layout = ({
             );
           })}
         </Tabs>
-        <Paper elevation={1} sx={{ p: 2, overflow: "auto" }}>
-          {children}
+        {/* CHILDREN */}
+        <Paper
+          elevation={1}
+          sx={{
+            overflowX: "auto",
+            p: 2,
+          }}
+        >
+          <Box>{children}</Box>
         </Paper>
       </Stack>
     </Stack>

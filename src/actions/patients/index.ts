@@ -45,7 +45,10 @@ export async function findPatient(term: string) {
 export async function getPatientByid(id: string) {
   if (!id) return { error: "Missing ID!" };
 
-  const patient = await db.patient.findUnique({ where: { id } });
+  const patient = await db.patient.findUnique({
+    where: { id },
+    include: { contactInfo: true },
+  });
 
   if (!patient) return { error: "Patient not found!" };
 
