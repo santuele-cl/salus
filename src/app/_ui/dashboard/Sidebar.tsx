@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import {
   Box,
   List,
@@ -22,9 +22,10 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "@mui/material/styles";
+import { toKebabCase } from "@/app/_utils/utils";
 
 type SidebarLinkType = {
-  label: String;
+  label: string;
   icon: () => React.ReactNode;
 };
 
@@ -98,7 +99,7 @@ const sidebarLinks: SidebarLink = {
 };
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
-  const pathname = usePathname();
+  const segments = usePathname().split("/");
   return (
     <List
       sx={{
@@ -119,44 +120,35 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
               {sidebarLinks[key].label}
             </ListSubheader>
           )}
-          {sidebarLinks[key].links.map(({ label, icon }, i) => {
-            const path = `/dashboard/${(label.length === 1
-              ? label.toLowerCase()
-              : label.split(" ").join("-")
-            ).toLowerCase()}`;
+          {sidebarLinks[key].links.map(({ label, icon }, i) => (
+            <ListItemButton
+              sx={() => {
+                const style: SxProps = {
+                  bgcolor: "primary.main",
+                  color: "common.white",
+                };
 
-            const isSelected = pathname === path;
-
-            return (
-              <ListItemButton
-                sx={() => {
-                  const style: SxProps = {
-                    bgcolor: "primary.main",
-                    color: "common.white",
-                  };
-
-                  return {
-                    "&.Mui-selected:hover, &.Mui-selected, :hover": style,
-                    "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
-                      { color: "#fff" },
-                  };
+                return {
+                  "&.Mui-selected:hover, &.Mui-selected, :hover": style,
+                  "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
+                    { color: "#fff" },
+                };
+              }}
+              key={label + String(i)}
+              selected={segments[2] === toKebabCase(label)}
+              LinkComponent={Link}
+              href={`/dashboard/${toKebabCase(label)}`}
+            >
+              <ListItemIcon
+                sx={{
+                  "&.Mui-selected": { color: "common.white !important" },
                 }}
-                key={label + String(i)}
-                selected={isSelected}
-                LinkComponent={Link}
-                href={path}
               >
-                <ListItemIcon
-                  sx={{
-                    "&.Mui-selected": { color: "common.white !important" },
-                  }}
-                >
-                  {icon()}
-                </ListItemIcon>
-                <ListItemText primary={label} />
-              </ListItemButton>
-            );
-          })}
+                {icon()}
+              </ListItemIcon>
+              <ListItemText primary={label} />
+            </ListItemButton>
+          ))}
         </Box>
       ))}
     </List>
