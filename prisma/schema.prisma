@@ -13,6 +13,15 @@ enum UserRole {
   EMPLOYEE
 }
 
+model EmployeeRole {
+  id        String     @id @default(nanoid(4))
+  roleName  String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+  // users     User[]
+}
+
 // enum CivilStatus {
 //   SINGLE
 //   MARRIED
@@ -88,6 +97,9 @@ model Employee {
   serviceDepartmentId String?
   Evaluation          Evaluation[]
   Vitals              Vitals[]
+  EmployeeRole        EmployeeRole?      @relation(fields: [employeeRoleId], references: [id])
+  employeeRoleId      String?
+  Presciption         Presciption[]
 }
 
 model Patient {
@@ -133,24 +145,67 @@ model Chart {
 }
 
 model Allergies {
-  id        String   @id @default(uuid())
-  name      String
-  severity  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  severity    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
   patientId String  @unique
 }
 
+model DrugCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  drugs       Drugs[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model DrugForm {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  drugs       Drugs[]
+}
+
+model Drugs {
+  id             String        @id @default(uuid())
+  name           String        @unique
+  drugCategory   DrugCategory? @relation(fields: [drugCategoryId], references: [id])
+  drugCategoryId String?
+  drugForm       DrugForm?     @relation(fields: [drugFormId], references: [id])
+  drugFormId     String?
+  strength       String
+  manufacturer   String
+  priceInCents   Int
+  prescriptions  Presciption[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
 model Presciption {
-  id Int @id @default(autoincrement())
+  id              String    @id @default(uuid())
+  drugName        String
+  dosage          Int
+  frequencyPerDay Int?
+  takenEveryHour  Int?
+  durationInDays  Int
+  notes           String?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  Patient         Patient?  @relation(fields: [patientId], references: [id])
+  patientId       String?
+  Visit           Visit?    @relation(fields: [visitId], references: [id])
+  visitId         String?
+  physician       Employee? @relation(fields: [physicianId], references: [id])
+  physicianId     String?
 
-  Patient   Patient? @relation(fields: [patientId], references: [id])
-  patientId String?
-
-  Visit   Visit?  @relation(fields: [visitId], references: [id])
-  visitId String?
+  drugs   Drugs?  @relation(fields: [drugsId], references: [id])
+  drugsId String?
 }
 
 model ContactInfo {
@@ -247,7 +302,7 @@ model Visit {
 
 model PhysicalExamination {
   id        String   @id @default(nanoid(16))
-  category  String
+  part      String
   isNormal  Boolean
   remarks   String?
   createdAt DateTime @default(now())

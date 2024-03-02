@@ -138,7 +138,7 @@ const PatientsPage = () => {
                         <Button
                           variant="contained"
                           LinkComponent={Link}
-                          href={`${pathname}/${id}`}
+                          href={`${pathname}/${id}/visit-history`}
                         >
                           Select
                         </Button>

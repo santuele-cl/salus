@@ -5,7 +5,7 @@ import { db } from "@/app/_lib/db";
 export async function getVisitsByProfileId(profileId: string) {
   const visit = await db.patient.findUnique({
     where: { id: profileId },
-    select: { chart: { select: { visits: true } } },
+    select: { id: true, chart: { select: { visits: true } } },
   });
 
   console.log("visit", visit);

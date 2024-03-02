@@ -25,3 +25,8 @@ export interface TabType {
   label: string;
   Content: (props: TabTypeObjectKeyType) => JSX.Element;
 }
+
+export interface CategoryType {
+  categoryName: string;
+  procedures: string[];
+}

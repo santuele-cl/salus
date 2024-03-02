@@ -7,12 +7,13 @@ import { Patient } from "@prisma/client";
 import ProfileSidebar from "@/app/_ui/dashboard/patients/ProfileSidebar";
 
 const TABS = [
+  { label: "Visit History", href: "visit-history" },
+
   {
     label: "Profile",
     href: "profile",
   },
   { label: "Documents", href: "documents" },
-  { label: "Visit History", href: "visit-history" },
   { label: "Medications", href: "medications" },
 ];
 
@@ -75,22 +76,22 @@ const Layout = ({
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab
+          {/* <Tab
             onClick={() => setActiveTab(0)}
             label="Current Visit"
             LinkComponent={Link}
             href={`/dashboard/patients/${patientId}`}
             value={0}
-          />
+          /> */}
           {TABS.map(({ label, href }, i) => {
             return (
               <Tab
-                onClick={() => setActiveTab(i + 1)}
+                onClick={() => setActiveTab(i)}
                 label={label}
                 key={i}
                 LinkComponent={Link}
                 href={`/dashboard/patients/${patientId}/${href}`}
-                value={i + 1}
+                value={i}
               />
             );
           })}
