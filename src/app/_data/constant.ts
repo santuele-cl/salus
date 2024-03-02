@@ -34,35 +34,6 @@ export const STEPS: Step[] = [
       { id: "bplace", label: "Birthplace" },
       { id: "civilStatus", label: "Civil Status" },
       { id: "occupation", label: "Occupation" },
-      {
-        id: "isSmoking",
-        label: "Smoking Status",
-        type: "select",
-        options: [
-          { value: "true", label: "Smoking" },
-          { value: "false", label: "Not smoking" },
-        ],
-      },
-      {
-        id: "isCovidVaccinated",
-        label: "Covid Vaccination Status",
-        type: "select",
-        options: [
-          { value: "true", label: "Vaccinated" },
-          { value: "false", label: "Not Vaccinated" },
-        ],
-      },
-      {
-        id: "isDengvaxiaVaccinated",
-        label: "Dengvaxia Vaccination Status",
-        type: "select",
-        options: [
-          { value: "", label: "Select" },
-
-          { value: "true", label: "Vaccinated" },
-          { value: "false", label: "Not Vaccinated" },
-        ],
-      },
     ],
   },
   {

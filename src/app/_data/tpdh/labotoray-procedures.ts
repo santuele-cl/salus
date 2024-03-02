@@ -69,7 +69,7 @@ export const TPDH_LAB_PROCEDURE_BACTERIOLOGY = [
   "Culture & Sensitivity",
 ];
 
-export const TPDH_LAB_PROCEDURE_CATEGORY: CategoryType[] = [
+export const TPDH_LAB_PROCEDURE_CATEGORY = [
   {
     categoryName: "hematology",
     procedures: TPDH_LAB_PROCEDURE_HEMATOLOGY,

@@ -9,7 +9,7 @@ const ProfilePage = async ({
   };
 }) => {
   const patient = await getPatientByid(patientId);
-  console.log(patient);
+  // console.log(patient);
   return <Stack>{JSON.stringify(patient)}</Stack>;
 };
 

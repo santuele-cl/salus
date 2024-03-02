@@ -18,7 +18,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6">List of visits</Typography>
+        <Typography variant="h6">Visit History</Typography>
         <Button variant="contained" onClick={handleCloseVisitFormDrawer}>
           Add New Visit
         </Button>

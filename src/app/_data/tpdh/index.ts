@@ -1,6 +1,6 @@
 import { TPDH_LAB_PROCEDURE_CATEGORY } from "./labotoray-procedures";
 
-export const CATEGORY_SEED_DATA = TPDH_LAB_PROCEDURE_CATEGORY.map(
+export const LAB_CATEGORY_SEED_DATA = TPDH_LAB_PROCEDURE_CATEGORY.map(
   (category, categoryIndex) => {
     return {
       id: `${"LP" + categoryIndex + 1 + "0000"}`,

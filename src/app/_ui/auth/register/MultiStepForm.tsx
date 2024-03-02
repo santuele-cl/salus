@@ -7,28 +7,21 @@ import {
   Button,
   Stack,
   Box,
-  Container,
   TextField,
   Paper,
   MenuItem,
   FormGroup,
   FormControlLabel,
   Checkbox,
-  FormControl,
-  FormLabel,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { RegisterSchema } from "@/app/_schemas/zod/schema";
 import { STEPS } from "@/app/_data/constant";
-import * as z from "zod";
 import { createUser } from "@/actions/auth";
 import FormStatusText from "../FormStatusText";
-import Link from "next/link";
-import Logo from "../../dashboard/Logo";
-import SideLogo from "./SideLogo";
 import Consent from "./Consent";
 
 const MultiStepForm = () => {
@@ -45,9 +38,7 @@ const MultiStepForm = () => {
   const {
     register,
     handleSubmit,
-    watch,
     trigger,
-    getValues,
     reset,
     control,
     formState: { errors },

@@ -29,6 +29,7 @@ import {
   getTwoFactorConfirmationByUserId,
   getTwoFactorTokenByEmail,
 } from "@/app/_data/two-factor";
+import { CivilStatus, Gender } from "@prisma/client";
 
 export async function login(
   credentials: z.infer<typeof LoginSchema>,
@@ -149,9 +150,6 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     region,
     country,
     zipCode,
-    isSmoking,
-    isCovidVaccinated,
-    isDengvaxiaVaccinated,
     username,
     email,
     password,
@@ -175,18 +173,15 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
         create: {
           patient: {
             create: {
-              isSmoking,
-              isCovidVaccinated,
-              isDengvaxiaVaccinated,
               fname,
               mname,
               lname,
               nameSuffix,
-              gender,
+              gender: gender as Gender,
               age,
               bdate,
               bplace,
-              civilStatus,
+              civilStatus: civilStatus as CivilStatus,
               occupation,
               contactInfo: {
                 create: {

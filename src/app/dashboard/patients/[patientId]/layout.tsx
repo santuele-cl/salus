@@ -5,16 +5,18 @@ import { useEffect, useState } from "react";
 import { getPatientByid } from "@/actions/patients";
 import { Patient } from "@prisma/client";
 import ProfileSidebar from "@/app/_ui/dashboard/patients/ProfileSidebar";
+import { usePathname } from "next/navigation";
 
 const TABS = [
   { label: "Visit History", href: "visit-history" },
-
-  {
-    label: "Profile",
-    href: "profile",
-  },
-  { label: "Documents", href: "documents" },
-  { label: "Medications", href: "medications" },
+  { label: "Profile", href: "profile" },
+  { label: "Diagnosis", href: "diagnosis" },
+  { label: "Prescriptions", href: "prescriptions" },
+  { label: "Laboratory Results", href: "laboratory-results" },
+  { label: "Vaccinations", href: "vaccinations" },
+  { label: "Allergies", href: "allergies" },
+  { label: "Family Medical History", href: "family-medical-history" },
+  { label: "Social History", href: "social-history" },
 ];
 
 const Layout = ({
@@ -24,7 +26,9 @@ const Layout = ({
   children: React.ReactNode;
   params: { patientId: string };
 }) => {
-  const [activeTab, setActiveTab] = useState(0);
+  const pathname = usePathname();
+  const segments = pathname.split("/");
+  console.log("segments", segments);
   const [profile, setProfile] = useState<Patient | undefined>(undefined);
 
   useEffect(() => {
@@ -36,8 +40,8 @@ const Layout = ({
     getProfile();
   }, []);
 
-  // console.log(patientId);
-  // console.log("profile", profile);
+  console.log("patientId", patientId);
+  console.log("profile", profile);
   return (
     <Stack
       sx={{
@@ -72,26 +76,18 @@ const Layout = ({
           sx={{ width: "100%" }}
           textColor="primary"
           indicatorColor="primary"
-          value={activeTab}
+          value={segments[4]}
           variant="scrollable"
           scrollButtons="auto"
         >
-          {/* <Tab
-            onClick={() => setActiveTab(0)}
-            label="Current Visit"
-            LinkComponent={Link}
-            href={`/dashboard/patients/${patientId}`}
-            value={0}
-          /> */}
           {TABS.map(({ label, href }, i) => {
             return (
               <Tab
-                onClick={() => setActiveTab(i)}
                 label={label}
                 key={i}
                 LinkComponent={Link}
                 href={`/dashboard/patients/${patientId}/${href}`}
-                value={i}
+                value={href}
               />
             );
           })}

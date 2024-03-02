@@ -6,7 +6,7 @@ const ActiveTab = async ({
 }: {
   params: { patientId: string };
 }) => {
-  console.log(patientId);
+  // console.log(patientId);
   const patient = await getPatientByid(patientId);
 
   return <Box>{JSON.stringify(patient)}</Box>;
