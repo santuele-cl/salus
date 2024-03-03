@@ -9,7 +9,7 @@ import {
   SxProps,
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import MedicationIcon from "@mui/icons-material/Medication";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -19,11 +19,13 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import GroupIcon from "@mui/icons-material/Group";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "@mui/material/styles";
 import { toKebabCase } from "@/app/_utils/utils";
-
 type SidebarLinkType = {
   label: string;
   icon: () => React.ReactNode;
@@ -34,26 +36,25 @@ type SidebarLink = {
   otherInfo: { label: string; links: SidebarLinkType[] };
   settings: { label: string; links: SidebarLinkType[] };
 };
-
 const sidebarLinks: SidebarLink = {
   general: {
     label: "",
     links: [
       {
         label: "Patients",
-        icon: () => <HomeOutlinedIcon />,
+        icon: () => <FamilyRestroomIcon />,
       },
       {
-        label: "Dashboard",
-        icon: () => <HomeOutlinedIcon />,
+        label: "Users",
+        icon: () => <GroupIcon />,
       },
       {
-        label: "Orders",
-        icon: () => <FormatListBulletedOutlinedIcon />,
+        label: "Drugs",
+        icon: () => <MedicationIcon />,
       },
       {
-        label: "Catergories",
-        icon: () => <FolderOutlinedIcon />,
+        label: "Appointmens",
+        icon: () => <CalendarMonthIcon />,
       },
       {
         label: "Customers",

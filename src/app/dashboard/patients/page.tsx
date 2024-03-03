@@ -15,11 +15,14 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import React, { useState } from "react";
-import { findPatient } from "@/actions/patients";
+import React, { useEffect, useState } from "react";
+import { findPatient, getTotalPatientsCount } from "@/actions/patients";
 import { Patient } from "@prisma/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import HomeOutlined from "@mui/icons-material/HomeOutlined";
+import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
+import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 
 interface PatientsType {
   error?: string;
@@ -32,7 +35,9 @@ const PatientsPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
   const insufficientSearchTerm = searchTerm.length < 1;
-
+  const [patientsCount, setPatientsCount] = useState<number | undefined>(
+    undefined
+  );
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const handleSearch = async () => {
@@ -49,8 +54,48 @@ const PatientsPage = () => {
     setSearchTerm("");
   };
 
+  useEffect(() => {
+    const getCount = async () => {
+      const count = await getTotalPatientsCount();
+      setPatientsCount(count.data);
+    };
+    getCount();
+  }, []);
+
   return (
     <Stack spacing={2}>
+      <Stack direction="row" gap={3} sx={{}}>
+        <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+          <Stack direction="row" gap={5}>
+            <Stack direction="column">
+              <Typography variant="h4" sx={{ color: "common.black" }}>
+                {patientsCount}
+              </Typography>
+              <Typography variant="subtitle1">All patients</Typography>
+            </Stack>
+            <Stack>
+              <PeopleOutlinedIcon
+                sx={{ fontSize: 50, color: "primary.light" }}
+              />
+            </Stack>
+          </Stack>
+        </Paper>
+        <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+          <Stack direction="row" gap={5}>
+            <Stack direction="column">
+              <Typography variant="h4" sx={{ color: "common.black" }}>
+                {patientsCount}
+              </Typography>
+              <Typography variant="subtitle1">Today&apos;s patients</Typography>
+            </Stack>
+            <Stack>
+              <PersonAddAltOutlinedIcon
+                sx={{ fontSize: 40, color: "primary.light" }}
+              />
+            </Stack>
+          </Stack>
+        </Paper>
+      </Stack>
       <Paper elevation={1} sx={{ p: 2 }}>
         <Stack
           direction="row"

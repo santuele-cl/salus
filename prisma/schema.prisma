@@ -184,12 +184,13 @@ model TestResult {
 }
 
 model Allergies {
-  id          String          @id @default(uuid())
-  name        String
-  description String?
-  severity    AllergySeverity @default(LOW)
-  createdAt   DateTime        @default(now())
-  updatedAt   DateTime        @updatedAt
+  id            String          @id @default(uuid())
+  name          String
+  description   String?
+  severity      AllergySeverity @default(LOW)
+  dateDiagnosed DateTime
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
   patient   Patient? @relation(fields: [patientId], references: [id])
   patientId String?
@@ -235,6 +236,8 @@ model Presciption {
   takenEveryHour  Int?
   durationInDays  Int
   notes           String?
+  startDate       DateTime
+  endDate         DateTime
   createdAt       DateTime  @default(now())
   updatedAt       DateTime  @updatedAt
   patient         Patient?  @relation(fields: [patientId], references: [id])

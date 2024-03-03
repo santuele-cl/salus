@@ -2,7 +2,14 @@
 
 import { VisitSchema } from "@/app/_schemas/zod/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Box, Button, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -27,33 +34,28 @@ const NewVisitForm = () => {
     // setPending(true);
     // setError("");
     // setSuccess("");
-
     // try {
     //   const res = await login(data, callbackUrl);
     //   console.log("res", res);
-
     //   if (res?.error) {
     //     reset();
     //     setError(res.error);
     //   }
-
     //   if (res?.success) {
     //     reset();
     //     setSuccess(res.success);
     //   }
-
     //   if (res.twoFactor) setShowTwoFactorInput(true);
     // } catch {
     //   setError("Something went asd wrong!");
     // }
-
     // setPending(false);
-    console.log("New visit form submitted");
+    // console.log("New visit form submitted");
   };
   return (
     <Box sx={{ p: 3, width: 450 }}>
       <Typography variant="h6">Visit Form</Typography>
-      <hr />
+      <Divider sx={{ my: 2 }} />
       <Stack
         component="form"
         onSubmit={handleSubmit(onSubmit)}

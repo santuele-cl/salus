@@ -83,7 +83,7 @@ const MultiStepForm = () => {
     }
   };
 
-  console.log("errors", errors);
+  // console.log("errors", errors);
   // console.log(getValues());
   return (
     <Paper

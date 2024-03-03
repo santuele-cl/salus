@@ -113,7 +113,7 @@ const seed = async () => {
       id: "USER2",
       username: "ara03",
       email: "kabi678goo@gmail.com",
-      password: "password123",
+      password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "EMPLOYEE",
       consent: true,
       profile: {
@@ -166,7 +166,7 @@ const seed = async () => {
       id: "USER1",
       username: "clyde03",
       email: "lemon256san@gmail.com",
-      password: "password123",
+      password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "PATIENT",
       consent: true,
       profile: {

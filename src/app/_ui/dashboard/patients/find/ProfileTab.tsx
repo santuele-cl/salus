@@ -1,5 +1,5 @@
 const ProfileTab = ({ patientId }: { patientId: string }) => {
-  console.log("profile tab patient ID", patientId);
+  // console.log("profile tab patient ID", patientId);
   return <div>ProfileTab</div>;
 };
 

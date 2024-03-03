@@ -46,7 +46,7 @@ interface PatientsType {
 const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const pathnameArr = pathname.split("/");
-  console.log(pathnameArr);
+  // console.log(pathnameArr);
   const router = useRouter();
 
   const [patients, setPatients] = useState<Patient[] | undefined>([]);
@@ -67,9 +67,9 @@ const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
     setPatientId("");
   };
 
-  console.log(`/dashboard/patients/${pathnameArr[4]}`);
+  // console.log(`/dashboard/patients/${pathnameArr[4]}`);
   // console.log("patients", patients);
-  console.log("selectedPatientId", selectedPatientId);
+  // console.log("selectedPatientId", selectedPatientId);
   return (
     <Stack spacing={2}>
       <Paper elevation={1} sx={{ p: 2 }}>

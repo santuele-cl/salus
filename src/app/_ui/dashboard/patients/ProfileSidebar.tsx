@@ -19,7 +19,7 @@ const sidebarFields: SidebarFieldsType[] = [
 const ProfileSidebar = ({ profile }: { profile: Patient | undefined }) => {
   if (!profile) return <Typography>Loading..</Typography>;
 
-  console.log("profile sidebar", profile);
+  // console.log("profile sidebar", profile);
   return (
     <Stack
       sx={{

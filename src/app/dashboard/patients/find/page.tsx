@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import {
   Box,
   Button,
+  Divider,
   Paper,
   Stack,
   Tab,
@@ -46,7 +47,7 @@ interface PatientsType {
 const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
   const pathnameArr = pathname.split("/");
-  console.log(pathnameArr);
+  // console.log(pathnameArr);
   const router = useRouter();
 
   const [patients, setPatients] = useState<Patient[] | undefined>([]);
@@ -114,7 +115,7 @@ const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
             </Button>
           </Stack>
         </Stack>
-        <hr />
+        <Divider />
         <TableContainer>
           <Table
             sx={{ minWidth: 650, overflow: "auto" }}

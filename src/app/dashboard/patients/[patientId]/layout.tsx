@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 const TABS = [
   { label: "Visit History", href: "visit-history" },
   { label: "Profile", href: "profile" },
-  { label: "Diagnosis", href: "diagnosis" },
+  { label: "Diagnoses", href: "diagnoses" },
   { label: "Prescriptions", href: "prescriptions" },
   { label: "Laboratory Results", href: "laboratory-results" },
   { label: "Vaccinations", href: "vaccinations" },
@@ -28,7 +28,7 @@ const Layout = ({
 }) => {
   const pathname = usePathname();
   const segments = pathname.split("/");
-  console.log("segments", segments);
+  // console.log("segments", segments);
   const [profile, setProfile] = useState<Patient | undefined>(undefined);
 
   useEffect(() => {
@@ -40,8 +40,8 @@ const Layout = ({
     getProfile();
   }, []);
 
-  console.log("patientId", patientId);
-  console.log("profile", profile);
+  // console.log("patientId", patientId);
+  // console.log("profile", profile);
   return (
     <Stack
       sx={{
