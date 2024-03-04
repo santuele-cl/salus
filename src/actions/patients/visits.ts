@@ -21,11 +21,19 @@ export async function getVisityByVisitId(visitId: string) {
       where: { id: visitId },
       include: {
         vitals: true,
-        diagnosis: true,
+        diagnosis: {
+          include: {
+            physician: true,
+          },
+        },
         prescriptions: {
           include: { drugs: true, physician: true },
         },
-        laboratoryRequest: true,
+        laboratoryRequest: {
+          include: {
+            laboratoryProcedure: true,
+          },
+        },
         physicalExamination: true,
         serviceDepartment: true,
       },

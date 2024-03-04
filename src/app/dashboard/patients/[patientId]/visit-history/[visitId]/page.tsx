@@ -6,15 +6,26 @@ import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MonitorHeartOutlinedIcon from "@mui/icons-material/MonitorHeartOutlined";
 import Prescriptions from "./_components/Prescriptions";
-import { Drugs } from "@prisma/client";
+import AccessibilityIcon from "@mui/icons-material/Accessibility";
+import { Drugs, Vitals } from "@prisma/client";
+import PhysicalExaminations from "./_components/PhysicalExaminations";
+import MedicalInformationOutlinedIcon from "@mui/icons-material/MedicalInformationOutlined";
+import Diagnosis from "./_components/Diagnosis";
+import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
+import LaboratoryRequest from "./_components/LaboratoryRequest";
 
-const vitalsField = [
+interface VitalsField {
+  label: string;
+  id: keyof Vitals;
+}
+
+const vitalsField: VitalsField[] = [
   { label: "Height", id: "heightInCm" },
   { label: "Weight", id: "weightInKg" },
-  { label: "BP", unit: "", id: "bloodPressure" },
+  { label: "BP", id: "bloodPressure" },
   { label: "Pulse Rate", id: "pulseRate" },
   { label: "Respiratory Rate", id: "respiratoryRate" },
-  { label: "Body Temparature", id: "bodyTemperature" },
+  { label: "Body Temparature", id: "bodyTemperatureInCelsius" },
   { label: "Oxygen Saturation", id: "oxygenSaturation" },
   // { label: "Checked by", id: "" },
   { label: "Date checked", id: "createdAt" },
@@ -27,8 +38,14 @@ const VisitPage = async ({
 }) => {
   const visit = await getVisityByVisitId(visitId);
   const prescriptions = visit.data?.prescriptions;
+  const physicalExaminations = visit.data?.physicalExamination;
+  const laboratoryRequests = visit.data?.laboratoryRequest;
+  const diagnoses = visit.data?.diagnosis;
 
   // console.log(visit.data);
+  // console.log(physicalExaminations);
+  // console.log(diagnoses);
+  console.log(laboratoryRequests);
   return (
     <div>
       {/* {JSON.stringify(visit.data)} */}
@@ -64,14 +81,17 @@ const VisitPage = async ({
             <Typography>Details</Typography>
           </Stack>
         </Stack>
-        <Grid2 container spacing={2}>
-          <Grid2
-            xs={12}
-            lg={6}
-            container
-            spacing={2}
-            // sx={{ border: "1px solid red" }}
-          >
+        <Stack
+          gap={2}
+          sx={{
+            flexDirection: {
+              xs: "column",
+              md: "row",
+            },
+          }}
+        >
+          <Grid2 xs={12} lg={6} container gap={2}>
+            {/* VITALS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -95,54 +115,59 @@ const VisitPage = async ({
                   border: "1px solid rgba(0,0,0,0.1)",
                   borderRadius: "4px",
                 }}
-                spacing={2}
+                gap={2}
               >
                 <Stack sx={{ p: 3 }}>
                   <MonitorHeartOutlinedIcon sx={{ fontSize: 40 }} />
                 </Stack>
                 <Stack sx={{ flexGrow: "1", p: 2 }}>
                   {/* {JSON.stringify(Object.keys(visit.data?.vitals!))} */}
-                  {vitalsField.map(({ label, id }) => {
-                    const data = visit.data?.vitals;
-                    return (
-                      <Stack
-                        key={id}
-                        sx={{
-                          flexDirection: "row",
-                          alignItems: "center",
-                          // justifyContent: "space-between",
-                          gap: 2,
-                        }}
-                      >
-                        <Typography variant="subtitle2">{label}</Typography>
-                        {typeof data[id] === "object" ? (
-                          <Box
-                            sx={{ marginLeft: "auto", fontStyle: "italic" }}
-                          >{`${format(
-                            data[id],
-                            " MMMM d, yyyy h:mm: a"
-                          )}`}</Box>
-                        ) : (
-                          <Box
-                            sx={{
-                              marginLeft: "auto",
-                              color: "success.main",
-                              fontWeight: "bold",
-                            }}
-                          >
-                            {data[id]}
-                          </Box>
-                        )}
+                  {visit.data?.vitals &&
+                    vitalsField.map(({ label, id }) => {
+                      const vitals = visit.data?.vitals;
 
-                        {/* <Box>
+                      if (!vitals) return;
+
+                      return (
+                        <Stack
+                          key={id}
+                          sx={{
+                            flexDirection: "row",
+                            alignItems: "center",
+                            // justifyContent: "space-between",
+                            gap: 2,
+                          }}
+                        >
+                          <Typography variant="subtitle2">{label}</Typography>
+                          {typeof vitals[id] === "object" ? (
+                            <Box
+                              sx={{ marginLeft: "auto", fontStyle: "italic" }}
+                            >{`${format(
+                              vitals[id]!,
+                              " MMMM d, yyyy h:mm: a"
+                            )}`}</Box>
+                          ) : (
+                            <Box
+                              sx={{
+                                marginLeft: "auto",
+                                color: "success.main",
+                                fontWeight: "bold",
+                              }}
+                            >
+                              {vitals[id] as string}
+                            </Box>
+                          )}
+
+                          {/* <Box>
                           <MonitorHeartOutlinedIcon sx={{ fontSize: 20 }} />
                         </Box> */}
-                      </Stack>
-                    );
-                  })}
+                        </Stack>
+                      );
+                    })}
                 </Stack>
               </Stack>
             </Grid2>
+            {/* PHYSICAL EXAMS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -159,7 +184,33 @@ const VisitPage = async ({
                 </Typography>
                 <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
               </Stack>
+              <Stack
+                sx={{
+                  flexDirection: "row",
+                  p: 1,
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  borderRadius: "4px",
+                }}
+                gap={2}
+              >
+                <Stack sx={{ p: 3 }}>
+                  <AccessibilityIcon sx={{ fontSize: 40 }} />
+                </Stack>
+                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
+                  {physicalExaminations &&
+                    physicalExaminations.length &&
+                    physicalExaminations.map((physicalExamination, index) => {
+                      return (
+                        <PhysicalExaminations
+                          physicalExamination={physicalExamination}
+                          key={physicalExamination.id}
+                        />
+                      );
+                    })}
+                </Stack>
+              </Stack>
             </Grid2>
+            {/* DIAGNOSIS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -176,9 +227,38 @@ const VisitPage = async ({
                 </Typography>
                 <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
               </Stack>
+              <Stack
+                sx={{
+                  flexDirection: "row",
+                  p: 1,
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  borderRadius: "4px",
+                }}
+                gap={2}
+              >
+                <Stack sx={{ p: 3 }}>
+                  <MedicalInformationOutlinedIcon sx={{ fontSize: 40 }} />
+                </Stack>
+                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
+                  {diagnoses &&
+                    diagnoses.length &&
+                    diagnoses.map((diagnosis, index) => {
+                      return (
+                        <Diagnosis diagnosis={diagnosis} key={diagnosis.id} />
+                      );
+                    })}
+                </Stack>
+              </Stack>
             </Grid2>
           </Grid2>
-          <Grid2 xs={12} lg={6} container spacing={2}>
+          <Grid2
+            xs={12}
+            lg={6}
+            container
+            gap={2}
+            sx={{ alignContent: "flex-start" }}
+          >
+            {/* PRESCRIPTIONS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -202,7 +282,7 @@ const VisitPage = async ({
                   border: "1px solid rgba(0,0,0,0.1)",
                   borderRadius: "4px",
                 }}
-                spacing={2}
+                gap={2}
               >
                 <Stack sx={{ p: 3 }}>
                   <Typography sx={{ fontSize: 40 }}>
@@ -225,21 +305,10 @@ const VisitPage = async ({
                         />
                       );
                     })}
-                  {prescriptions &&
-                    prescriptions.length &&
-                    prescriptions.map((prescription, index) => {
-                      const drugs = prescription.drugs as Drugs;
-                      return (
-                        <Prescriptions
-                          drugs={drugs}
-                          data={prescription}
-                          key={prescription.id}
-                        />
-                      );
-                    })}
                 </Stack>
               </Stack>
             </Grid2>
+            {/* LAB REQUESTS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -256,9 +325,34 @@ const VisitPage = async ({
                 </Typography>
                 <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
               </Stack>
+              <Stack
+                sx={{
+                  flexDirection: "row",
+                  p: 1,
+                  border: "1px solid rgba(0,0,0,0.1)",
+                  borderRadius: "4px",
+                }}
+                gap={2}
+              >
+                <Stack sx={{ p: 3 }}>
+                  <BiotechOutlinedIcon sx={{ fontSize: 40 }} />
+                </Stack>
+                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
+                  {laboratoryRequests &&
+                    laboratoryRequests.length &&
+                    laboratoryRequests.map((laboratoryRequest, index) => {
+                      return (
+                        <LaboratoryRequest
+                          laboratoryRequest={laboratoryRequest}
+                          key={laboratoryRequest.id}
+                        />
+                      );
+                    })}
+                </Stack>
+              </Stack>
             </Grid2>
           </Grid2>
-        </Grid2>
+        </Stack>
       </Stack>
     </div>
   );

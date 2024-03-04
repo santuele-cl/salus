@@ -1,24 +1,19 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
-import { PhysicalExamination } from "@prisma/client";
+import { Diagnosis, Employee } from "@prisma/client";
 import { format } from "date-fns";
+import DiagnosisPage from "../../../diagnoses/page";
 
-const physicalExaminationsSelectedFields: Array<keyof PhysicalExamination> = [
-  "isNormal",
-  "remarks",
+const diagnosisSelectedFields: Array<keyof Diagnosis> = [
+  "condition",
+  "diagnosisDate",
+  "treatment",
   "createdAt",
   "updatedAt",
-  "specifyIfOther",
 ];
 
-const PhysicalExaminations = ({
-  physicalExamination,
-}: {
-  physicalExamination: PhysicalExamination;
-}) => {
-  const fields = Object.keys(physicalExamination) as Array<
-    keyof PhysicalExamination
-  >;
+const Diagnosis = ({ diagnosis }: { diagnosis: Diagnosis }) => {
+  const fields = Object.keys(diagnosis) as Array<keyof Diagnosis>;
 
   return (
     <Stack
@@ -27,13 +22,17 @@ const PhysicalExaminations = ({
       }}
     >
       <Typography variant="h6" sx={{ fontStyle: "italic" }}>
-        {physicalExamination["physicalPart"] as string}
+        {diagnosis["condition"] as string}
       </Typography>
 
       <Stack>
         {fields.map((field, i) => {
-          if (physicalExaminationsSelectedFields.includes(field)) {
-            if (field === "updatedAt" || field === "createdAt") {
+          if (diagnosisSelectedFields.includes(field)) {
+            if (
+              field === "updatedAt" ||
+              field === "createdAt" ||
+              field === "diagnosisDate"
+            ) {
               const label = field === "updatedAt" ? "Updated" : "Date Examined";
               return (
                 <Stack
@@ -42,7 +41,7 @@ const PhysicalExaminations = ({
                 >
                   <Typography variant="subtitle2">{label}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    physicalExamination[field],
+                    diagnosis[field],
                     " MMMM d, yyyy"
                   )}`}</Typography>
                 </Stack>
@@ -57,11 +56,7 @@ const PhysicalExaminations = ({
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {typeof physicalExamination[field] === "boolean"
-                    ? physicalExamination[field]
-                      ? "true"
-                      : "false"
-                    : physicalExamination[field]}
+                  {diagnosis[field]}
                 </Typography>
               </Stack>
             );
@@ -72,4 +67,4 @@ const PhysicalExaminations = ({
     </Stack>
   );
 };
-export default PhysicalExaminations;
+export default Diagnosis;
