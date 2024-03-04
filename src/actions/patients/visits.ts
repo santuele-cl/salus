@@ -22,7 +22,9 @@ export async function getVisityByVisitId(visitId: string) {
       include: {
         vitals: true,
         diagnosis: true,
-        prescriptions: true,
+        prescriptions: {
+          include: { drugs: true, physician: true },
+        },
         laboratoryRequest: true,
         physicalExamination: true,
         serviceDepartment: true,

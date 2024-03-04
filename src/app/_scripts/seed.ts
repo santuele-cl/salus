@@ -213,17 +213,20 @@ const seed = async () => {
                       name: "Peanut Allergy",
                       description: "Allergic reaction to peanuts",
                       severity: "HIGH",
+                      dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
                       name: "Penicillin Allergy",
                       description:
                         "Allergic reaction to penicillin antibiotics",
                       severity: "MEDIUM",
+                      dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
                       name: "Dust Allergy",
                       description: "Allergic reaction to dust mites",
                       severity: "LOW",
+                      dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                   ],
                 },
@@ -272,6 +275,8 @@ const seed = async () => {
                         notes: "Take with food.",
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
+                        startDate: "2024-03-01T10:00:00Z",
+                        endDate: "2024-03-01T10:00:00Z",
                       },
                     },
                     laboratoryRequest: {
@@ -325,6 +330,8 @@ const seed = async () => {
                         notes: "Pain relief for surgery.",
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
+                        startDate: "2024-03-01T10:00:00Z",
+                        endDate: "2024-03-01T10:00:00Z",
                       },
                     },
                     laboratoryRequest: {
@@ -380,6 +387,8 @@ const seed = async () => {
                         notes: "For relief of sore throat pain.",
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
+                        startDate: "2024-03-01T10:00:00Z",
+                        endDate: "2024-03-01T10:00:00Z",
                       },
                     },
                     laboratoryRequest: {
