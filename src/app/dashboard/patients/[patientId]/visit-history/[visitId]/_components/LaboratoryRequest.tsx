@@ -1,76 +1,83 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Stack, Typography } from "@mui/material";
-import { Diagnosis, LaboratoryRequest } from "@prisma/client";
+import {
+  Diagnosis,
+  Employee,
+  LaboratoryProcedures,
+  LaboratoryRequest,
+} from "@prisma/client";
 import { format } from "date-fns";
 
 const laboratoryRequestSelectedFields: Array<keyof LaboratoryRequest> = [
-  //   "condition",
-  //   "diagnosisDate",
-  //   "treatment",
-  //   "createdAt",
-  //   "updatedAt",
+  "status",
+  "dateRequested",
+  "lastUpdated",
 ];
 
 const LaboratoryRequest = ({
   laboratoryRequest,
+  laboratoryProcedure,
+  requestingPhysician,
 }: {
   laboratoryRequest: LaboratoryRequest;
+  laboratoryProcedure: LaboratoryProcedures;
+  requestingPhysician: Employee;
 }) => {
   const fields = Object.keys(laboratoryRequest) as Array<
     keyof LaboratoryRequest
   >;
 
   return (
-    // <Stack
-    //   sx={{
-    //     gap: 1,
-    //   }}
-    // >
-    //   <Typography variant="h6" sx={{ fontStyle: "italic" }}>
-    //     {laboratoryRequest["condition"] as string}
-    //   </Typography>
+    <Stack
+      sx={{
+        gap: 1,
+      }}
+    >
+      <Typography variant="h6" sx={{ fontStyle: "italic" }}>
+        {laboratoryProcedure["procedureName"]}
+      </Typography>
 
-    //   <Stack>
-    //     {fields.map((field, i) => {
-    //       if (laboratoryRequestSelectedFields.includes(field)) {
-    //         if (
-    //           field === "updatedAt" ||
-    //           field === "createdAt" ||
-    //           field === "diagnosisDate"
-    //         ) {
-    //           const label = field === "updatedAt" ? "Updated" : "Date Examined";
-    //           return (
-    //             <Stack
-    //               key={field + i}
-    //               sx={{ flexDirection: "row", justifyContent: "space-between" }}
-    //             >
-    //               <Typography variant="subtitle2">{label}</Typography>
-    //               <Typography sx={{ fontStyle: "italic" }}>{`${format(
-    //                 diagnosis[field],
-    //                 " MMMM d, yyyy"
-    //               )}`}</Typography>
-    //             </Stack>
-    //           );
-    //         }
-    //         return (
-    //           <Stack
-    //             key={field + i}
-    //             sx={{ flexDirection: "row", justifyContent: "space-between" }}
-    //           >
-    //             <Typography variant="subtitle2">
-    //               {camelCaseToWords(field)}
-    //             </Typography>
-    //             <Typography sx={{ color: "success.main" }}>
-    //               {diagnosis[field]}
-    //             </Typography>
-    //           </Stack>
-    //         );
-    //       }
-    //       return;
-    //     })}
-    //   </Stack>
-    // </Stack>
-    <Stack>klajsdkf</Stack>
+      <Stack>
+        {fields.map((field, i) => {
+          if (laboratoryRequestSelectedFields.includes(field)) {
+            if (field === "dateRequested" || field === "lastUpdated") {
+              return (
+                <Stack
+                  key={field + i}
+                  sx={{ flexDirection: "row", justifyContent: "space-between" }}
+                >
+                  <Typography variant="subtitle2">{field}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
+                    laboratoryRequest[field]!,
+                    " MMMM d, yyyy"
+                  )}`}</Typography>
+                </Stack>
+              );
+            }
+            return (
+              <Stack
+                key={field + i}
+                sx={{ flexDirection: "row", justifyContent: "space-between" }}
+              >
+                <Typography variant="subtitle2">
+                  {camelCaseToWords(field)}
+                </Typography>
+                <Typography sx={{ color: "success.main" }}>
+                  {laboratoryRequest[field]}
+                </Typography>
+              </Stack>
+            );
+          }
+          return;
+        })}
+        <Stack sx={{ flexDirection: "row", justifyContent: "space-between" }}>
+          <Typography variant="subtitle2">Requesting by</Typography>
+          <Typography sx={{ color: "success.main" }}>
+            {`${requestingPhysician.fname} ${requestingPhysician.lname} `}
+          </Typography>
+        </Stack>
+      </Stack>
+    </Stack>
   );
 };
 export default LaboratoryRequest;

@@ -60,16 +60,16 @@ const VisitPage = async ({
           <Typography variant="body1" fontWeight={400}>
             Visit details for
             <Typography variant="h6" component="span">{`${format(
-              visit.data?.createdAt as Date,
+              visit.data?.createdAt!,
               " MMMM d, yyyy h:mm: a"
             )}`}</Typography>
           </Typography>
           <Stack direction="row">
             <UpdateIcon sx={{ fontSize: 22 }} />
             <Typography component="span">
-              Updated :{" "}
+              Updated :
               <Typography component="span" variant="subtitle2">{`${format(
-                visit.data?.updatedAt as Date,
+                visit.data?.updatedAt!,
                 " MMMM d, yyyy h:mm: a"
               )}`}</Typography>
             </Typography>
@@ -343,6 +343,12 @@ const VisitPage = async ({
                     laboratoryRequests.map((laboratoryRequest, index) => {
                       return (
                         <LaboratoryRequest
+                          requestingPhysician={
+                            laboratoryRequest.requestingPhysician
+                          }
+                          laboratoryProcedure={
+                            laboratoryRequest.laboratoryProcedure!
+                          }
                           laboratoryRequest={laboratoryRequest}
                           key={laboratoryRequest.id}
                         />

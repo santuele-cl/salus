@@ -32,6 +32,21 @@ export async function getVisityByVisitId(visitId: string) {
         laboratoryRequest: {
           include: {
             laboratoryProcedure: true,
+            requestingPhysician: {
+              include: {
+                profile: {
+                  select: {
+                    employee: {
+                      select: {
+                        fname: true,
+                        lname: true,
+                        employeeRole: { select: { roleName: true } },
+                      },
+                    },
+                  },
+                },
+              },
+            },
           },
         },
         physicalExamination: true,
