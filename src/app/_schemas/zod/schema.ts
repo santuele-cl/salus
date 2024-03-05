@@ -8,15 +8,15 @@ export const VisitSchema = z.object({
 });
 
 export const VitalsSchema = z.object({
-  heightInCm: z.number(),
-  weightInKg: z.number(),
-  bodyTemperatureInCelsius: z.number(),
+  heightInCm: z.coerce.number().refine((value) => value !== 0),
+  weightInKg: z.coerce.number().refine((value) => value !== 0),
+  bodyTemperatureInCelsius: z.coerce.number().refine((value) => value !== 0),
   bloodPressure: z.string().min(1, "This field is required"),
   pulseRate: z.string().min(1, "This field is required"),
   respiratoryRate: z.string().min(1, "This field is required"),
   hpi: z.string().min(1, "This field is required"),
   oxygenSaturation: z.string().min(1, "This field is required"),
-  checkedBy: z.string().min(1, "Requred fields"),
+  checkedById: z.string().min(1, "Requred fields"),
 });
 
 export const EvaluationSchema = z.object({

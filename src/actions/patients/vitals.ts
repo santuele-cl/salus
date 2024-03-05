@@ -39,7 +39,7 @@ export async function addVitals(
   if (!vitals) return { error: "An error has occured. Vitals not added!" };
 
   return {
-    sucess: "Vitals successfully added!",
+    success: "Vitals successfully added!",
     data: vitals,
   };
 }

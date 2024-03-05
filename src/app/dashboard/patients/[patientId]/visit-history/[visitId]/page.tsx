@@ -14,6 +14,7 @@ import Diagnosis from "./_components/Diagnosis";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
 import SampleDrawer from "./_components/SampleDrawer";
+import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
 
 interface VitalsField {
   label: string;
@@ -63,9 +64,7 @@ const VisitPage = async ({
   // console.log(laboratoryRequests);
   return (
     <div>
-      {/* {JSON.stringify(visit.data)} */}
       <Stack>
-        <SampleDrawer />
         <Stack
           sx={{
             justifyContent: "space-between",
@@ -122,7 +121,8 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Vitals
                 </Typography>
-                <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
+                {/* <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} /> */}
+                <VitalSignsFormDrawer visitId={visitId} />
               </Stack>
               <Stack
                 sx={{
