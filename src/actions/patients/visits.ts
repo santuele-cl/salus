@@ -1,7 +1,9 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { VisitSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore } from "next/cache";
+import { z } from "zod";
 
 export async function getVisitsByProfileId(profileId: string) {
   noStore();
@@ -60,4 +62,28 @@ export async function getVisityByVisitId(visitId: string) {
   } catch (error) {
     return { error: "Something went wrong!" };
   }
+}
+
+export async function createVisit(
+  patientId: string,
+  values: z.infer<typeof VisitSchema>
+) {
+  const validatedFields = VisitSchema.safeParse(values);
+
+  if (!validatedFields.success) return { error: "Invalid data!" };
+
+  const { hpi, accompaniedBy, chiefComplaint } = validatedFields.data;
+
+  const visit = await db.visit.create({
+    data: {
+      patientId,
+      hpi,
+      chiefComplaint,
+      accompaniedBy,
+    },
+  });
+
+  if (!visit) return { error: "An error has occured. Visit data not added!" };
+
+  return { success: "Visit data has added!", data: visit };
 }

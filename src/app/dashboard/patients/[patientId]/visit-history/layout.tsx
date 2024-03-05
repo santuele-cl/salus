@@ -2,8 +2,10 @@
 import { Button, Drawer, Stack, Typography } from "@mui/material";
 import { useState } from "react";
 import NewVisitForm from "./_components/NewVisitForm";
+import { useParams } from "next/navigation";
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
+  const { patientId } = useParams();
   const [showVisitForm, setShowVisitForm] = useState(false);
 
   const handleCloseVisitFormDrawer = () => {
@@ -28,7 +30,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         open={showVisitForm}
         onClose={handleCloseVisitFormDrawer}
       >
-        <NewVisitForm />
+        <NewVisitForm patientId={patientId as string} />
       </Drawer>
       {children}
     </Stack>

@@ -13,6 +13,7 @@ import MedicalInformationOutlinedIcon from "@mui/icons-material/MedicalInformati
 import Diagnosis from "./_components/Diagnosis";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
+import SampleDrawer from "./_components/SampleDrawer";
 
 interface VitalsField {
   label: string;
@@ -42,14 +43,29 @@ const VisitPage = async ({
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
 
+  // const {
+  //   data: visit,
+  //   isLoading,
+  //   isError,
+  //   error,
+  // } = useQuery({
+  //   queryKey: ["Visit"],
+  //   queryFn: async () => {
+  //     await getVisityByVisitId(params.visitId as string);
+  //   },
+  // });
+  // if (isLoading) return <h1>Loading...</h1>;
+  // else if (isError) return <h1>{`Error : ${JSON.stringify(error)}`}</h1>;
+
   // console.log(visit.data);
   // console.log(physicalExaminations);
   // console.log(diagnoses);
-  console.log(laboratoryRequests);
+  // console.log(laboratoryRequests);
   return (
     <div>
       {/* {JSON.stringify(visit.data)} */}
       <Stack>
+        <SampleDrawer />
         <Stack
           sx={{
             justifyContent: "space-between",

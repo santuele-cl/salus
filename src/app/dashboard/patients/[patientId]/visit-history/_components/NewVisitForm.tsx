@@ -1,5 +1,6 @@
 "use client";
 
+import { createVisit } from "@/actions/patients/visits";
 import { VisitSchema } from "@/app/_schemas/zod/schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -14,11 +15,10 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const NewVisitForm = () => {
+const NewVisitForm = ({ patientId }: { patientId: string }) => {
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const [showTwoFactorInput, setShowTwoFactorInput] = useState(false);
 
   const {
     register,
@@ -31,26 +31,27 @@ const NewVisitForm = () => {
   });
 
   const onSubmit = async (data: z.infer<typeof VisitSchema>) => {
-    // setPending(true);
-    // setError("");
-    // setSuccess("");
-    // try {
-    //   const res = await login(data, callbackUrl);
-    //   console.log("res", res);
-    //   if (res?.error) {
-    //     reset();
-    //     setError(res.error);
-    //   }
-    //   if (res?.success) {
-    //     reset();
-    //     setSuccess(res.success);
-    //   }
-    //   if (res.twoFactor) setShowTwoFactorInput(true);
-    // } catch {
-    //   setError("Something went asd wrong!");
-    // }
-    // setPending(false);
+    setPending(true);
+    setError("");
+    setSuccess("");
+    try {
+      const res = await createVisit(patientId, data);
+      console.log("res", res);
+      if (res?.error) {
+        reset();
+        setError(res.error);
+      }
+      if (res?.success) {
+        reset();
+        setSuccess(res.success);
+      }
+    } catch {
+      setError("Something went asd wrong!");
+    } finally {
+      setPending(false);
+    }
     // console.log("New visit form submitted");
+    // console.log("patientID", patientId);
   };
   return (
     <Box sx={{ p: 3, width: 450 }}>
