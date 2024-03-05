@@ -47,7 +47,7 @@ const LoginForm = () => {
 
     try {
       const res = await login(data, callbackUrl);
-      console.log("res", res);
+      // console.log("res", res);
 
       if (res?.error) {
         reset();

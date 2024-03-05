@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import {
   Box,
   List,
@@ -9,7 +9,7 @@ import {
   SxProps,
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
-import FormatListBulletedOutlinedIcon from "@mui/icons-material/FormatListBulletedOutlined";
+import MedicationIcon from "@mui/icons-material/Medication";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -19,12 +19,15 @@ import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import WorkspacePremiumOutlinedIcon from "@mui/icons-material/WorkspacePremiumOutlined";
 import ManageAccountsOutlinedIcon from "@mui/icons-material/ManageAccountsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import GroupIcon from "@mui/icons-material/Group";
+import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useTheme } from "@mui/material/styles";
-
+import { toKebabCase } from "@/app/_utils/utils";
 type SidebarLinkType = {
-  label: String;
+  label: string;
   icon: () => React.ReactNode;
 };
 
@@ -33,22 +36,25 @@ type SidebarLink = {
   otherInfo: { label: string; links: SidebarLinkType[] };
   settings: { label: string; links: SidebarLinkType[] };
 };
-
 const sidebarLinks: SidebarLink = {
   general: {
     label: "",
     links: [
       {
-        label: "Dashboard",
-        icon: () => <HomeOutlinedIcon />,
+        label: "Patients",
+        icon: () => <FamilyRestroomIcon />,
       },
       {
-        label: "Orders",
-        icon: () => <FormatListBulletedOutlinedIcon />,
+        label: "Users",
+        icon: () => <GroupIcon />,
       },
       {
-        label: "Catergories",
-        icon: () => <FolderOutlinedIcon />,
+        label: "Drugs",
+        icon: () => <MedicationIcon />,
+      },
+      {
+        label: "Appointmens",
+        icon: () => <CalendarMonthIcon />,
       },
       {
         label: "Customers",
@@ -94,13 +100,13 @@ const sidebarLinks: SidebarLink = {
 };
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
-  const pathname = usePathname();
+  const segments = usePathname().split("/");
   return (
     <List
       sx={{
         height: "100%",
         width: 250,
-        bgcolor: "background.paper",
+
         p: 2,
       }}
       component="nav"
@@ -115,44 +121,35 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
               {sidebarLinks[key].label}
             </ListSubheader>
           )}
-          {sidebarLinks[key].links.map(({ label, icon }, i) => {
-            const path = `/dashboard/${(label.length === 1
-              ? label.toLowerCase()
-              : label.split(" ").join("-")
-            ).toLowerCase()}`;
+          {sidebarLinks[key].links.map(({ label, icon }, i) => (
+            <ListItemButton
+              sx={() => {
+                const style: SxProps = {
+                  bgcolor: "primary.main",
+                  color: "common.white",
+                };
 
-            const isSelected = pathname === path;
-
-            return (
-              <ListItemButton
-                sx={() => {
-                  const style: SxProps = {
-                    bgcolor: "primary.main",
-                    color: "common.white",
-                  };
-
-                  return {
-                    "&.Mui-selected:hover, &.Mui-selected, :hover": style,
-                    "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
-                      { color: "#fff" },
-                  };
+                return {
+                  "&.Mui-selected:hover, &.Mui-selected, :hover": style,
+                  "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
+                    { color: "#fff" },
+                };
+              }}
+              key={label + String(i)}
+              selected={segments[2] === toKebabCase(label)}
+              LinkComponent={Link}
+              href={`/dashboard/${toKebabCase(label)}`}
+            >
+              <ListItemIcon
+                sx={{
+                  "&.Mui-selected": { color: "common.white !important" },
                 }}
-                key={label + String(i)}
-                selected={isSelected}
-                LinkComponent={Link}
-                href={path}
               >
-                <ListItemIcon
-                  sx={{
-                    "&.Mui-selected": { color: "common.white !important" },
-                  }}
-                >
-                  {icon()}
-                </ListItemIcon>
-                <ListItemText primary={label} />
-              </ListItemButton>
-            );
-          })}
+                {icon()}
+              </ListItemIcon>
+              <ListItemText primary={label} />
+            </ListItemButton>
+          ))}
         </Box>
       ))}
     </List>

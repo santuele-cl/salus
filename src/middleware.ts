@@ -6,11 +6,22 @@ import {
   apiRoutePrefix,
   publicRoutes,
 } from "./routes";
+import { getToken } from "next-auth/jwt";
 
 const { auth } = NextAuth(authConfig);
 
-export default auth((req) => {
+export default auth(async (req) => {
+  const token = await getToken({
+    req,
+    secret: process.env.AUTH_SECRET as string,
+  });
+
+  // token.role
+  // const session = await getSession();
+  // console.log("session", session);
   // console.log("req : ", req);
+  // console.log("cookies : ", token);
+  // console.log("req : ", req.auth);
   const { nextUrl } = req;
   const isLoggedIn = !!req?.auth;
   // console.log("isLoggedIn", isLoggedIn);
@@ -19,16 +30,14 @@ export default auth((req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
-  if (isApiAuthRoute) {
-    return null;
-  }
+  if (isApiAuthRoute) return;
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       // Pass nextUrl as 2nd argument to make an absolute url
       return Response.redirect(new URL(DEFAULT_LOGIN_REDIRECT, nextUrl));
     }
-    return null;
+    return;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
@@ -44,7 +53,7 @@ export default auth((req) => {
     );
   }
 
-  return null;
+  return;
 });
 
 // Whatever listed in the matcher array will invoke the auth func above

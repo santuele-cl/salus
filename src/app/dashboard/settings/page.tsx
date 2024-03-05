@@ -1,13 +1,13 @@
 "use client";
 
 import { updateSettings } from "@/actions/settings";
-import { Button } from "@mui/material";
+import { Button, Paper } from "@mui/material";
 import { useSession } from "next-auth/react";
 
 const SettingsPage = () => {
   const { update } = useSession();
   return (
-    <div>
+    <Paper elevation={1} sx={{ p: 2 }}>
       <h1>SettingsPage</h1>
       <Button
         onClick={() => {
@@ -17,7 +17,7 @@ const SettingsPage = () => {
       >
         Update name
       </Button>
-    </div>
+    </Paper>
   );
 };
 export default SettingsPage;

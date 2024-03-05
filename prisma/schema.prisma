@@ -8,18 +8,6 @@ datasource db {
   // directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
 
-enum UserRole {
-  PATIENT
-  EMPLOYEE
-}
-
-// enum CivilStatus {
-//   SINGLE
-//   MARRIED
-//   WIDOWED
-//   SEPARATED
-// }
-
 model User {
   id                    String                 @id @default(cuid())
   username              String?
@@ -31,7 +19,7 @@ model User {
   accounts              Account[]
   isTwoFactorEnabled    Boolean                @default(false)
   twoFactorConfirmation TwoFactorConfirmation?
-  consent               Boolean
+  consent               Boolean                @default(true)
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
 
@@ -39,125 +27,232 @@ model User {
 }
 
 model Profile {
-  id String @id @default(nanoid(8))
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id         String    @id @default(nanoid(8))
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  isEmployee Boolean   @default(false)
+  isPatient  Boolean   @default(true)
+  employee   Employee?
+  patient    Patient?
 
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId String @unique
-
-  employee Employee?
-  patient  Patient?
-
-  // Evaluation Evaluation[]
-  // Vitals     Vitals[]
-  // Chart   Chart?  @relation(fields: [chartId], references: [id])
-  // chartId String?
 }
 
-// enum Gender {
-//   MALE
-//   FEMALE
-//   PREFER_NOT_TO_SAY
-// }
+model EmployeeRole {
+  id        String     @id @default(nanoid(4))
+  roleName  String     @unique
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  employees Employee[]
+}
 
 model Employee {
-  id          String       @id @default(nanoid(8))
-  fname       String
-  mname       String
-  lname       String
-  gender      String
-  // gender      Gender
-  bdate       DateTime
-  age         Int
-  contactInfo ContactInfo?
+  id                    String              @id @default(nanoid(8))
+  fname                 String
+  mname                 String
+  lname                 String
+  gender                Gender
+  bdate                 DateTime
+  age                   Int
+  contactInfo           ContactInfo?
+  createdAt             DateTime            @default(now())
+  updatedAt             DateTime            @updatedAt
+  presciptionsMade      Presciption[]
+  requestedLaboratories LaboratoryRequest[]
+  vitalsChecked         Vitals[]
+  diagnosis             Diagnosis[]
+  professionalInfo      ProfessionInfo?
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
-  profileId String  @unique
-
-  professionalInfo ProfessionInfo?
-
+  profile              Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  profileId            String              @unique
   clinicalDepartment   ClinicalDepartment? @relation(fields: [clinicalDepartmentId], references: [id])
   clinicalDepartmentId String?
-
-  serviceDepartment   ServiceDepartment? @relation(fields: [serviceDepartmentId], references: [id])
-  serviceDepartmentId String?
-  Evaluation          Evaluation[]
-  Vitals              Vitals[]
+  serviceDepartment    ServiceDepartment?  @relation(fields: [serviceDepartmentId], references: [id])
+  serviceDepartmentId  String?
+  employeeRole         EmployeeRole?       @relation(fields: [employeeRoleId], references: [id])
+  employeeRoleId       String?
 }
 
 model Patient {
-  id        String   @id @default(nanoid(8))
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                   String                 @id @default(nanoid(8))
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  fname                String
+  mname                String
+  lname                String
+  nameSuffix           String?
+  gender               Gender
+  age                  Int
+  bdate                DateTime
+  bplace               String
+  civilStatus          CivilStatus            @default(SINGLE)
+  occupation           String?
+  contactInfo          ContactInfo?
+  allergies            Allergies[]
+  visits               Visit[]
+  prescriptions        Presciption[]
+  physicalExaminations PhysicalExamination[]
+  diagnosis            Diagnosis[]
+  labResults           LaboratoryResults[]
+  familyMedicalHistory FamilyMedicalHistory[]
+  socialHistory        SocialHistory?
+  vaccinations         Vaccination[]
+  vitals               Vitals[]
+  laboratoryRequest    LaboratoryRequest[]
 
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
-
-  fname         String
-  mname         String
-  lname         String
-  nameSuffix    String?
-  gender        String
-  // gender        Gender
-  age           Int
-  bdate         DateTime
-  bplace        String
-  civilStatus   String
-  // civilStatus   CivilStatus
-  occupation    String?
-  contactInfo   ContactInfo?
-  allergies     Allergies[]
-  prescriptions Presciption[]
-
-  isSmoking             Boolean @default(false)
-  isCovidVaccinated     Boolean @default(false)
-  isDengvaxiaVaccinated Boolean @default(false)
-
-  chart Chart?
 }
 
-model Chart {
-  id        String   @id @default(nanoid(10))
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Vaccination {
+  id             String    @id @default(nanoid(16))
+  vaccineName    String
+  administeredAt DateTime
+  administeredBy String
+  dosage         String
+  nextDueDate    DateTime?
+  patient        Patient?  @relation(fields: [patientId], references: [id])
+  patientId      String?
+}
 
-  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  patientId String  @unique
+model FamilyMedicalHistory {
+  id           String   @id @default(nanoid(16))
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  condition    String // e.g., Diabetes, Heart Disease, Cancer
+  relationship String // e.g., Mother, Father, Sibling, Grandparent
+  ageOfOnset   Int? //Age at which the condition was diagnosed in the family member
+  patient      Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId    String?
+}
 
-  visits Visit[]
+model SocialHistory {
+  id               String           @id @default(nanoid(16))
+  alcoholUse       AlcoholUse       @default(NONE)
+  tobaccoUse       TobaccoUse       @default(NEVER)
+  drugUse          DrugUse          @default(NONE)
+  exerciseHabits   ExerciseHabits   @default(VIGOROUS)
+  dietHabits       DietHabits       @default(HEALTHY)
+  occupation       String?
+  livingConditions LivingConditions @default(URBAN)
+  patient          Patient?         @relation(fields: [patientId], references: [id])
+  patientId        String?          @unique
+}
+
+model LaboratoryRequest {
+  id                    String                  @id @default(uuid())
+  status                LaboratoryRequestStatus @default(PENDING)
+  dateRequested         DateTime                @default(now())
+  lastUpdated           DateTime                @updatedAt
+  LaboratoryResults     LaboratoryResults?
+  laboratoryProcedure   LaboratoryProcedures?   @relation(fields: [labProcedureId], references: [id])
+  labProcedureId        String?
+  requestingPhysician   Employee                @relation(fields: [requestingPhysicianId], references: [id])
+  requestingPhysicianId String
+
+  Visit     Visit?   @relation(fields: [visitId], references: [id])
+  visitId   String?
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+}
+
+model LaboratoryResults {
+  id          String       @id @default(nanoid(16))
+  testName    String
+  testDate    DateTime
+  testResults TestResult[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  patient             Patient?          @relation(fields: [patientId], references: [id])
+  patientId           String?
+  laboratoryRequest   LaboratoryRequest @relation(fields: [laboratoryRequestId], references: [id])
+  laboratoryRequestId String            @unique
+}
+
+model TestResult {
+  id                 String            @id @default(nanoid(16))
+  laboratoryResult   LaboratoryResults @relation(fields: [laboratoryResultId], references: [id])
+  laboratoryResultId String
+  parameter          String
+  value              String
+  unit               String
+  referenceRange     String
+  createdAt          DateTime          @default(now())
+  updatedAt          DateTime          @updatedAt
 }
 
 model Allergies {
-  id        String   @id @default(uuid())
-  name      String
-  severity  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            String          @id @default(uuid())
+  name          String
+  description   String?
+  severity      AllergySeverity @default(LOW)
+  dateDiagnosed DateTime
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
 
-  patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
-  patientId String  @unique
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+}
+
+model DrugCategory {
+  id          String   @id @default(uuid())
+  name        String   @unique
+  description String?
+  drugs       Drugs[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model DrugForm {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  description String?
+  drugs       Drugs[]
+}
+
+model Drugs {
+  id             String        @id @default(uuid())
+  name           String        @unique
+  drugCategory   DrugCategory? @relation(fields: [drugCategoryId], references: [id])
+  drugCategoryId String?
+  drugForm       DrugForm?     @relation(fields: [drugFormId], references: [id])
+  drugFormId     String?
+  strength       String
+  manufacturer   String
+  priceInCents   Int
+  prescriptions  Presciption[]
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 }
 
 model Presciption {
-  id Int @id @default(autoincrement())
-
-  Patient   Patient? @relation(fields: [patientId], references: [id])
-  patientId String?
-
-  Visit   Visit?  @relation(fields: [visitId], references: [id])
-  visitId String?
+  id              String    @id @default(uuid())
+  drugs           Drugs?    @relation(fields: [drugsId], references: [id])
+  drugsId         String?
+  dosage          Int
+  frequencyPerDay Int?
+  takenEveryHour  Int?
+  durationInDays  Int
+  notes           String?
+  startDate       DateTime
+  endDate         DateTime
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  patient         Patient?  @relation(fields: [patientId], references: [id])
+  patientId       String?
+  Visit           Visit?    @relation(fields: [visitId], references: [id])
+  visitId         String?
+  physician       Employee? @relation(fields: [physicianId], references: [id])
+  physicianId     String?
 }
 
 model ContactInfo {
   id      String    @id @default(uuid())
-  address Address[]
   phone   String
   email   String
+  address Address[]
 
   employee    Employee? @relation(fields: [employeedId], references: [id])
   employeedId String?   @unique
@@ -182,20 +277,14 @@ model Address {
   contactInfoId String?
 }
 
-enum Field {
-  N_A
-  CARDIOLOGY
-  DENTISTRY
-  PEDIACTRICS
-}
-
 model ProfessionInfo {
-  id             String    @id @default(uuid())
-  field          Field?    @default(N_A)
+  id             String        @id @default(uuid())
+  medicalField   MedicalField? @default(OTHER)
+  specifyField   String?
   licenseNumber  String?
   dateRegistered DateTime?
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
   employee   Employee? @relation(fields: [employeeId], references: [id], onDelete: Cascade)
   employeeId String?   @unique
@@ -227,56 +316,78 @@ model ServiceDepartment {
 }
 
 model Visit {
-  id String @id @default(nanoid(16))
-
-  chart   Chart?  @relation(fields: [chartId], references: [id], onDelete: Cascade)
-  chartId String?
-
-  accompaniedBy  String?
-  chiefComplaint String
-  hpi            String
-
-  serviceDepartment   ServiceDepartment? @relation(fields: [serviceDepartmentId], references: [id])
+  id                  String                @id @default(nanoid(16))
+  accompaniedBy       String?
+  chiefComplaint      String
+  hpi                 String
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
+  vitals              Vitals?
+  physicalExamination PhysicalExamination[]
+  diagnosis           Diagnosis[]
+  prescriptions       Presciption[]
+  laboratoryRequest   LaboratoryRequest[]
+  serviceDepartment   ServiceDepartment?    @relation(fields: [serviceDepartmentId], references: [id])
   serviceDepartmentId String?
-
-  vitals Vitals?
-
-  evaluation    Evaluation?
-  prescriptions Presciption[]
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  patient             Patient?              @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId           String?
 }
 
-model Evaluation {
-  id String @id @default(nanoid(16))
+model PhysicalExamination {
+  id             String       @id @default(nanoid(16))
+  physicalPart   PhysicalPart
+  specifyIfOther String?
+  isNormal       Boolean
+  remarks        String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  visit     Visit    @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId   String   @unique
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
+}
+
+model LaboratoryProcedures {
+  id            String   @id @default(uuid())
+  procedureName String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  laboratoryProcedureCategory LaboratoryProcedureCategory? @relation(fields: [labProcedureCategoryId], references: [id])
+  labProcedureCategoryId      String?
+  LaboratoryRequest           LaboratoryRequest[]
+}
+
+model LaboratoryProcedureCategory {
+  id           String   @id @default(uuid())
+  categoryName String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  laboratoryProcedures LaboratoryProcedures[]
+}
+
+model Diagnosis {
+  id            String   @id @default(nanoid(16))
+  condition     String
+  diagnosisDate DateTime
+  treatment     String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  patient       Patient? @relation(fields: [patientId], references: [id], onDelete: Cascade)
+  patientId     String?
+  Visit         Visit?   @relation(fields: [visitId], references: [id])
+  visitId       String?
 
   physician   Employee? @relation(fields: [physicianId], references: [id])
   physicianId String?
-
-  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
-  visitId String @unique
-
-  physicalExamination String
-  diagnosis           String
-  treatment           String
-  prescription        String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
 }
 
 model Vitals {
-  id String @id @default(nanoid(16))
-
-  nurse   Employee @relation(fields: [nurseId], references: [id])
-  nurseId String
-
-  visit   Visit  @relation(fields: [visitId], references: [id], onDelete: Cascade)
-  visitId String @unique
-
+  id                       String   @id @default(nanoid(16))
   heightInCm               Int
-  weightInKl               Int
+  weightInKg               Int
   bloodPressure            String
   pulseRate                String
   respiratoryRate          String
@@ -284,6 +395,14 @@ model Vitals {
   oxygenSaturation         String
   createdAt                DateTime @default(now())
   updatedAt                DateTime @updatedAt
+
+  checkedBy   Employee @relation(fields: [checkedById], references: [id])
+  checkedById String
+
+  visit     Visit    @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId   String   @unique
+  patient   Patient? @relation(fields: [patientId], references: [id])
+  patientId String?
 }
 
 model TwoFactorConfirmation {
@@ -338,3 +457,140 @@ model TwoFactorToken {
 
   @@unique([email, token])
 }
+
+enum PhysicalPart {
+  HEAD_AND_NECK
+  CHEST
+  ABDOMEN
+  BACK
+  UPPER_EXTREMITIES
+  LOWER_EXTREMITIES
+  GENITALS
+  SKIN
+  EYES
+  EARS
+  NOSE
+  MOUTH_AND_THROAT
+  OTHER
+}
+
+enum AlcoholUse {
+  NONE
+  SOCIAL
+  MODERATE
+  HEAVY
+}
+
+enum TobaccoUse {
+  NEVER
+  CURRENT
+  FORMER
+}
+
+enum DrugUse {
+  NONE
+  RECREATIONAL
+  CHRONIC
+}
+
+enum ExerciseHabits {
+  SEDENTARY
+  LIGHT
+  MODERATE
+  VIGOROUS
+}
+
+enum DietHabits {
+  HEALTHY
+  BALANCED
+  UNHEALTHY
+}
+
+enum LivingConditions {
+  URBAN
+  RURAL
+  HOMELESS
+  INSTITUTIONALIZED
+  OTHER
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  PREFER_NOT_TO_SAY
+  OTHER
+}
+
+enum CivilStatus {
+  SINGLE
+  MARRIED
+  DIVORCED
+  WIDOWED
+  SEPARATED
+  OTHER
+}
+
+enum UserRole {
+  PATIENT
+  EMPLOYEE
+}
+
+enum MedicalField {
+  CARDIOLOGY
+  DERMATOLOGY
+  ENDOCRINOLOGY
+  GASTROENTEROLOGY
+  HEMATOLOGY
+  INFECTIOUS_DISEASE
+  NEPHROLOGY
+  NEUROLOGY
+  ONCOLOGY
+  OPHTHALMOLOGY
+  ORTHOPEDICS
+  OTOLARYNGOLOGY
+  PEDIATRICS
+  PSYCHIATRY
+  PULMONOLOGY
+  RADIOLOGY
+  RHEUMATOLOGY
+  UROLOGY
+  OTHER
+}
+
+enum AllergySeverity {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum LaboratoryRequestStatus {
+  PENDING
+  COMPLETED
+  CANCELED
+}
+
+// model Chart {
+//   id        String   @id @default(nanoid(10))
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   patient   Patient @relation(fields: [patientId], references: [id], onDelete: Cascade)
+//   patientId String  @unique
+
+//   visits        Visit[]
+//   prescriptions Presciption[]
+// }
+
+// model Evaluation {
+//   id        String    @id @default(nanoid(16))
+//   diagnosis Diagnosis @relation(fields: [diagnosisId], references: [id])
+//   treatment String
+//   createdAt DateTime  @default(now())
+//   updatedAt DateTime  @updatedAt
+
+//   physician   Employee? @relation(fields: [physicianId], references: [id])
+//   physicianId String?
+//   // visit       Visit     @relation(fields: [visitId], references: [id], onDelete: Cascade)
+//   // visitId     String    @unique
+//   diagnosisId Int
+// }

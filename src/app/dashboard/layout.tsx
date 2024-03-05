@@ -34,13 +34,17 @@ export default function DashboardLayout({
         showTemporarySidebar={showTemporarySidebar}
         setShowTemporarySidebar={setShowTemporarySidebar}
       />
-      <Stack direction="row" position="relative" height="calc(100dvh - 70px)">
+      <Stack
+        direction="row"
+        position="relative"
+        height="calc(100vh - 70px)"
+        bgcolor="background.paper"
+      >
         <Box>
           <Stack
             direction="row"
             height="100%"
-            flexGrow="1"
-            sx={{ overflowX: "hidden" }}
+            sx={{ overflowY: "auto", overflowX: "hidden" }}
             bgcolor="general"
             borderRight="1px solid rgba(0,0,0,.1)"
           >
@@ -53,10 +57,20 @@ export default function DashboardLayout({
             </Collapse>
           </Stack>
         </Box>
-        <Box flexGrow="1" p={4} bgcolor="#F5F6FA">
-          <Paper elevation={1} sx={{ p: 2 }}>
-            {children}
-          </Paper>
+        <Box
+          sx={{
+            flexGrow: "1",
+            width: {
+              xs: "100%",
+              sm: "calc(100vw - 250px)",
+            },
+            p: 2,
+            bgcolor: "gray.light",
+            overflowX: "hidden",
+            overflowY: "auto",
+          }}
+        >
+          {children}
         </Box>
       </Stack>
     </Box>

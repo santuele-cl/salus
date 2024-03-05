@@ -43,7 +43,7 @@ export default function Navbar({
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
   const isXsScreen = useMediaQuery(theme.breakpoints.down("sm"));
 
-  console.log(session);
+  // console.log(session);
 
   return (
     <AppBar

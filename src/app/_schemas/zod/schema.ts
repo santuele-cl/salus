@@ -1,6 +1,35 @@
 // import { CivilStatus } from "@prisma/client";
 import * as z from "zod";
 
+export const VisitSchema = z.object({
+  accompaniedBy: z.string().optional(),
+  chiefComplaint: z.string().min(1, "This field is required"),
+  hpi: z.string().min(1, "This field is required"),
+});
+
+export const VitalsSchema = z.object({
+  heightInCm: z.number(),
+  weightInKg: z.number(),
+  bodyTemperatureInCelsius: z.number(),
+  bloodPressure: z.string().min(1, "This field is required"),
+  pulseRate: z.string().min(1, "This field is required"),
+  respiratoryRate: z.string().min(1, "This field is required"),
+  hpi: z.string().min(1, "This field is required"),
+  oxygenSaturation: z.string().min(1, "This field is required"),
+  checkedBy: z.string().min(1, "Requred fields"),
+});
+
+export const EvaluationSchema = z.object({
+  heightInCm: z.number(),
+  weightInKl: z.number(),
+  bodyTemperatureInCelsius: z.number(),
+  hbloodPressurepi: z.string().min(1, "This field is required"),
+  pulseRate: z.string().min(1, "This field is required"),
+  respiratoryRate: z.string().min(1, "This field is required"),
+  hpi: z.string().min(1, "This field is required"),
+  oxygenSaturation: z.string().min(1, "This field is required"),
+});
+
 export const SettingsSchema = z.object({
   name: z.optional(z.string().min(1, "Minimum 1 character!")),
 });
