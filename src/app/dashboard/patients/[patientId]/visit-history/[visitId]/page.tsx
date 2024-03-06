@@ -15,6 +15,7 @@ import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
 import SampleDrawer from "./_components/SampleDrawer";
 import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
+import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
 
 interface VitalsField {
   label: string;
@@ -34,9 +35,9 @@ const vitalsField: VitalsField[] = [
 ];
 
 const VisitPage = async ({
-  params: { visitId },
+  params: { visitId, patientId },
 }: {
-  params: { visitId: string };
+  params: { visitId: string; patientId: string };
 }) => {
   const visit = await getVisityByVisitId(visitId);
   const prescriptions = visit.data?.prescriptions;
@@ -289,7 +290,10 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Prescriptions
                 </Typography>
-                <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
+                <PrescriptionFormDrawer
+                  visitId={visitId}
+                  patientId={patientId}
+                />
               </Stack>
               <Stack
                 sx={{
