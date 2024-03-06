@@ -2,6 +2,7 @@
 
 import { db } from "@/app/_lib/db";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
+import { Presciption } from "@prisma/client";
 import { unstable_noStore } from "next/cache";
 import { z } from "zod";
 
@@ -32,7 +33,15 @@ export async function addPrescription(
 
   if (!validatedValues.success) return { error: "Parse error!" };
 
-  return { success: "Prescription added!", data: "" };
+  const prescription = await db.presciption.create({
+    data: {
+      ...(validatedValues.data && validatedValues.data),
+    },
+  });
+
+  if (!prescription) return { error: "Error. Prescription not added!" };
+
+  return { success: "Prescription added!", data: prescription };
 }
 
 export async function getPrescriptionByPrescriptionId(prescriptionId: string) {

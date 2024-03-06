@@ -1,4 +1,4 @@
-import { camelCaseToTitleCase, camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { Drugs, Presciption } from "@prisma/client";
 import { format } from "date-fns";
@@ -9,7 +9,6 @@ const prescriptionSelectedFields: Array<keyof Presciption> = [
   "startDate",
   "endDate",
   "frequencyPerDay",
-  //   "takenEveryHour",
   "durationInDays",
 ];
 

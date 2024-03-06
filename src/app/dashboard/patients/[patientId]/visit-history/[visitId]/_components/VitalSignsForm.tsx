@@ -10,18 +10,47 @@ import {
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { VitalsSchema } from "@/app/_schemas/zod/schema";
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
-const fields = Object.keys(VitalsSchema.shape) as Array<
-  keyof z.infer<typeof VitalsSchema>
->;
+import { useSession } from "next-auth/react";
 
-const VitalSignsForm = ({ visitId }: { visitId: string }) => {
+// const fields = Object.keys(VitalsSchema.shape) as Array<
+//   keyof z.infer<typeof VitalsSchema>
+// >;
+
+interface VitalSignsFieldType {
+  id: keyof z.infer<typeof VitalsSchema>;
+  label: string;
+  type?: string;
+}
+
+const fields: VitalSignsFieldType[] = [
+  { id: "heightInCm", label: "Height", type: "number" },
+  { id: "weightInKg", label: "Weigth", type: "number" },
+  { id: "bodyTemperatureInCelsius", label: "Body Temperature" },
+  { id: "bloodPressure", label: "Blood Pressure" },
+  { id: "pulseRate", label: "Pulse Rate" },
+  { id: "respiratoryRate", label: "Respitartory Rate" },
+  { id: "oxygenSaturation", label: "Oxygen Saturation" },
+];
+
+const excludedFields: Array<keyof z.infer<typeof VitalsSchema>> = [
+  "checkedById",
+];
+
+const VitalSignsForm = ({
+  visitId,
+  setShowVitalSignsForm,
+}: {
+  visitId: string;
+  setShowVitalSignsForm: Dispatch<SetStateAction<boolean>>;
+}) => {
+  const session = useSession();
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -42,7 +71,7 @@ const VitalSignsForm = ({ visitId }: { visitId: string }) => {
       respiratoryRate: "",
       hpi: "",
       oxygenSaturation: "",
-      checkedById: "",
+      checkedById: session.data?.user.empId,
     },
   });
 
@@ -86,7 +115,46 @@ const VitalSignsForm = ({ visitId }: { visitId: string }) => {
         spacing={2}
         sx={{}}
       >
-        {fields.map((field, index) => {
+        {fields.map(({ id, label, type = "" }, index) => {
+          if (type === "number") {
+            return (
+              <TextField
+                type="number"
+                key={id + index}
+                label={label}
+                {...register(id)}
+                error={errors[id] ? true : false}
+                helperText={errors[id]?.message}
+                disabled={pending}
+              />
+            );
+          } else if (type === "date") {
+            return (
+              <TextField
+                InputLabelProps={{ shrink: true }}
+                type="date"
+                key={id + index}
+                label={label}
+                {...register(id)}
+                error={errors[id] ? true : false}
+                helperText={errors[id]?.message}
+                disabled={pending}
+              />
+            );
+          }
+          return (
+            <TextField
+              key={id + index}
+              label={label}
+              {...register(id)}
+              error={errors[id] ? true : false}
+              helperText={errors[id]?.message}
+              disabled={pending}
+            />
+          );
+        })}
+        {/* {fields.map((field, index) => {
+          if (excludedFields.includes(field)) return;
           return (
             <TextField
               key={field + index}
@@ -97,10 +165,10 @@ const VitalSignsForm = ({ visitId }: { visitId: string }) => {
               disabled={pending}
             />
           );
-        })}
+        })} */}
 
         <Button
-          type="submit"
+          onClick={() => setShowVitalSignsForm(false)}
           variant="outlined"
           disabled={pending}
           sx={{ p: 2 }}

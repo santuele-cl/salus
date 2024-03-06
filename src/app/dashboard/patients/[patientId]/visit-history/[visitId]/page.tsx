@@ -1,5 +1,5 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
-import { Box, Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, Typography } from "@mui/material";
 import { format } from "date-fns";
 import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
@@ -7,32 +7,15 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MonitorHeartOutlinedIcon from "@mui/icons-material/MonitorHeartOutlined";
 import Prescriptions from "./_components/Prescriptions";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
-import { Drugs, Vitals } from "@prisma/client";
+import { Drugs } from "@prisma/client";
 import PhysicalExaminations from "./_components/PhysicalExaminations";
 import MedicalInformationOutlinedIcon from "@mui/icons-material/MedicalInformationOutlined";
 import Diagnosis from "./_components/Diagnosis";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
-import SampleDrawer from "./_components/SampleDrawer";
 import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
 import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
-
-interface VitalsField {
-  label: string;
-  id: keyof Vitals;
-}
-
-const vitalsField: VitalsField[] = [
-  { label: "Height", id: "heightInCm" },
-  { label: "Weight", id: "weightInKg" },
-  { label: "BP", id: "bloodPressure" },
-  { label: "Pulse Rate", id: "pulseRate" },
-  { label: "Respiratory Rate", id: "respiratoryRate" },
-  { label: "Body Temparature", id: "bodyTemperatureInCelsius" },
-  { label: "Oxygen Saturation", id: "oxygenSaturation" },
-  // { label: "Checked by", id: "" },
-  { label: "Date checked", id: "createdAt" },
-];
+import Vital from "./_components/Vital";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -40,29 +23,12 @@ const VisitPage = async ({
   params: { visitId: string; patientId: string };
 }) => {
   const visit = await getVisityByVisitId(visitId);
+  const vitals = visit.data?.vitals;
   const prescriptions = visit.data?.prescriptions;
   const physicalExaminations = visit.data?.physicalExamination;
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
 
-  // const {
-  //   data: visit,
-  //   isLoading,
-  //   isError,
-  //   error,
-  // } = useQuery({
-  //   queryKey: ["Visit"],
-  //   queryFn: async () => {
-  //     await getVisityByVisitId(params.visitId as string);
-  //   },
-  // });
-  // if (isLoading) return <h1>Loading...</h1>;
-  // else if (isError) return <h1>{`Error : ${JSON.stringify(error)}`}</h1>;
-
-  // console.log(visit.data);
-  // console.log(physicalExaminations);
-  // console.log(diagnoses);
-  // console.log(laboratoryRequests);
   return (
     <div>
       <Stack>
@@ -122,8 +88,9 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Vitals
                 </Typography>
-                {/* <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} /> */}
-                <VitalSignsFormDrawer visitId={visitId} />
+                {!visit.data?.vitals && (
+                  <VitalSignsFormDrawer visitId={visitId} />
+                )}
               </Stack>
               <Stack
                 sx={{
@@ -138,49 +105,7 @@ const VisitPage = async ({
                   <MonitorHeartOutlinedIcon sx={{ fontSize: 40 }} />
                 </Stack>
                 <Stack sx={{ flexGrow: "1", p: 2 }}>
-                  {/* {JSON.stringify(Object.keys(visit.data?.vitals!))} */}
-                  {visit.data?.vitals &&
-                    vitalsField.map(({ label, id }) => {
-                      const vitals = visit.data?.vitals;
-
-                      if (!vitals) return;
-
-                      return (
-                        <Stack
-                          key={id}
-                          sx={{
-                            flexDirection: "row",
-                            alignItems: "center",
-                            // justifyContent: "space-between",
-                            gap: 2,
-                          }}
-                        >
-                          <Typography variant="subtitle2">{label}</Typography>
-                          {typeof vitals[id] === "object" ? (
-                            <Box
-                              sx={{ marginLeft: "auto", fontStyle: "italic" }}
-                            >{`${format(
-                              vitals[id]!,
-                              " MMMM d, yyyy h:mm: a"
-                            )}`}</Box>
-                          ) : (
-                            <Box
-                              sx={{
-                                marginLeft: "auto",
-                                color: "success.main",
-                                fontWeight: "bold",
-                              }}
-                            >
-                              {vitals[id] as string}
-                            </Box>
-                          )}
-
-                          {/* <Box>
-                          <MonitorHeartOutlinedIcon sx={{ fontSize: 20 }} />
-                        </Box> */}
-                        </Stack>
-                      );
-                    })}
+                  {vitals && <Vital vitals={vitals} />}
                 </Stack>
               </Stack>
             </Grid2>

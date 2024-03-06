@@ -15,7 +15,10 @@ const VitalSignsFormDrawer = ({ visitId }: { visitId: string }) => {
         open={showVitalSignsForm}
         onClose={() => setShowVitalSignsForm(false)}
       >
-        <VitalSignsForm visitId={visitId} />
+        <VitalSignsForm
+          visitId={visitId}
+          setShowVitalSignsForm={setShowVitalSignsForm}
+        />
       </Drawer>
       <LibraryAddOutlinedIcon
         sx={{ fontSize: 25, cursor: "pointer" }}

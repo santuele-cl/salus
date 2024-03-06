@@ -18,12 +18,18 @@ const arr: Array<keyof Presciption> = [
 
 export const PrescriptionSchema = z.object({
   drugsId: z.string().min(1, "This field is required"),
-  dosage: z.string().min(1, "This field is required"),
-  startDate: z.string().min(1, "This field is required"),
-  endDate: z.string().min(1, "This field is required"),
-  durationInDays: z.string().optional(),
-  takenEveryHour: z.string().min(1, "This field is required"),
-  frequencyPerDay: z.string().optional(),
+  dosage: z.coerce.number().refine((value) => value !== 0),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  durationInDays: z.coerce.number().refine((value) => value !== 0),
+  takenEveryHour: z.coerce
+    .number()
+    .refine((value) => value !== 0)
+    .optional(),
+  frequencyPerDay: z.coerce
+    .number()
+    .refine((value) => value !== 0)
+    .optional(),
   notes: z.string().optional(),
   physicianId: z.string().min(1, "This field is required"),
   patientId: z.string().min(1, "This field is required"),
@@ -43,7 +49,6 @@ export const VitalsSchema = z.object({
   bloodPressure: z.string().min(1, "This field is required"),
   pulseRate: z.string().min(1, "This field is required"),
   respiratoryRate: z.string().min(1, "This field is required"),
-  hpi: z.string().min(1, "This field is required"),
   oxygenSaturation: z.string().min(1, "This field is required"),
   checkedById: z.string().min(1, "Requred fields"),
 });
