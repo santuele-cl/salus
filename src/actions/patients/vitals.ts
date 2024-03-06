@@ -9,7 +9,7 @@ export async function addVitals(
 ) {
   const parsedValues = VitalsSchema.safeParse(values);
 
-  if (!parsedValues.success) return { error: "Parsed value invalid!" };
+  if (!parsedValues.success) return { error: "Parse error!" };
 
   const {
     heightInCm,

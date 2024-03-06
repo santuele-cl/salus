@@ -35,9 +35,9 @@ const vitalsField: VitalsField[] = [
 ];
 
 const VisitPage = async ({
-  params: { visitId },
+  params: { visitId, patientId },
 }: {
-  params: { visitId: string };
+  params: { visitId: string; patientId: string };
 }) => {
   const visit = await getVisityByVisitId(visitId);
   const prescriptions = visit.data?.prescriptions;
@@ -290,7 +290,10 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Prescriptions
                 </Typography>
-                <PrescriptionFormDrawer visitId={visitId} />
+                <PrescriptionFormDrawer
+                  visitId={visitId}
+                  patientId={patientId}
+                />
               </Stack>
               <Stack
                 sx={{

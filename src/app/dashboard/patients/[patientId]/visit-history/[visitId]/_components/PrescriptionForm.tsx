@@ -9,28 +9,40 @@ import {
 } from "@mui/material";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
+import { addPrescription } from "@/actions/patients/prescriptions";
+import { Drugs } from "@prisma/client";
+import { getDrugs } from "@/actions/patients/drugs";
 
 const fields = Object.keys(PrescriptionSchema.shape) as Array<
   keyof z.infer<typeof PrescriptionSchema>
 >;
 
+const filteredFields = fields.filter((field) => {
+  const exclude = ["visitId", "patientId", "physicianId"];
+  return !exclude.includes(field);
+});
+
 const PrescriptionForm = ({
   visitId,
+  patientId,
   setShowPrescriptionFormDrawer,
 }: {
+  patientId: string;
   visitId: string;
   setShowPrescriptionFormDrawer: Dispatch<SetStateAction<boolean>>;
 }) => {
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [drugs, setDrugs] = useState<Drugs[] | undefined>([]);
+  console.log("drugs", drugs);
 
   const {
     register,
@@ -40,29 +52,34 @@ const PrescriptionForm = ({
   } = useForm({
     resolver: zodResolver(PrescriptionSchema),
     defaultValues: {
-      heightInCm: "",
-      weightInKg: "",
-      bodyTemperatureInCelsius: "",
-      bloodPressure: "",
-      pulseRate: "",
-      respiratoryRate: "",
-      hpi: "",
-      oxygenSaturation: "",
-      checkedById: "",
+      drugsId: "",
+      dosage: "",
+      durationInDays: "",
+      endDate: "",
+      frequencyPerDay: "",
+      notes: "",
+      startDate: "",
+      takenEveryHour: "",
+      physicianId: "",
+      patientId,
+      visitId,
     },
   });
 
-  // console.log("register errors", errors);
+  const onSubmit = async (values: any) => {
+    console.log("prescription values", values);
+    const parse = PrescriptionSchema.safeParse(values);
 
-  const onSubmit = async (data: any) => {
-    console.log(data);
+    if (!parse.success) console.log("parse error");
+    else console.log("parse data", parse.data);
+
     // setError("");
     // setSuccess("");
 
     // setPending(true);
 
     // try {
-    //   const res = await addVitals(visitId, data);
+    //   const res = await addPrescription(data);
     //   if (res?.error) {
     //     reset();
     //     setError(res.error);
@@ -78,9 +95,20 @@ const PrescriptionForm = ({
     // }
   };
 
+  useEffect(() => {
+    async function generateDrugs() {
+      const res = await getDrugs();
+      if (res.success) {
+        setDrugs(res.data);
+      }
+    }
+
+    generateDrugs();
+  }, []);
+
   return (
     <Box sx={{ p: 3, width: 450 }}>
-      <Typography variant="h6">Vital Signs</Typography>
+      <Typography variant="h6">Prescription</Typography>
       <Divider sx={{ my: 2 }} />
       <Stack sx={{ my: 1 }}>
         {error && <FormStatusText message={error} status="error" />}
@@ -118,7 +146,7 @@ const PrescriptionForm = ({
           sx={{ p: 2 }}
           onClick={() => setShowPrescriptionFormDrawer(false)}
         >
-          Canceld
+          Cancel
         </Button>
       </Stack>
     </Box>

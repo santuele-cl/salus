@@ -17,13 +17,14 @@ const arr: Array<keyof Presciption> = [
 ];
 
 export const PrescriptionSchema = z.object({
+  drugsId: z.string().min(1, "This field is required"),
   dosage: z.string().min(1, "This field is required"),
-  durationInDays: z.string().min(1, "This field is required"),
-  endDate: z.string().min(1, "This field is required"),
-  frequencyPerDay: z.string().min(1, "This field is required"),
-  notes: z.string().min(1, "This field is required"),
   startDate: z.string().min(1, "This field is required"),
+  endDate: z.string().min(1, "This field is required"),
+  durationInDays: z.string().optional(),
   takenEveryHour: z.string().min(1, "This field is required"),
+  frequencyPerDay: z.string().optional(),
+  notes: z.string().optional(),
   physicianId: z.string().min(1, "This field is required"),
   patientId: z.string().min(1, "This field is required"),
   visitId: z.string().min(1, "This field is required"),

@@ -6,7 +6,13 @@ import VitalSignsForm from "./VitalSignsForm";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import PrescriptionForm from "./PrescriptionForm";
 
-const PrescriptionFormDrawer = ({ visitId }: { visitId: string }) => {
+const PrescriptionFormDrawer = ({
+  visitId,
+  patientId,
+}: {
+  visitId: string;
+  patientId: string;
+}) => {
   const [showPrescriptionFormDrawer, setShowPrescriptionFormDrawer] =
     useState(false);
 
@@ -19,6 +25,7 @@ const PrescriptionFormDrawer = ({ visitId }: { visitId: string }) => {
       >
         <PrescriptionForm
           visitId={visitId}
+          patientId={patientId}
           setShowPrescriptionFormDrawer={setShowPrescriptionFormDrawer}
         />
       </Drawer>
