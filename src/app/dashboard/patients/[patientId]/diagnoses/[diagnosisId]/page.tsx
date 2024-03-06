@@ -2,6 +2,7 @@ import { getDiagnosisByDiagnosisId } from "@/actions/patients/diagnosis";
 import Diagnosis from "../../visit-history/[visitId]/_components/Diagnosis";
 import { Stack } from "@mui/material";
 import TroubleshootOutlinedIcon from '@mui/icons-material/TroubleshootOutlined';
+
 const DiagnosisPage = async ({
   params: { diagnosisId },
 }: {
