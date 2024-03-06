@@ -8,6 +8,8 @@ export type ExtendedUser = DefaultSession["user"] & {
   isOAuth: boolean;
   username: string;
   email: string;
+  empId: string;
+  patId: string;
 };
 
 declare module "next-auth" {
@@ -21,5 +23,7 @@ declare module "next-auth/jwt" {
     user: {
       username: string;
     };
+    empId: string;
+    patId: string;
   }
 }

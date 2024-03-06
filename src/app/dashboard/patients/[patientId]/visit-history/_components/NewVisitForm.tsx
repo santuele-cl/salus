@@ -11,11 +11,17 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-const NewVisitForm = ({ patientId }: { patientId: string }) => {
+const NewVisitForm = ({
+  patientId,
+  setShowVisitForm,
+}: {
+  patientId: string;
+  setShowVisitForm: Dispatch<SetStateAction<boolean>>;
+}) => {
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -50,8 +56,6 @@ const NewVisitForm = ({ patientId }: { patientId: string }) => {
     } finally {
       setPending(false);
     }
-    // console.log("New visit form submitted");
-    // console.log("patientID", patientId);
   };
   return (
     <Box sx={{ p: 3, width: 450 }}>
@@ -87,10 +91,10 @@ const NewVisitForm = ({ patientId }: { patientId: string }) => {
           disabled={pending}
         />
         <Button
-          type="submit"
           variant="outlined"
           disabled={pending}
           sx={{ p: 2 }}
+          onClick={() => setShowVisitForm(false)}
         >
           Cancel
         </Button>

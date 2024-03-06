@@ -67,6 +67,15 @@ export const {
       if (token.email) {
         session.user.email = token.email;
       }
+      if (session.user) {
+        if (token.empId) {
+          session.user.empId = token.empId;
+        }
+
+        if (token.patId) {
+          session.user.patId = token.patId;
+        }
+      }
 
       return session;
     },
@@ -84,6 +93,8 @@ export const {
       token.username = existingUser.username;
       token.email = existingUser.email;
       token.role = existingUser.role;
+      token.empId = existingUser.profile?.employee?.id ?? "";
+      token.patId = existingUser.profile?.patient?.id ?? "";
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;

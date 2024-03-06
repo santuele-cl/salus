@@ -1,10 +1,10 @@
 "use client";
 import { Button, Drawer, Stack, Typography } from "@mui/material";
 import { useState } from "react";
-import NewVisitForm from "./_components/NewVisitForm";
 import { useParams } from "next/navigation";
+import NewVisitForm from "./NewVisitForm";
 
-const Layout = ({ children }: { children: React.ReactNode }) => {
+const TableHeader = () => {
   const { patientId } = useParams();
   const [showVisitForm, setShowVisitForm] = useState(false);
 
@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
     setShowVisitForm((prev) => !prev);
   };
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} sx={{ p: 2 }}>
       <Stack
         direction="row"
         sx={{
@@ -30,10 +30,12 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
         open={showVisitForm}
         onClose={handleCloseVisitFormDrawer}
       >
-        <NewVisitForm patientId={patientId as string} />
+        <NewVisitForm
+          patientId={patientId as string}
+          setShowVisitForm={setShowVisitForm}
+        />
       </Drawer>
-      {children}
     </Stack>
   );
 };
-export default Layout;
+export default TableHeader;

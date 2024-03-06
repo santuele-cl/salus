@@ -29,7 +29,8 @@
     "src/components/auth/LoginForm copy.bak",
     "src/app/dashboard/patients/pagebakb.bak",
     "src/app/dashboard/patients/pagebackd.bak",
-    "src/app/dashboard/patients/layoutback.bak"
+    "src/app/dashboard/patients/layoutback.bak",
+    "src/app/dashboard/patients/[patientId]/visit-history/layoutbak.bak"
   ],
   "exclude": ["node_modules"]
 }
