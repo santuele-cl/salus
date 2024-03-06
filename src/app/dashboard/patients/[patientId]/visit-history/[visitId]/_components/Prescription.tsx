@@ -1,17 +1,27 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
-import { Allergies, Diagnosis, Employee } from "@prisma/client";
+import { Presciption, Diagnosis, Employee} from "@prisma/client";
 import { format } from "date-fns";
 
-const allergiesSelectedFields: Array<keyof Allergies> = [
- "patientId",
- "description",
- "severity",
- "updatedAt",
+const allergiesSelectedFields: Array<keyof Presciption> = [
+"createdAt",
+"dosage",
+"drugsId",
+"durationInDays",
+"endDate",
+"frequencyPerDay",
+"id",
+"notes",
+"patientId",
+"physicianId",
+"startDate",
+"takenEveryHour",
+"updatedAt",
+"visitId"
 ];
 
-const Allergy = ({ allergy }: { allergy: Allergies }) => {
-  const fields = Object.keys(allergy) as Array<keyof Allergies>;
+const Prescription = ({ prescription }: { prescription: Presciption }) => {
+  const fields = Object.keys(prescription) as Array<keyof Presciption>;
 
   return (
     <Stack
@@ -20,14 +30,14 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
       }}
     >
       <Typography variant="h6" sx={{ fontStyle: "italic" }}>
-        {allergy["name"] as string}
+        {prescription["patientId"] as string}
       </Typography>
 
       <Stack>
         {fields.map((field, i) => {
           if (allergiesSelectedFields.includes(field)) {
             if (
-              field === "updatedAt"
+              field === "updatedAt" || field === "createdAt" || field === "endDate" || field === "startDate"
             ) {
               return (
                 <Stack
@@ -36,26 +46,11 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
                 >
                   <Typography variant="subtitle2">{field}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    allergy[field],
+                    prescription[field],
                     " MMMM d, yyyy"
                   )}`}</Typography>
                 </Stack>
               );
-            }
-            if(field === "severity") {
-                return (
-                    <Stack
-                    key={field + i}
-                    sx={{ flexDirection: "row", justifyContent: "space-between" }}
-                  >
-                    <Typography variant="subtitle2">
-                      {camelCaseToWords(field)}
-                    </Typography>
-                    <Typography sx={{ fontWeight:"500", color: allergy[field] === "HIGH"  ? "error.main": "success.main"}}>
-                      {allergy[field]  as string}
-                    </Typography>
-                  </Stack>
-                )
             }
 
             return (
@@ -67,7 +62,7 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {allergy[field]  as string}
+                  {prescription[field]  as string}
                 </Typography>
               </Stack>
             );
@@ -77,4 +72,4 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
     </Stack>
   );
 };
-export default Allergy;
+export default Prescription;
