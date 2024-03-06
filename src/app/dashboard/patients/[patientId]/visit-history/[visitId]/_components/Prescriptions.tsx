@@ -1,5 +1,5 @@
-import { camelCaseToTitleCase, camelCaseToWords } from "@/app/_utils/utils";
-import { Box, Stack, Typography } from "@mui/material";
+import { camelCaseToWords } from "@/app/_utils/utils";
+import { Stack, Typography } from "@mui/material";
 import { Drugs, Presciption } from "@prisma/client";
 import { format } from "date-fns";
 

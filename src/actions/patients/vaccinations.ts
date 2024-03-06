@@ -6,7 +6,6 @@ import { unstable_noStore as noStore } from "next/cache";
 export async function getVaccinationsByPatientId(patientId: string) {
   noStore();
   try {
-    const vac = await db.vaccination
     const vaccination = await db.vaccination.findMany({
       where: { patientId: patientId },
     });
