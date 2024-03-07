@@ -283,6 +283,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac43",
                         patientId: "PATIENT2",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
@@ -353,6 +354,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac44",
                         patientId: "PATIENT2",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
@@ -424,6 +426,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac45",
                         patientId: "PATIENT2",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
@@ -578,6 +581,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac46",
                         patientId: "PATIENT3",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
@@ -648,6 +652,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac47",
                         patientId: "PATIENT3",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
@@ -719,6 +724,7 @@ const seed = async () => {
                     },
                     laboratoryRequest: {
                       create: {
+                        id: "1bea286b-6ee1-42b7-8895-64683305ac48",
                         patientId: "PATIENT3",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
