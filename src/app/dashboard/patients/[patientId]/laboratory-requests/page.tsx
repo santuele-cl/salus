@@ -44,10 +44,11 @@ const LaboratoryRequestPage = async ({
                 switch (type) {
                   case "date":
                     return (
-                      <TableCell>{`${format(
-                        datum[id],
-                        " MMMM d, yyyy"
-                      )}`}</TableCell>
+                      <TableCell
+                        component="th"
+                        scope="row"
+                        key={id + index}
+                      >{`${format(datum[id], " MMMM d, yyyy")}`}</TableCell>
                     );
 
                   default:

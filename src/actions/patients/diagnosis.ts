@@ -7,6 +7,19 @@ export async function getDiagnosesByPatientId(patientId: string) {
   noStore();
   const diagnoses = await db.diagnosis.findMany({
     where: { patientId },
+    include: {
+      physician: {
+        select: {
+          fname: true,
+          lname: true,
+          employeeRole: {
+            select: {
+              roleName: true,
+            },
+          },
+        },
+      },
+    },
   });
 
   if (!diagnoses) return { error: "No diagnoses found!" };

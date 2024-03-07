@@ -10,10 +10,9 @@ export async function getLaboratoryResultsByPatientId(patientId: string) {
       where: { patientId },
     });
 
-    if (!laboratoryResults)
-      return { error: "No laboratory results data found!" };
+    if (!laboratoryResults) return { error: "Laboratory results not found!" };
 
-    return { success: " found!", data: laboratoryResults };
+    return { success: "Fetch successful!", data: laboratoryResults };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
