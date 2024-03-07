@@ -288,6 +288,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
@@ -357,6 +358,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
@@ -427,6 +429,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
@@ -580,6 +583,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
@@ -649,6 +653,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
@@ -719,6 +724,7 @@ const seed = async () => {
                         requestingPhysicianId: "EMP1",
                         LaboratoryResults: {
                           create: {
+                            patientId: "PATIENT2",
                             testDate: "2024-03-07T11:04:27.869Z",
                             testName: "Fecalysis Test A",
                             testResults: {
