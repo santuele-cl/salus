@@ -286,6 +286,20 @@ const seed = async () => {
                         patientId: "PATIENT2",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
@@ -339,9 +353,22 @@ const seed = async () => {
                     laboratoryRequest: {
                       create: {
                         patientId: "PATIENT2",
-
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
@@ -398,6 +425,20 @@ const seed = async () => {
                         patientId: "PATIENT2",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
@@ -537,6 +578,20 @@ const seed = async () => {
                         patientId: "PATIENT3",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
@@ -590,9 +645,22 @@ const seed = async () => {
                     laboratoryRequest: {
                       create: {
                         patientId: "PATIENT3",
-
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
@@ -649,6 +717,20 @@ const seed = async () => {
                         patientId: "PATIENT3",
                         labProcedureId: "LP2100001",
                         requestingPhysicianId: "EMP1",
+                        LaboratoryResults: {
+                          create: {
+                            testDate: "2024-03-07T11:04:27.869Z",
+                            testName: "Fecalysis Test A",
+                            testResults: {
+                              create: {
+                                parameter: "PARAMS",
+                                unit: "UNIT",
+                                value: "VAL",
+                                referenceRange: "REF",
+                              },
+                            },
+                          },
+                        },
                       },
                     },
                     serviceDepartmentId: "SD1003",
