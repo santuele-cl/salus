@@ -116,6 +116,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "EMPLOYEE",
       consent: true,
+      emailVerified: "2024-03-07T11:08:20.692Z",
       profile: {
         create: {
           id: "PROFILE2",
@@ -169,6 +170,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "PATIENT",
       consent: true,
+      emailVerified: "2024-03-07T11:08:20.692Z",
       profile: {
         create: {
           id: "PROFILE1",
@@ -419,6 +421,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "PATIENT",
       consent: true,
+      emailVerified: "2024-03-07T11:08:20.692Z",
       profile: {
         create: {
           id: "PROFILE3",

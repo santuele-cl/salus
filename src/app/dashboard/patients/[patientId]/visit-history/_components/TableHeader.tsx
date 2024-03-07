@@ -20,9 +20,9 @@ const TableHeader = () => {
           alignItems: "center",
         }}
       >
-        <Typography variant="h6">Visit History</Typography>
+        <Typography variant="h6">Checkup History</Typography>
         <Button variant="contained" onClick={handleCloseVisitFormDrawer}>
-          Add New Visit
+          New Checkup
         </Button>
       </Stack>
       <Drawer

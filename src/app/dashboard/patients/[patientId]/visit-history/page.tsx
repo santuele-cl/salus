@@ -33,7 +33,7 @@ const VisitHistoryPage = async ({
         >
           <TableHead>
             <TableRow>
-              <TableCell>Visit ID</TableCell>
+              <TableCell>ID</TableCell>
               <TableCell align="right">Date</TableCell>
               <TableCell align="right">Chief Complaint</TableCell>
               <TableCell align="right">Details</TableCell>

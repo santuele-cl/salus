@@ -30,7 +30,7 @@ const PrescriptionFormDrawer = ({
         />
       </Drawer>
       <LibraryAddOutlinedIcon
-        sx={{ fontSize: 25, cursor: "pointer" }}
+        sx={{ fontSize: 25, cursor: "pointer", color: "primary.main"}}
         onClick={() => setShowPrescriptionFormDrawer((prev) => !prev)}
       />
     </Stack>
