@@ -59,7 +59,7 @@ const NewVisitForm = ({
   };
   return (
     <Box sx={{ p: 3, width: 450 }}>
-      <Typography variant="h6">Visit Form</Typography>
+      <Typography variant="h6">Checkup Information</Typography>
       <Divider sx={{ my: 2 }} />
       <Stack
         component="form"
