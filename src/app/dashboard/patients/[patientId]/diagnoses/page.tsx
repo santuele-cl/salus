@@ -20,7 +20,6 @@ const DiagnosisPage = async ({
 }) => {
   const response = await getDiagnosesByPatientId(patientId);
   const diagnoses = response.data;
-  console.log(diagnoses);
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">
