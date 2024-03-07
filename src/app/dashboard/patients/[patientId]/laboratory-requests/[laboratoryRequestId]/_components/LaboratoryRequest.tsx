@@ -1,27 +1,36 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
-import { Presciption, Diagnosis, Employee } from "@prisma/client";
+import {
+  Presciption,
+  Diagnosis,
+  Employee,
+  LaboratoryRequest,
+  LaboratoryProcedures,
+} from "@prisma/client";
 import { format } from "date-fns";
 
-const include: Array<keyof Presciption> = [
-  "createdAt",
-  "dosage",
-  "drugsId",
-  "durationInDays",
-  "endDate",
-  "frequencyPerDay",
+const include: Array<keyof LaboratoryRequest> = [
   "id",
-  "notes",
   "patientId",
-  "physicianId",
-  "startDate",
-  "takenEveryHour",
-  "updatedAt",
   "visitId",
+  "dateRequested",
+  "lastUpdated",
 ];
 
-const Prescription = ({ prescription }: { prescription: Presciption }) => {
-  const fields = Object.keys(prescription) as Array<keyof Presciption>;
+const LaboratoryRequest = ({
+  laboratoryRequest,
+  laboratoryProcedure,
+  requestingPhysician,
+}: {
+  laboratoryProcedure: LaboratoryProcedures;
+  requestingPhysician: Employee;
+  laboratoryRequest: LaboratoryRequest;
+}) => {
+  const fields = Object.keys(laboratoryRequest) as Array<
+    keyof LaboratoryRequest
+  >;
+
+  //   TODO: Display neccessary informations
 
   return (
     <Stack
@@ -30,18 +39,13 @@ const Prescription = ({ prescription }: { prescription: Presciption }) => {
       }}
     >
       <Typography variant="h6" sx={{ fontStyle: "italic" }}>
-        {prescription["patientId"] as string}
+        {laboratoryRequest["patientId"] as string}
       </Typography>
 
       <Stack>
         {fields.map((field, i) => {
           if (include.includes(field)) {
-            if (
-              field === "updatedAt" ||
-              field === "createdAt" ||
-              field === "endDate" ||
-              field === "startDate"
-            ) {
+            if (field === "lastUpdated" || field === "dateRequested") {
               return (
                 <Stack
                   key={field + i}
@@ -49,7 +53,7 @@ const Prescription = ({ prescription }: { prescription: Presciption }) => {
                 >
                   <Typography variant="subtitle2">{field}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    prescription[field],
+                    laboratoryRequest[field],
                     " MMMM d, yyyy"
                   )}`}</Typography>
                 </Stack>
@@ -65,7 +69,7 @@ const Prescription = ({ prescription }: { prescription: Presciption }) => {
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {prescription[field] as string}
+                  {laboratoryRequest[field] as string}
                 </Typography>
               </Stack>
             );
@@ -75,4 +79,4 @@ const Prescription = ({ prescription }: { prescription: Presciption }) => {
     </Stack>
   );
 };
-export default Prescription;
+export default LaboratoryRequest;

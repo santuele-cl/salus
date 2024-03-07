@@ -12,7 +12,7 @@ const TABS = [
   { label: "Profile", href: "profile" },
   { label: "Diagnoses", href: "diagnoses" },
   { label: "Prescriptions", href: "prescriptions" },
-  { label: "Laboratory Results", href: "laboratory-results" },
+  { label: "Laboratory Requests", href: "laboratory-requests" },
   { label: "Laboratory Results", href: "laboratory-results" },
   { label: "Vaccinations", href: "vaccinations" },
   { label: "Allergies", href: "allergies" },
