@@ -35,7 +35,7 @@ const TABS = [
     href: "profile",
   },
   { label: "Documents", href: "documents" },
-  { label: "Visit History", href: "visit-history" },
+  { label: "Checkup History", href: "visit-history" },
   { label: "Medications", href: "medications" },
 ];
 

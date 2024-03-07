@@ -1,4 +1,4 @@
 const VisitLoadingPage = () => {
-  return <div>VisitLoadingPage</div>;
+  return <div>Loading</div>;
 };
 export default VisitLoadingPage;

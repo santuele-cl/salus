@@ -8,7 +8,7 @@ import ProfileSidebar from "@/app/_ui/dashboard/patients/ProfileSidebar";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { label: "Visit History", href: "visit-history" },
+  { label: "Checkup History", href: "visit-history" },
   { label: "Profile", href: "profile" },
   { label: "Diagnoses", href: "diagnoses" },
   { label: "Prescriptions", href: "prescriptions" },
