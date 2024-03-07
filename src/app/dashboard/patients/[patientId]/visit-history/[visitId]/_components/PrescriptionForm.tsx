@@ -40,6 +40,8 @@ const fields: PrescriptionFieldType[] = [
   { id: "endDate", label: "End Date", type: "date" },
 ];
 
+const hiddenFields = [""]
+
 const PrescriptionForm = ({
   visitId,
   patientId,
@@ -132,6 +134,8 @@ const PrescriptionForm = ({
       <Typography variant="h6">Prescription</Typography>
       <Divider sx={{ my: 2 }} />
       <Stack sx={{ my: 1 }}>
+      {!session.data?.user.empId && <FormStatusText message="Forbidden. Action not allowed!" status="error" />}
+        {error && <FormStatusText message={error} status="error" />}
         {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}
       </Stack>
@@ -200,7 +204,7 @@ const PrescriptionForm = ({
         <Button
           type="submit"
           variant="contained"
-          disabled={pending}
+          disabled={pending || !session.data?.user.empId}
           sx={{ p: 2 }}
         >
           Add

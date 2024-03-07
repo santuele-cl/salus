@@ -13,6 +13,7 @@ const TABS = [
   { label: "Diagnoses", href: "diagnoses" },
   { label: "Prescriptions", href: "prescriptions" },
   { label: "Laboratory Results", href: "laboratory-results" },
+  { label: "Laboratory Results", href: "laboratory-results" },
   { label: "Vaccinations", href: "vaccinations" },
   { label: "Allergies", href: "allergies" },
   { label: "Family Medical History", href: "family-medical-history" },
