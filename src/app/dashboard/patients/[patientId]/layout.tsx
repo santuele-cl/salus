@@ -16,8 +16,8 @@ const TABS = [
   { label: "Laboratory Results", href: "laboratory-results" },
   { label: "Vaccinations", href: "vaccinations" },
   { label: "Allergies", href: "allergies" },
-  { label: "Family Medical History", href: "family-medical-history" },
-  { label: "Social History", href: "social-history" },
+  { label: "Family Medical Histories", href: "family-medical-histories" },
+  { label: "Social Histories", href: "social-histories" },
 ];
 
 const Layout = ({
