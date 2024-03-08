@@ -49,6 +49,9 @@ export async function getPrescriptionByPrescriptionId(prescriptionId: string) {
   try {
     const prescription = await db.presciption.findUnique({
       where: { id: prescriptionId },
+    include: {
+      drugs: {select: {name: true}}
+    }
     });
 
     if (!prescription) return { error: "No prescription data found!" };
