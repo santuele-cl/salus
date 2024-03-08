@@ -6,18 +6,18 @@ const VaccinationsPage = async ({
 }: {
   params: { patientId: string };
 }) => {
-  const allergies = await getVaccinationsByPatientId(patientId);
+  const vaccination = await getVaccinationsByPatientId(patientId);
   const columns = [
     { id: "id", label: "ID" },
-    { id: "name", label: "Name" },
-    { id: "vaccine", label: "Vaccine name" },
-    { id: "dosage", label: "dosage"}
+    { id: "vaccineName", label: "Vaccine name" },
+    { id: "dosage", label: "Dosage"},
+    { id: "nextDueDate", label: "Next appointment", type: "date"},
   ];
   return (
     <div>
       <GeneralTable
         columns={columns}
-        data={allergies.data}
+        data={vaccination.data}
         baseUrl={`/dashboard/patients/${patientId}/vaccinations`}
       />
     </div>
