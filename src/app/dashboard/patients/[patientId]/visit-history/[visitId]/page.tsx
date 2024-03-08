@@ -16,6 +16,7 @@ import LaboratoryRequest from "./_components/LaboratoryRequest";
 import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
 import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
 import Vital from "./_components/Vital";
+import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -28,6 +29,7 @@ const VisitPage = async ({
   const physicalExaminations = visit.data?.physicalExamination;
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
+  // console.log(visit);
 
   return (
     <div>
@@ -268,7 +270,10 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Laboratory Request
                 </Typography>
-                <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
+                <LaboratoryRequestDrawer
+                  visitId={visitId}
+                  patientId={patientId}
+                />
               </Stack>
               <Stack
                 sx={{
