@@ -334,16 +334,16 @@ model Visit {
 }
 
 model PhysicalExamination {
-  id             String       @id @default(nanoid(16))
-  physicalPart   PhysicalPart
+  id             String        @id @default(nanoid(16))
+  physicalPart   PhysicalPart?
   specifyIfOther String?
   isNormal       Boolean
   remarks        String?
-  createdAt      DateTime     @default(now())
-  updatedAt      DateTime     @updatedAt
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
 
-  visit     Visit    @relation(fields: [visitId], references: [id], onDelete: Cascade)
-  visitId   String   @unique
+  visit     Visit?   @relation(fields: [visitId], references: [id], onDelete: Cascade)
+  visitId   String?
   patient   Patient? @relation(fields: [patientId], references: [id])
   patientId String?
 }

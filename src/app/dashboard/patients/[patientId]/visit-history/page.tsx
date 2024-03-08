@@ -34,8 +34,8 @@ const VisitHistoryPage = async ({
           <TableHead>
             <TableRow>
               <TableCell>ID</TableCell>
-              <TableCell align="right">Date</TableCell>
-              <TableCell align="right">Chief Complaint</TableCell>
+              <TableCell align="left">Date of Visit</TableCell>
+              <TableCell align="left">Chief Complaint</TableCell>
               <TableCell align="right">Details</TableCell>
             </TableRow>
           </TableHead>
@@ -50,11 +50,11 @@ const VisitHistoryPage = async ({
                   <TableCell component="th" scope="row">
                     {visit.id}
                   </TableCell>
-                  <TableCell align="right">{`${format(
+                  <TableCell align="left">{`${format(
                     visit.createdAt,
                     " MMMM d, yyyy h:mm: a"
                   )}`}</TableCell>
-                  <TableCell align="right">{visit.chiefComplaint}</TableCell>
+                  <TableCell align="left">{visit.chiefComplaint}</TableCell>
                   <TableCell align="right">
                     <Button
                       variant="contained"

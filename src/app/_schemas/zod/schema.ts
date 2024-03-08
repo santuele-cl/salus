@@ -1,6 +1,14 @@
-// import { CivilStatus } from "@prisma/client";
 import * as z from "zod";
-import { Presciption } from "@prisma/client";
+import { PhysicalPart } from "@prisma/client";
+
+export const PhysicalExaminationSchema = z.object({
+  physicalPart: z.nativeEnum(PhysicalPart),
+  specifyIfOther: z.string().optional(),
+  isNormal: z.coerce.boolean(),
+  remarks: z.string().min(1, "This field is required"),
+  visitId: z.string(),
+  patientId: z.string(),
+});
 
 export const LaboratoryRequestSchema = z.object({
   labProcedureId: z.string().min(1, "This field is required"),

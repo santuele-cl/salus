@@ -350,13 +350,13 @@ CREATE TABLE "Visit" (
 -- CreateTable
 CREATE TABLE "PhysicalExamination" (
     "id" TEXT NOT NULL,
-    "physicalPart" "PhysicalPart" NOT NULL,
+    "physicalPart" "PhysicalPart",
     "specifyIfOther" TEXT,
     "isNormal" BOOLEAN NOT NULL,
     "remarks" TEXT,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
-    "visitId" TEXT NOT NULL,
+    "visitId" TEXT,
     "patientId" TEXT,
 
     CONSTRAINT "PhysicalExamination_pkey" PRIMARY KEY ("id")
@@ -517,9 +517,6 @@ CREATE UNIQUE INDEX "ClinicalDepartment_name_key" ON "ClinicalDepartment"("name"
 
 -- CreateIndex
 CREATE UNIQUE INDEX "ServiceDepartment_name_key" ON "ServiceDepartment"("name");
-
--- CreateIndex
-CREATE UNIQUE INDEX "PhysicalExamination_visitId_key" ON "PhysicalExamination"("visitId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "LaboratoryProcedureCategory_categoryName_key" ON "LaboratoryProcedureCategory"("categoryName");
