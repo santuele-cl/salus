@@ -38,7 +38,7 @@ type SidebarLinkType = {
 };
 
 type SidebarLink = {
-  [general: string]: { label: string; links: SidebarLinkType[] };
+  [index: string]: { label: string; links: SidebarLinkType[] };
   // otherInfo?: { label: string; links: SidebarLinkType[] };
   // settings?: { label: string; links: SidebarLinkType[] };
 };
@@ -82,6 +82,15 @@ const sidebarLinks: SidebarLink = {
       //   label: "Inbox",
       //   icon: () => <MessageOutlinedIcon />,
       // },
+    ],
+  },
+  settings: {
+    label: "Account Settings",
+    links: [
+      {
+        label: "Settings",
+        icon: () => <FamilyRestroomIcon />,
+      },
     ],
   },
   // otherInfo: {
@@ -181,6 +190,12 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
               <LockOpenOutlinedIcon />
             </ListItemIcon>
             <ListItemText primary="Login" />
+          </ListItemButton>
+          <ListItemButton sx={{ pl: 4 }}>
+            <ListItemIcon>
+              <LockOpenOutlinedIcon />
+            </ListItemIcon>
+            <ListItemText primary="Error" />
           </ListItemButton>
         </List>
       </Collapse>
