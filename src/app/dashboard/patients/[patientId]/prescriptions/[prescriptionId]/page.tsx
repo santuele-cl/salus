@@ -15,7 +15,6 @@ const PrescriptionPage = async ({
   const response = await getPrescriptionByPrescriptionId(prescriptionId);
   const prescription = response.data;
 
-  // TODO: (Fix) Drug name should be in heading instead of patient ID
   return (
     <Stack
       sx={{
