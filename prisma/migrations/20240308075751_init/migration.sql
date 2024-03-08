@@ -47,6 +47,7 @@ CREATE TABLE "User" (
     "password" TEXT,
     "role" "UserRole" NOT NULL DEFAULT 'PATIENT',
     "isTwoFactorEnabled" BOOLEAN NOT NULL DEFAULT false,
+    "isActive" BOOLEAN NOT NULL DEFAULT true,
     "consent" BOOLEAN NOT NULL DEFAULT true,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
