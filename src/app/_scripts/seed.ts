@@ -178,6 +178,33 @@ const seed = async () => {
           isPatient: true,
           patient: {
             create: {
+              familyMedicalHistory: {
+                createMany: {
+                  data: [
+                    {
+                      condition: "Cancer",
+                      relationship: "Sibling",
+                      ageOfOnset: 40,
+                    },
+                    {
+                      condition: "Hypertension",
+                      relationship: "Grandparent",
+                      ageOfOnset: 70,
+                    },
+                  ],
+                },
+              },
+              socialHistory: {
+                create: {
+                  alcoholUse: "NONE",
+                  dietHabits: "BALANCED",
+                  drugUse: "NONE",
+                  exerciseHabits: "LIGHT",
+                  livingConditions: "URBAN",
+                  tobaccoUse: "NEVER",
+                  occupation: "software engineer",
+                },
+              },
               id: "PATIENT2",
               fname: "clyde",
               mname: "arrogante",
@@ -476,6 +503,33 @@ const seed = async () => {
           isPatient: true,
           patient: {
             create: {
+              familyMedicalHistory: {
+                createMany: {
+                  data: [
+                    {
+                      condition: "Diabetes",
+                      relationship: "Mother",
+                      ageOfOnset: 50,
+                    },
+                    {
+                      condition: "Heart Disease",
+                      relationship: "Father",
+                      ageOfOnset: 55,
+                    },
+                  ],
+                },
+              },
+              socialHistory: {
+                create: {
+                  alcoholUse: "NONE",
+                  dietHabits: "BALANCED",
+                  drugUse: "NONE",
+                  exerciseHabits: "LIGHT",
+                  livingConditions: "URBAN",
+                  tobaccoUse: "NEVER",
+                  occupation: "software engineer",
+                },
+              },
               id: "PATIENT3",
               fname: "ara",
               mname: "buenaventura",
