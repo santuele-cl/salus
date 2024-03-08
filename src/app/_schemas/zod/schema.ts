@@ -2,19 +2,12 @@
 import * as z from "zod";
 import { Presciption } from "@prisma/client";
 
-const arr: Array<keyof Presciption> = [
-  "dosage",
-  "drugsId",
-  "durationInDays",
-  "endDate",
-  "frequencyPerDay",
-  "notes",
-  "patientId",
-  "physicianId",
-  "startDate",
-  "takenEveryHour",
-  "visitId",
-];
+export const LaboratoryRequestSchema = z.object({
+  labProcedureId: z.string().min(1, "This field is required"),
+  requestingPhysicianId: z.string().min(1, "This field is required"),
+  visitId: z.string().min(1, "This field is required"),
+  patientId: z.string().min(1, "This field is required"),
+});
 
 export const PrescriptionSchema = z.object({
   drugsId: z.string().min(1, "This field is required"),

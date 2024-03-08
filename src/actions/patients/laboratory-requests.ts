@@ -1,7 +1,9 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { LaboratoryRequestSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore } from "next/cache";
+import { z } from "zod";
 
 export async function getLaboratoryRequestsByPatientId(patientId: string) {
   noStore();
@@ -58,4 +60,23 @@ export async function getLaboratoryRequestByLaboratoryRequestId(
   } catch (error) {
     return { error: "Something went wrong!" };
   }
+}
+
+export async function postLaboratoryRequest(
+  values: z.infer<typeof LaboratoryRequestSchema>
+) {
+  const parse = LaboratoryRequestSchema.safeParse(values);
+
+  if (!parse.success) return { error: "Parse error. Invalid input!" };
+
+  const laboratoryRequest = await db.laboratoryRequest.create({
+    data: {
+      ...(parse.data && parse.data),
+    },
+  });
+
+  if (!laboratoryRequest)
+    return { error: "Error. Laboratory request not added!" };
+
+  return { success: "Laboratory request added!", data: laboratoryRequest };
 }
