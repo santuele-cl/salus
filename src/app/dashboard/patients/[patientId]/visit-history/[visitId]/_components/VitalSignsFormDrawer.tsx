@@ -21,7 +21,7 @@ const VitalSignsFormDrawer = ({ visitId }: { visitId: string }) => {
         />
       </Drawer>
       <LibraryAddOutlinedIcon
-        sx={{ fontSize: 25, cursor: "pointer" }}
+        sx={{ fontSize: 25, cursor: "pointer", color: "primary.main" }}
         onClick={() => setShowVitalSignsForm((prev) => !prev)}
       />
     </Stack>

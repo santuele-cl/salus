@@ -1,5 +1,5 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
-import { Divider, Stack, Typography } from "@mui/material";
+import { Divider, Stack, TextField, Typography } from "@mui/material";
 import { format } from "date-fns";
 import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
@@ -17,6 +17,7 @@ import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
 import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
 import Vital from "./_components/Vital";
 import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
+import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -29,7 +30,7 @@ const VisitPage = async ({
   const physicalExaminations = visit.data?.physicalExamination;
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
-  // console.log(visit);
+  console.log(visit);
 
   return (
     <div>
@@ -60,10 +61,35 @@ const VisitPage = async ({
           </Stack>
         </Stack>
         <Divider sx={{ my: 1 }} />
-        <Stack>
-          <Stack direction="row">
-            <Typography>Details</Typography>
-          </Stack>
+        <Stack spacing={2} sx={{ my: 1 }}>
+          <Typography>Details</Typography>
+          <Grid2 container spacing={2}>
+            <Grid2 xs={12} md={6}>
+              <TextField
+                defaultValue={visit.data?.chiefComplaint}
+                disabled
+                label="Chief complaint"
+                fullWidth
+              />
+            </Grid2>
+            <Grid2 xs={12} md={6}>
+              <TextField
+                multiline
+                defaultValue={visit.data?.hpi}
+                disabled
+                label="History of Present Illness"
+                fullWidth
+              />
+            </Grid2>
+            <Grid2 xs={12} md={6}>
+              <TextField
+                defaultValue={visit.data?.accompaniedBy}
+                disabled
+                label="Accompanied by"
+                fullWidth
+              />
+            </Grid2>
+          </Grid2>
         </Stack>
         <Stack
           gap={2}
@@ -126,7 +152,10 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Physical Examination
                 </Typography>
-                <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
+                <PhysicalExamFormDrawer
+                  visitId={visitId}
+                  patientId={patientId}
+                />
               </Stack>
               <Stack
                 sx={{
