@@ -1,17 +1,12 @@
 "use client";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {
-  Draggable,
-  DropArg,
-} from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
 
-import { useState } from "react";
-import dayjs from "dayjs";
-import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import { Box, Paper, Stack } from "@mui/material";
-
+import CalendarHeader from "./_components/CalendarHeader";
+import CalendarSidebar from "./_components/CalendarSidebar";
+import CalendarMonth from "./_components/CalendarMonth";
+import { useState } from "react";
+import { getMonth } from "@/app/_utils/days";
+import dayjs from "dayjs";
 import AppointmentModal from "./_components/AppointmentModal";
 
 export default function DashboardLayout({
@@ -31,7 +26,7 @@ export default function DashboardLayout({
         setShowAppointmentModal={setShowAppointmentModal}
       />
       <Stack sx={{ height: "100vh", position: "relative" }}>
-        {/* <Box sx={{ position: "sticky", top: 0 }}>
+        <Box sx={{ position: "sticky", top: 0 }}>
           <Paper elevation={0} sx={{ border: "1px solid rgba(0,0,0,0.1)" }}>
             <CalendarHeader
               setCurrentMonth={setCurrentMonth}
@@ -40,28 +35,15 @@ export default function DashboardLayout({
               setShowAppointmentModal={setShowAppointmentModal}
             />
           </Paper>
-        </Box> */}
+        </Box>
         <Stack direction="row" sx={{ flexGrow: "1" }}>
           {/* <Box sx={{ flex: "0 0 250px" }}>
           <CalendarSidebar />
         </Box> */}
           <Box sx={{ flex: "1 1" }}>
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "resourceTimelineWook, dayGridMonth,timeGridWeek",
-              }}
-              // events={allEvents as EventSourceInput}
-              nowIndicator={true}
-              editable={true}
-              droppable={true}
-              selectable={true}
-              selectMirror={true}
-              // dateClick={handleDateClick}
-              // drop={(data) => addEvent(data)}
-              // eventClick={(data) => handleDeleteModal(data)}
+            <CalendarMonth
+              montArr={currentMonth}
+              setSelectedDay={setSelectedDay}
             />
           </Box>
         </Stack>

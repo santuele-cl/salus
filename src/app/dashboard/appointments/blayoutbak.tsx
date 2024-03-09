@@ -1,18 +1,12 @@
 "use client";
-import FullCalendar from "@fullcalendar/react";
-import dayGridPlugin from "@fullcalendar/daygrid";
-import interactionPlugin, {
-  Draggable,
-  DropArg,
-} from "@fullcalendar/interaction";
-import timeGridPlugin from "@fullcalendar/timegrid";
-
 import { useState } from "react";
 import dayjs from "dayjs";
 import { Calendar, dayjsLocalizer, Views } from "react-big-calendar";
 import { Box, Paper, Stack } from "@mui/material";
 
 import AppointmentModal from "./_components/AppointmentModal";
+
+const localizer = dayjsLocalizer(dayjs);
 
 export default function DashboardLayout({
   children,
@@ -46,22 +40,14 @@ export default function DashboardLayout({
           <CalendarSidebar />
         </Box> */}
           <Box sx={{ flex: "1 1" }}>
-            <FullCalendar
-              plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
-              headerToolbar={{
-                left: "prev,next today",
-                center: "title",
-                right: "resourceTimelineWook, dayGridMonth,timeGridWeek",
-              }}
-              // events={allEvents as EventSourceInput}
-              nowIndicator={true}
-              editable={true}
-              droppable={true}
-              selectable={true}
-              selectMirror={true}
-              // dateClick={handleDateClick}
-              // drop={(data) => addEvent(data)}
-              // eventClick={(data) => handleDeleteModal(data)}
+            <Calendar
+              localizer={localizer}
+              // defaultView="day"
+              // views={[Views.DAY, Views.WEEK, Views.MONTH]}
+              //   events={myEventsList}
+              startAccessor="start"
+              endAccessor="end"
+              //   style={{ height: 500 }}
             />
           </Box>
         </Stack>

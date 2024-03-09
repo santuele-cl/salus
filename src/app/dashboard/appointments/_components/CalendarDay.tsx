@@ -1,12 +1,15 @@
-import { Stack, Typography } from "@mui/material";
+import { IconButton, Stack, Typography } from "@mui/material";
 import dayjs from "dayjs";
-
+import CreateOutlinedIcon from "@mui/icons-material/CreateOutlined";
+import { Dispatch, SetStateAction } from "react";
 const CalendarDay = ({
   day,
   rowIndex,
+  setSelectedDay,
 }: {
   day: dayjs.Dayjs;
   rowIndex: number;
+  setSelectedDay: Dispatch<SetStateAction<dayjs.Dayjs>>;
 }) => {
   const isCurrentDay = day.format("DD-MM-YY") === dayjs().format("DD-MM-YY");
   return (
@@ -16,6 +19,7 @@ const CalendarDay = ({
         sx={{
           p: "4px",
           justifyContent: "space-between",
+          alignItems: "center",
           //   bgcolor: "lightblue",
           //   color: "common.black",
         }}
@@ -31,6 +35,11 @@ const CalendarDay = ({
         >
           {day.format("DD")}
         </Typography>
+        <IconButton
+        // onClick={() => setSelectedDay(new Date(dayjs().year, ))}
+        >
+          <CreateOutlinedIcon sx={{ fontSize: 16 }} />
+        </IconButton>
       </Stack>
     </Stack>
   );

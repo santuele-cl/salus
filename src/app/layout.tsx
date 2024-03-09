@@ -1,3 +1,4 @@
+// import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
@@ -6,7 +7,6 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
 import { auth } from "@/auth";
-import TanstackProvider from "@/providers/TanstackProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
