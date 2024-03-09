@@ -10,6 +10,8 @@ import {
   SxProps,
 } from "@mui/material";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import SettingsIcon from "@mui/icons-material/Settings";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
@@ -89,7 +91,7 @@ const sidebarLinks: SidebarLink = {
     links: [
       {
         label: "Settings",
-        icon: () => <FamilyRestroomIcon />,
+        icon: () => <SettingsIcon />,
       },
     ],
   },
@@ -193,7 +195,7 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }}>
             <ListItemIcon>
-              <LockOpenOutlinedIcon />
+              <ErrorOutlineIcon />
             </ListItemIcon>
             <ListItemText primary="Error" />
           </ListItemButton>

@@ -15,7 +15,7 @@ import {
   Typography,
 } from "@mui/material";
 import { LoadingButton } from "@mui/lab";
-import React, { useEffect, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { findPatient, getTotalPatientsCount } from "@/actions/patients";
 import { Patient, User } from "@prisma/client";
 import Link from "next/link";
@@ -23,7 +23,7 @@ import { usePathname } from "next/navigation";
 import HomeOutlined from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
-import { findUser, toggleUserIsActive } from "@/actions/patients/users";
+import { findUser, toggleUserIsActive } from "@/actions/users/users";
 
 interface UsersResponseType {
   error?: string;
@@ -40,13 +40,12 @@ const UserSearchPage = () => {
 
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
-  const handleSearch = async () => {
-    if (!insufficientSearchTerm) {
-      setIsSearching(true);
-      const user: UsersResponseType = await findUser(searchTerm);
-      if (user.data && user.data.length > 0) setUsers(user.data);
-      setIsSearching(false);
-    }
+  const handleSearch = async (e: FormEvent) => {
+    e.preventDefault();
+    setIsSearching(true);
+    const user: UsersResponseType = await findUser(searchTerm);
+    setUsers(user.data);
+    setIsSearching(false);
   };
 
   return (
@@ -68,6 +67,8 @@ const UserSearchPage = () => {
           </Typography>
         </Stack>
         <Stack
+          component="form"
+          onSubmit={(e) => handleSearch(e)}
           direction="row"
           spacing={2}
           sx={{
@@ -86,7 +87,7 @@ const UserSearchPage = () => {
             type="submit"
             variant="contained"
             sx={{ alignSelf: "stretch" }}
-            onClick={handleSearch}
+            // onClick={handleSearch}
           >
             Search
           </LoadingButton>
@@ -101,11 +102,11 @@ const UserSearchPage = () => {
           <TableHead>
             <TableRow>
               <TableCell>User ID</TableCell>
-              <TableCell align="right">Username</TableCell>
-              <TableCell align="right">Email</TableCell>
-              <TableCell align="right">Active Status</TableCell>
-              <TableCell align="right">Verified</TableCell>
-              <TableCell align="right">Role</TableCell>
+              <TableCell align="left">Username</TableCell>
+              <TableCell align="left">Email</TableCell>
+              <TableCell align="left">Active Status</TableCell>
+              <TableCell align="left">Verified</TableCell>
+              <TableCell align="left">Role</TableCell>
               <TableCell align="right">Details</TableCell>
             </TableRow>
           </TableHead>
@@ -121,18 +122,18 @@ const UserSearchPage = () => {
                       "&:last-child td, &:last-child th": { border: 0 },
                     }}
                   >
-                    <TableCell component="th" scope="row">
+                    <TableCell component="th" scope="row" align="left">
                       {id}
                     </TableCell>
-                    <TableCell align="right">{username}</TableCell>
-                    <TableCell align="right">{email}</TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">{username}</TableCell>
+                    <TableCell align="left">{email}</TableCell>
+                    <TableCell align="left">
                       {isActive ? "active" : "inactive"}
                     </TableCell>
-                    <TableCell align="right">
+                    <TableCell align="left">
                       {emailVerified ? "verified" : "not verified"}
                     </TableCell>
-                    <TableCell align="right">{role}</TableCell>
+                    <TableCell align="left">{role}</TableCell>
                     <TableCell align="right">
                       <Stack
                         spacing={2}
@@ -176,20 +177,19 @@ const UserSearchPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {!users ||
-        (!users.length && (
-          <Stack
-            spacing={1}
-            sx={{
-              justifyContent: "center",
-              alignItems: "center",
-              p: 8,
-            }}
-          >
-            <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
-            <Typography>No results found!</Typography>
-          </Stack>
-        ))}
+      {!users && (
+        <Stack
+          spacing={1}
+          sx={{
+            justifyContent: "center",
+            alignItems: "center",
+            p: 8,
+          }}
+        >
+          <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
+          <Typography>No results found!</Typography>
+        </Stack>
+      )}
     </Paper>
   );
 };

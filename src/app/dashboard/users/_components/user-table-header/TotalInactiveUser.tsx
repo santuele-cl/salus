@@ -1,6 +1,6 @@
 import { Stack, Typography } from "@mui/material";
 import PersonOffIcon from "@mui/icons-material/PersonOff";
-import { getTotalInactiveUser } from "@/actions/patients/users";
+import { getTotalInactiveUser } from "@/actions/users/users";
 
 const TotalInactiveUser = async () => {
   const usersTotalInactive = await getTotalInactiveUser();

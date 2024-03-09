@@ -45,7 +45,7 @@ export async function findUser(term: string) {
   }
 }
 
-export async function getUserByid(id: string) {
+export async function getUserById(id: string) {
   noStore();
 
   if (!id) return { error: "Missing ID!" };
