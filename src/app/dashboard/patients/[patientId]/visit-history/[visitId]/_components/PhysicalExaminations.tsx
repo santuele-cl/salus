@@ -1,4 +1,4 @@
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { PhysicalExamination } from "@prisma/client";
 import { format } from "date-fns";

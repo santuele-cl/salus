@@ -1,13 +1,13 @@
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { Allergies, Diagnosis, Employee } from "@prisma/client";
 import { format } from "date-fns";
 
 const allergiesSelectedFields: Array<keyof Allergies> = [
- "patientId",
- "description",
- "severity",
- "updatedAt",
+  "patientId",
+  "description",
+  "severity",
+  "updatedAt",
 ];
 
 const Allergy = ({ allergy }: { allergy: Allergies }) => {
@@ -26,9 +26,7 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
       <Stack>
         {fields.map((field, i) => {
           if (allergiesSelectedFields.includes(field)) {
-            if (
-              field === "updatedAt"
-            ) {
+            if (field === "updatedAt") {
               return (
                 <Stack
                   key={field + i}
@@ -42,20 +40,28 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
                 </Stack>
               );
             }
-            if(field === "severity") {
-                return (
-                    <Stack
-                    key={field + i}
-                    sx={{ flexDirection: "row", justifyContent: "space-between" }}
+            if (field === "severity") {
+              return (
+                <Stack
+                  key={field + i}
+                  sx={{ flexDirection: "row", justifyContent: "space-between" }}
+                >
+                  <Typography variant="subtitle2">
+                    {camelCaseToWords(field)}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontWeight: "500",
+                      color:
+                        allergy[field] === "HIGH"
+                          ? "error.main"
+                          : "success.main",
+                    }}
                   >
-                    <Typography variant="subtitle2">
-                      {camelCaseToWords(field)}
-                    </Typography>
-                    <Typography sx={{ fontWeight:"500", color: allergy[field] === "HIGH"  ? "error.main": "success.main"}}>
-                      {allergy[field]  as string}
-                    </Typography>
-                  </Stack>
-                )
+                    {allergy[field] as string}
+                  </Typography>
+                </Stack>
+              );
             }
 
             return (
@@ -67,7 +73,7 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {allergy[field]  as string}
+                  {allergy[field] as string}
                 </Typography>
               </Stack>
             );

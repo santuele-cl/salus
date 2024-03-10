@@ -14,7 +14,7 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { VitalsSchema } from "@/app/_schemas/zod/schema";
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { useSession } from "next-auth/react";

@@ -1,17 +1,23 @@
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { Stack, Typography } from "@mui/material";
-import { FamilyMedicalHistory} from "@prisma/client";
+import { FamilyMedicalHistory } from "@prisma/client";
 import { format } from "date-fns";
 
 const include: Array<keyof FamilyMedicalHistory> = [
-"ageOfOnset",
-"relationship",
-"updatedAt",
-"createdAt"
+  "ageOfOnset",
+  "relationship",
+  "updatedAt",
+  "createdAt",
 ];
 
-const FamilyMedicalHistory = ({ familyMedicalHistory }: { familyMedicalHistory: FamilyMedicalHistory }) => {
-  const fields = Object.keys(familyMedicalHistory) as Array<keyof FamilyMedicalHistory>;
+const FamilyMedicalHistory = ({
+  familyMedicalHistory,
+}: {
+  familyMedicalHistory: FamilyMedicalHistory;
+}) => {
+  const fields = Object.keys(familyMedicalHistory) as Array<
+    keyof FamilyMedicalHistory
+  >;
 
   return (
     <Stack
@@ -26,9 +32,7 @@ const FamilyMedicalHistory = ({ familyMedicalHistory }: { familyMedicalHistory: 
       <Stack>
         {fields.map((field, i) => {
           if (include.includes(field)) {
-            if (
-              field === "updatedAt" || field === "createdAt"
-            ) {
+            if (field === "updatedAt" || field === "createdAt") {
               return (
                 <Stack
                   key={field + i}
@@ -51,7 +55,7 @@ const FamilyMedicalHistory = ({ familyMedicalHistory }: { familyMedicalHistory: 
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {familyMedicalHistory[field]  as string}
+                  {familyMedicalHistory[field] as string}
                 </Typography>
               </Stack>
             );

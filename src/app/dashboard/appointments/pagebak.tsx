@@ -1,5 +1,5 @@
 "use client";
-import { getMonth } from "@/app/_utils/days";
+import { getMonth } from "@/app/_ui/dashboard/_utils/days";
 
 const AppointmentPage = () => {
   const months = getMonth();
