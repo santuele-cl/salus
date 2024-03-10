@@ -31,7 +31,7 @@ import FamilyRestroomIcon from "@mui/icons-material/FamilyRestroom";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import { toKebabCase } from "@/app/_ui/dashboard/_utils/utils";
+import { toKebabCase } from "@/app/_utils/utils";
 import { useState } from "react";
 
 type SidebarLinkType = {
