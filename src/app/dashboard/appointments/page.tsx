@@ -1,3 +1,7 @@
-export default function AppointmentPage() {
-  return <div>AppointmentPage</div>;
-}
+"use client";
+import DnDCalendar from "./_components/DnDCalendar";
+
+const AppointmentPage = () => {
+  return <DnDCalendar />;
+};
+export default AppointmentPage;

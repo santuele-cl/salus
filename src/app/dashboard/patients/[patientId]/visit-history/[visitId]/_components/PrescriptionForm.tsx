@@ -15,7 +15,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { addPrescription } from "@/actions/patients/prescriptions";
@@ -40,7 +40,7 @@ const fields: PrescriptionFieldType[] = [
   { id: "endDate", label: "End Date", type: "date" },
 ];
 
-const hiddenFields = [""]
+const hiddenFields = [""];
 
 const PrescriptionForm = ({
   visitId,
@@ -134,7 +134,12 @@ const PrescriptionForm = ({
       <Typography variant="h6">Prescription</Typography>
       <Divider sx={{ my: 2 }} />
       <Stack sx={{ my: 1 }}>
-      {!session.data?.user.empId && <FormStatusText message="Forbidden. Action not allowed!" status="error" />}
+        {!session.data?.user.empId && (
+          <FormStatusText
+            message="Forbidden. Action not allowed!"
+            status="error"
+          />
+        )}
         {error && <FormStatusText message={error} status="error" />}
         {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}

@@ -1,16 +1,16 @@
-import { camelCaseToWords } from "@/app/_utils/utils";
+import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
 import { Stack, Typography } from "@mui/material";
-import { Vaccination} from "@prisma/client";
+import { Vaccination } from "@prisma/client";
 import { format } from "date-fns";
 
 const vaccinationsSelectedFields: Array<keyof Vaccination> = [
-"administeredAt",
-"administeredBy",
-"dosage",
-"nextDueDate",
-"patientId",
-"vaccineName",
-"id"
+  "administeredAt",
+  "administeredBy",
+  "dosage",
+  "nextDueDate",
+  "patientId",
+  "vaccineName",
+  "id",
 ];
 
 const Vaccination = ({ vaccination }: { vaccination: Vaccination }) => {
@@ -29,9 +29,7 @@ const Vaccination = ({ vaccination }: { vaccination: Vaccination }) => {
       <Stack>
         {fields.map((field, i) => {
           if (vaccinationsSelectedFields.includes(field)) {
-            if (
-              field === "nextDueDate" || field === "administeredAt"
-            ) {
+            if (field === "nextDueDate" || field === "administeredAt") {
               return (
                 <Stack
                   key={field + i}
@@ -54,7 +52,7 @@ const Vaccination = ({ vaccination }: { vaccination: Vaccination }) => {
                   {camelCaseToWords(field)}
                 </Typography>
                 <Typography sx={{ color: "success.main" }}>
-                  {vaccination[field]  as string}
+                  {vaccination[field] as string}
                 </Typography>
               </Stack>
             );

@@ -64,6 +64,7 @@ model Employee {
   vitalsChecked         Vitals[]
   diagnosis             Diagnosis[]
   professionalInfo      ProfessionInfo?
+  appointments          Appointments[]
 
   profile              Profile             @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId            String              @unique
@@ -101,9 +102,34 @@ model Patient {
   vaccinations         Vaccination[]
   vitals               Vitals[]
   laboratoryRequest    LaboratoryRequest[]
+  appointments         Appointments[]
 
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
+}
+
+enum AppointmentStatus {
+  SCHEDULED
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  RESCHEDULED
+}
+
+model Appointments {
+  id         String            @id @default(nanoid(16))
+  createdAt  DateTime          @default(now())
+  updatedAt  DateTime          @updatedAt
+  title      String
+  status     AppointmentStatus
+  room       String
+  reason     String
+  startDate  DateTime
+  endDate    DateTime
+  patient    Patient?          @relation(fields: [patientId], references: [id])
+  patientId  String?
+  employee   Employee?         @relation(fields: [employeeId], references: [id])
+  employeeId String?
 }
 
 model Vaccination {
