@@ -15,7 +15,7 @@ import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
-import { camelCaseToWords } from "@/app/_ui/dashboard/_utils/utils";
+import { camelCaseToWords } from "@/app/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { addPrescription } from "@/actions/patients/prescriptions";
