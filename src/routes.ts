@@ -32,3 +32,11 @@ export const apiRoutePrefix = "/api/auth";
  * @type {string}
  */
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
+
+export const DEFAULT_EMPLOYEE_LOGIN_REDIRECT = "/dashboard/patients";
+export const DEFAULT_PATIENT_LOGIN_REDIRECT = "/";
+
+export const roleRoute = {
+  EMPLOYEE: "/dashboard/patients",
+  PATIENT: "/",
+};

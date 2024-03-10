@@ -60,30 +60,11 @@ const sidebarLinks: SidebarLink = {
         label: "Drugs",
         icon: () => <MedicationIcon />,
       },
-      // {
-      //   label: "Logs",
-      //   icon: () => <ArticleOutlinedIcon />,
-      // },
+
       {
-        label: "Appointmens",
+        label: "Appointments",
         icon: () => <CalendarMonthIcon />,
       },
-      // {
-      //   label: "Customers",
-      //   icon: () => <PeopleOutlinedIcon />,
-      // },
-      // {
-      //   label: "Reports",
-      //   icon: () => <BarChartOutlinedIcon />,
-      // },
-      // {
-      //   label: "Coupons",
-      //   icon: () => <StarBorderOutlinedIcon />,
-      // },
-      // {
-      //   label: "Inbox",
-      //   icon: () => <MessageOutlinedIcon />,
-      // },
     ],
   },
   settings: {
@@ -99,10 +80,6 @@ const sidebarLinks: SidebarLink = {
   //   label: "Other information",
   //   links: [
   //     { label: "Knowledge Base", icon: () => <HelpOutlineOutlinedIcon /> },
-  //     {
-  //       label: "Product Updates",
-  //       icon: () => <WorkspacePremiumOutlinedIcon />,
-  //     },
   //   ],
   // },
   // settings: {
@@ -111,10 +88,6 @@ const sidebarLinks: SidebarLink = {
   //     {
   //       label: "Personal Settings",
   //       icon: () => <ManageAccountsOutlinedIcon />,
-  //     },
-  //     {
-  //       label: "Global Settings",
-  //       icon: () => <SettingsOutlinedIcon />,
   //     },
   //   ],
   // },

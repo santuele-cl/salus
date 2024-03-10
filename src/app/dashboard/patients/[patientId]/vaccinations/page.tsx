@@ -1,4 +1,4 @@
-import { getVaccinationsByPatientId } from "@/actions/users/vaccinations";
+import { getVaccinationsByPatientId } from "@/actions/patients/vaccinations";
 import GeneralTable from "../_components/GeneralTable";
 
 const VaccinationsPage = async ({
@@ -11,7 +11,7 @@ const VaccinationsPage = async ({
     { id: "id", label: "ID" },
     { id: "vaccineName", label: "Vaccine name" },
     { id: "dosage", label: "Dosage" },
-    { id: "nextDueDate", label: "Next appointment", type: "date" },
+    { id: "nextDueDate", label: "Next appointment ", type: "date" },
   ];
   return (
     <div>

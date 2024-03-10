@@ -1,7 +1,7 @@
 import { Stack } from "@mui/system";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
 import Vaccination from "../../visit-history/[visitId]/_components/Vaccination";
-import { getVaccinationsByVaccinationsId } from "@/actions/users/vaccinations";
+import { getVaccinationsByVaccinationsId } from "@/actions/patients/vaccinations";
 
 const VaccinationPage = async ({
   params: { vaccinationId },

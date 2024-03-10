@@ -3,7 +3,7 @@ import { Box, Paper, Stack, Tab, Tabs, useTheme } from "@mui/material";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { getPatientByid } from "@/actions/patients";
-import { Patient } from "@prisma/client";
+import { ContactInfo, Patient } from "@prisma/client";
 import ProfileSidebar from "@/app/_ui/dashboard/patients/ProfileSidebar";
 import { usePathname } from "next/navigation";
 
@@ -29,20 +29,22 @@ const Layout = ({
 }) => {
   const pathname = usePathname();
   const segments = pathname.split("/");
-  // console.log("segments", segments);
-  const [profile, setProfile] = useState<Patient | undefined>(undefined);
+  const [profile, setProfile] = useState<Patient | null>();
+  const [contactInfo, setContactInfo] = useState<ContactInfo | null>();
 
   useEffect(() => {
     const getProfile = async () => {
       const patientProfile = await getPatientByid(patientId);
       if (patientProfile.success) setProfile(patientProfile.data);
+      if (patientProfile.success)
+        setContactInfo(patientProfile.data.contactInfo);
     };
 
     getProfile();
   }, []);
 
   // console.log("patientId", patientId);
-  // console.log("profile", profile);
+  console.log("profile", profile);
   return (
     <Stack
       sx={{
@@ -68,7 +70,9 @@ const Layout = ({
           },
         }}
       >
-        <ProfileSidebar profile={profile} />
+        {profile && contactInfo && (
+          <ProfileSidebar profile={profile} contactInfo={contactInfo} />
+        )}
       </Paper>
 
       <Stack flexGrow="1">

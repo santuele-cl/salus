@@ -100,7 +100,7 @@ export async function login(
     await signIn("credentials", {
       email,
       password,
-      redirectTo: callbackUrl || DEFAULT_LOGIN_REDIRECT,
+      // redirectTo: callbackUrl || "/",
     });
   } catch (error) {
     if (error instanceof AuthError) {

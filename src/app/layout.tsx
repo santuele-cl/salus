@@ -1,3 +1,4 @@
+// import "react-big-calendar/lib/css/react-big-calendar.css";
 import type { Metadata } from "next";
 import { SessionProvider } from "next-auth/react";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v13-appRouter";
@@ -6,7 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
 import { auth } from "@/auth";
-import TanstackProvider from "@/providers/TanstackProvider";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,10 +28,8 @@ export default async function RootLayout({
       <html lang="en">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            {/* <TanstackProvider> */}
             <CssBaseline />
             <body className={inter.className}>{children}</body>
-            {/* </TanstackProvider> */}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </html>
