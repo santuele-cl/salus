@@ -1,12 +1,15 @@
 import { getPatientByid } from "@/actions/patients";
-import { Box } from "@mui/material";
-import { redirect } from "next/navigation";
+import { Box, Typography } from "@mui/material";
 
-const ActiveTab = async ({ patientId }: { patientId: string }) => {
-  redirect("/dashboard/patients");
+const ActiveTab = async () => {
   // const patient = await getPatientByid(patientId);
 
-  // return <Box>{JSON.stringify(patient)}</Box>;
+  // return <Box>{JSON.stringify(patient.data)}</Box>;
+  return (
+    <Box>
+      <Typography>Dashboard Page</Typography>
+    </Box>
+  );
 };
 
 export default ActiveTab;

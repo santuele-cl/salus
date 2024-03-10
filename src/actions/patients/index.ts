@@ -1,6 +1,7 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { Patient } from "@prisma/client";
 
 export async function findPatient(term: string) {
   if (!term) return { error: "No search term found!" };

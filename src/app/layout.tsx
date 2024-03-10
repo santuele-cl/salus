@@ -7,6 +7,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
 import { auth } from "@/auth";
+import "react-big-calendar/lib/css/react-big-calendar.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -27,10 +28,8 @@ export default async function RootLayout({
       <html lang="en">
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
-            {/* <TanstackProvider> */}
             <CssBaseline />
             <body className={inter.className}>{children}</body>
-            {/* </TanstackProvider> */}
           </ThemeProvider>
         </AppRouterCacheProvider>
       </html>

@@ -20,7 +20,13 @@ const include: Array<keyof Presciption> = [
   "visitId",
 ];
 
-const Prescription = ({ prescription }: { prescription: Presciption }) => {
+const Prescription = ({
+  prescription,
+  drugName,
+}: {
+  prescription: Presciption;
+  drugName: string;
+}) => {
   const fields = Object.keys(prescription) as Array<keyof Presciption>;
 
   return (
@@ -30,7 +36,7 @@ const Prescription = ({ prescription }: { prescription: Presciption }) => {
       }}
     >
       <Typography variant="h6" sx={{ fontStyle: "italic" }}>
-        {prescription["patientId"] as string}
+        {drugName}
       </Typography>
 
       <Stack>

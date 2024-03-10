@@ -14,6 +14,7 @@ import { getToken } from "next-auth/jwt";
 const { auth } = NextAuth(authConfig);
 
 export default auth(async (req) => {
+  //@ts-expect-error
   const user = await getToken({
     req,
     secret: process.env.AUTH_SECRET!,
@@ -30,18 +31,20 @@ export default auth(async (req) => {
   if (isApiAuthRoute) return;
 
   if (isAuthRoute) {
-    if (isLoggedIn && user?.role) {
+    if (isLoggedIn) {
       // Pass nextUrl as 2nd argument to make an absolute url
-      if (user.role === "EMPLOYEE") {
-        return Response.redirect(
-          new URL(DEFAULT_EMPLOYEE_LOGIN_REDIRECT, nextUrl)
-        );
-      } else if (user.role === "PATIENT") {
-        return Response.redirect(
-          new URL(DEFAULT_PATIENT_LOGIN_REDIRECT, nextUrl)
-        );
+      if (user?.role) {
+        if (user.role === "EMPLOYEE") {
+          return Response.redirect(
+            new URL(DEFAULT_EMPLOYEE_LOGIN_REDIRECT, nextUrl)
+          );
+        } else {
+          return Response.redirect(
+            new URL(DEFAULT_PATIENT_LOGIN_REDIRECT, nextUrl)
+          );
+        }
       } else {
-        return;
+        return Response.redirect(new URL("/", nextUrl));
       }
     }
     return;
