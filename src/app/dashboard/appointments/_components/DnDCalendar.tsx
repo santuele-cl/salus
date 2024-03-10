@@ -69,6 +69,9 @@ export default function DnDCalendar() {
       });
     });
   };
+  const handleEventSelect = (props: any) => {
+    console.log("event select", props);
+  };
 
   return (
     <Box
@@ -78,6 +81,8 @@ export default function DnDCalendar() {
       }}
     >
       <DragAndDropCalendar
+        onSelectSlot={handleEventSelect}
+        selectable={true}
         onEventDrop={handleEventDrop}
         onEventResize={handleEventResize}
         draggableAccessor={(event: any) => event.isDraggable!}

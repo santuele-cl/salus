@@ -12,7 +12,7 @@ export const events: EventType[] = [
     title: "Board meeting",
     start: new Date(2024, 2, 15, 11, 0, 0),
     end: new Date(2024, 2, 15, 12, 0, 0),
-    isDraggable: false,
+    isDraggable: true,
   },
   {
     id: "2",
@@ -33,6 +33,13 @@ export const events: EventType[] = [
     title: "Birthday Party",
     start: new Date(2024, 2, 16, 15, 0, 0),
     end: new Date(2024, 2, 16, 16, 30, 0),
+    isDraggable: true,
+  },
+  {
+    id: "5",
+    title: "Training",
+    start: new Date(2024, 2, 16, 17, 0, 0),
+    end: new Date(2024, 2, 16, 19, 30, 0),
     isDraggable: true,
   },
 ];
