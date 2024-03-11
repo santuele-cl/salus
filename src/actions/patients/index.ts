@@ -66,3 +66,13 @@ export async function getTotalPatientsCount() {
     };
   }
 }
+
+export async function getPatientsIds() {
+  try {
+    const ids = await db.patient.findMany({select: {id: true,fname: true, lname: true}})
+    if(!ids || ids.length < 1) return {error: "No patients found!"}
+    return {success: "Fetch successful!", data: ids}
+  } catch (error) {
+    return { error: "An errors has occured. Fetch unsuccessful!"}
+  }
+}

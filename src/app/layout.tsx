@@ -7,7 +7,9 @@ import { ThemeProvider } from "@mui/material/styles";
 import theme from "@/theme";
 import { CssBaseline } from "@mui/material";
 import { auth } from "@/auth";
+
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import MuiXDateProvider from "@/providers/MuiXDateProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -29,7 +31,9 @@ export default async function RootLayout({
         <AppRouterCacheProvider>
           <ThemeProvider theme={theme}>
             <CssBaseline />
-            <body className={inter.className}>{children}</body>
+            <MuiXDateProvider>
+              <body className={inter.className}>{children}</body></MuiXDateProvider>
+
           </ThemeProvider>
         </AppRouterCacheProvider>
       </html>
