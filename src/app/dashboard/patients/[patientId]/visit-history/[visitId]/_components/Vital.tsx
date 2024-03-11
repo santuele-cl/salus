@@ -34,7 +34,7 @@ const Vital = ({ vitals }: { vitals: Vitals }) => {
             content = (
               <Box sx={{ marginLeft: "auto", fontStyle: "italic" }}>{`${format(
                 vitals[id]!,
-                " MMMM d, yyyy h:mm: a"
+                " MMMM d, yyyy h:mm a"
               )}`}</Box>
             );
           } else {

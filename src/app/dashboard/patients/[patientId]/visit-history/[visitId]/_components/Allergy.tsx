@@ -67,12 +67,12 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
             return (
               <Stack
                 key={field + i}
-                sx={{ flexDirection: "row", justifyContent: "space-between" }}
+                sx={{ flexDirection: "row", justifyContent: "space-between", textTransform: "capitalize" }}
               >
-                <Typography variant="subtitle2">
+                <Typography variant="subtitle2" >
                   {camelCaseToWords(field)}
                 </Typography>
-                <Typography sx={{ color: "success.main" }}>
+                <Typography sx={{ color: "success.main"}}>
                   {allergy[field] as string}
                 </Typography>
               </Stack>

@@ -22,7 +22,7 @@ const SocialHistories = async ({
         <Grid2 container spacing={2}>
           <Grid2 xs={12} md={6}>
             <TextField
-              label="Alcholol Use"
+              label="Alcohol Use"
               defaultValue={socialHistories?.alcoholUse}
               InputProps={{ readOnly: true }}
               fullWidth

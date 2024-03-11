@@ -8,9 +8,9 @@ const FamilyMedicalHistories = async ({
 }) => {
   const familyMedicalHistory = await getFamilyMedicalHistoriesByPatientID(patientId);
   const columns = [
-    { id: "id", label: "ID" },
-    { id: "ageOfOnset", label: "Age" },
+    { id: "ageOfOnset", label: "Age of on set" },
     { id: "condition", label: "Condition"},
+    { id: "createdAt", label: "Created on", type: "date"},
     { id: "updatedAt", label: "Last updated", type: "date"},
   ];
 

@@ -20,6 +20,8 @@ const PrescriptionsPage = async ({
   const prescriptions = response.data;
   const columns = [
     { id: "durationInDays", label: "Duration (in days)" },
+    { id: "dosage", label: "Dosage" },
+    { id: "frequencyPerDay", label: "Frequency (in days)" },
     { id: "startDate", label: "Start date", type: "date" },
     { id: "endDate", label: "End date", type: "date" },
   ];
