@@ -41,6 +41,7 @@ const MultiStepForm = () => {
     trigger,
     reset,
     control,
+    getValues,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(RegisterSchema),
@@ -149,7 +150,9 @@ const MultiStepForm = () => {
                             error={errors[id] ? true : false}
                             helperText={errors[id]?.message as string}
                             placeholder={placeholder}
-                            InputProps={{style: {textTransform: 'capitalize'} }}
+                            InputProps={{
+                              style: { textTransform: "capitalize" },
+                            }}
                             fullWidth
                           >
                             {options &&
@@ -199,6 +202,20 @@ const MultiStepForm = () => {
                           <Consent />
                         </Grid2>
                       );
+                    } else if (type === "password") {
+                      return (
+                        <Grid2 xs={12} sm={6} key={id}>
+                          <TextField
+                            label={label}
+                            type="password"
+                            {...register(id)}
+                            error={errors[id] ? true : false}
+                            helperText={errors[id]?.message as string}
+                            placeholder={placeholder}
+                            fullWidth
+                          />
+                        </Grid2>
+                      );
                     }
                     return (
                       <Grid2 xs={12} sm={6} key={id}>
@@ -228,6 +245,12 @@ const MultiStepForm = () => {
                   />
                 </FormGroup>
               ))}
+              {isLastStep && !getValues("consent") && (
+                <FormStatusText
+                  message="Must agree to the consent"
+                  status="error"
+                />
+              )}
             </Box>
           )}
           {/* STEP NAVIGATION */}

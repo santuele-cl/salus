@@ -50,11 +50,11 @@ const ResetPasswordForm = () => {
           placeholder="example@email.com"
         />
 
-        <Button>
-          <Link href="/auth/login">Login</Link>
-        </Button>
         <Button type="submit" variant="contained" disabled={pending}>
           Send reset email
+        </Button>
+        <Button>
+          <Link href="/auth/login">Login</Link>
         </Button>
       </Box>
       {success && <FormStatusText message={success} status="success" />}

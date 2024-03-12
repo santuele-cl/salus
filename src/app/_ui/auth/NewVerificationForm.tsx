@@ -4,6 +4,9 @@ import { verify } from "@/actions/auth";
 import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
 import FormStatusText from "./FormStatusText";
+import { Button, Container, Paper, Stack, Typography } from "@mui/material";
+import Link from "next/link";
+import Logo from "../dashboard/Logo";
 
 const NewVerificationForm = () => {
   const searchParams = useSearchParams();
@@ -38,19 +41,61 @@ const NewVerificationForm = () => {
   }, []);
 
   return (
-    <div>
-      <h1>NewVerificationForm</h1>
+    <Container maxWidth="sm">
+      <Paper sx={{ p: 4, borderRadius: "8px" }}>
+        <Stack spacing={3} sx={{ textAlign: "center" }}>
+          {/* HEADER */}
+          <Stack spacing={3}>
+            <Stack
+              direction="row"
+              gap={1}
+              alignItems="center"
+              justifyContent="center"
+            >
+              <Link
+                href="/"
+                style={{ lineHeight: 0, transition: "all 2s ease" }}
+              >
+                <Logo size={45} />
+              </Link>
+              <Typography
+                component={Link}
+                href="/"
+                mt="4px"
+                variant="h4"
+                textTransform="capitalize"
+                sx={{ textDecoration: "none", color: "common.black" }}
+                fontWeight={900}
+              >
+                Salus
+              </Typography>
+            </Stack>
+            <Stack>
+              <Typography variant="h4">Email Verification</Typography>
+            </Stack>
+          </Stack>
+          {/* FORM */}
+          {!success && !error && <p>Loading...</p>}
 
-      {!success && !error && <p>Loading...</p>}
-
-      {/* FORM STATUS */}
-      {(success || error) && (
-        <FormStatusText
-          status={success ? "success" : "error"}
-          message={success ? success : error}
-        />
-      )}
-    </div>
+          {success && (
+            <FormStatusText message={success || "Success"} status="success" />
+          )}
+          {error && (
+            <FormStatusText message={error || "Error"} status="error" />
+          )}
+          {(success || error) && (
+            <Button
+              LinkComponent={Link}
+              href="/auth/login"
+              variant="contained"
+              size="large"
+            >
+              Login
+            </Button>
+          )}
+        </Stack>
+      </Paper>
+    </Container>
   );
 };
 export default NewVerificationForm;

@@ -59,8 +59,8 @@ export const STEPS: Step[] = [
     fields: [
       { id: "username", label: "Username" },
       { id: "email", label: "Email" },
-      { id: "password", label: "Password" },
-      { id: "confirmPassword", label: "Confirm Password" },
+      { id: "password", label: "Password", type: "password" },
+      { id: "confirmPassword", label: "Confirm Password", type: "password" },
     ],
   },
   {
