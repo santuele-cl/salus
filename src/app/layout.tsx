@@ -32,8 +32,8 @@ export default async function RootLayout({
           <ThemeProvider theme={theme}>
             <CssBaseline />
             <MuiXDateProvider>
-              <body className={inter.className}>{children}</body>
-            </MuiXDateProvider>
+              <body className={inter.className}>{children}</body></MuiXDateProvider>
+
           </ThemeProvider>
         </AppRouterCacheProvider>
       </html>
