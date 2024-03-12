@@ -1,3 +1,4 @@
+"use client"
 import {
   Button,
   Divider,
@@ -29,19 +30,11 @@ import { AppointmentStatus } from "@prisma/client";
 const AppointmentStatusOption = Object.keys(AppointmentStatus) as Array<AppointmentStatus>
 
 
-const SelectAppointmentFormModal = ({
+const TestSelectAppointmentFormModal = ({
   showAppointmentModal,
   setShowAppointmentModal,
-  selectEndDate,
-  setSelectEndDate,
-  selectStartDate,
-  setSelectStartDate,
 }: {
   showAppointmentModal: boolean;
-  selectEndDate: Dayjs | null,
-  setSelectEndDate: Dispatch<SetStateAction<Dayjs | null>>;
-  selectStartDate: Dayjs | null,
-  setSelectStartDate: Dispatch<SetStateAction<Dayjs | null>>;
   setShowAppointmentModal: Dispatch<SetStateAction<boolean>>;
 }) => {
 
@@ -67,8 +60,8 @@ const SelectAppointmentFormModal = ({
       status: AppointmentStatus.SCHEDULED as AppointmentStatus,
       room: "",
       reason: "",
-      startDate: selectStartDate,
-      endDate: selectEndDate,
+      startDate: null,
+      endDate: null,
       patientId: "",
       employeeId: "",
     },
@@ -191,7 +184,7 @@ const SelectAppointmentFormModal = ({
                 disabled={pending}
                 size="small" />
             </Stack>
-            <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            {/* <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <AccessTimeOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
 
               <Controller
@@ -222,7 +215,7 @@ const SelectAppointmentFormModal = ({
                   />
                 }
               />
-            </Stack>
+            </Stack> */}
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <DescriptionOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
@@ -253,4 +246,4 @@ const SelectAppointmentFormModal = ({
     </Modal>
   );
 };
-export default SelectAppointmentFormModal;
+export default TestSelectAppointmentFormModal;

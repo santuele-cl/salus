@@ -11,12 +11,13 @@ const CustomToolbar = ({
   setStep,
   timeSlots,
   setTimeslots,
+  handleCloseAppointmentForm
 }: {
   step: number;
   timeSlots: number;
   setStep: Dispatch<SetStateAction<number>>;
   setTimeslots: Dispatch<SetStateAction<number>>;
-  toolBarProps: ToolbarProps;
+  toolBarProps: ToolbarProps; handleCloseAppointmentForm: () => void
 }) => {
   const { date, view, onNavigate, onView, label } = toolBarProps;
   return (
@@ -45,6 +46,7 @@ const CustomToolbar = ({
           variant="contained"
           size="small"
           sx={{ ml: 2 }}
+          onClick={handleCloseAppointmentForm}
         >
           Create appointment
         </Button>
