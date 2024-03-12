@@ -17,7 +17,7 @@ export const STEPS: Step[] = [
       { id: "fname", label: "First Name" },
       { id: "mname", label: "Middle Name" },
       { id: "lname", label: "Last Name" },
-      { id: "nameSuffix", label: "Name Suffix" },
+      { id: "nameSuffix", label: "Suffix" },
       {
         id: "gender",
         label: "Gender",
@@ -58,9 +58,9 @@ export const STEPS: Step[] = [
     description: "Input the information needed to create an account",
     fields: [
       { id: "username", label: "Username" },
-      { id: "email", label: "email" },
-      { id: "password", label: "password" },
-      { id: "confirmPassword", label: "confirmPassword" },
+      { id: "email", label: "Email" },
+      { id: "password", label: "Password" },
+      { id: "confirmPassword", label: "Confirm Password" },
     ],
   },
   {

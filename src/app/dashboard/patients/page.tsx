@@ -174,7 +174,7 @@ const PatientsPage = () => {
                       <TableCell align="right">{lname}</TableCell>
                       <TableCell align="right">{`${format(
                         bdate,
-                        " MMMM d, yyyy h:mm: a"
+                        " MMMM d, yyyy h:mm a"
                       )}`}</TableCell>
                       <TableCell
                         align="right"

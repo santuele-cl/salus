@@ -29,7 +29,7 @@ const MultiStepForm = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
 
-  const [activeStep, setActiveStep] = useState(3);
+  const [activeStep, setActiveStep] = useState(0);
   const currentStepDetails = STEPS[activeStep];
 
   const totalSteps = STEPS.length;
@@ -149,6 +149,7 @@ const MultiStepForm = () => {
                             error={errors[id] ? true : false}
                             helperText={errors[id]?.message as string}
                             placeholder={placeholder}
+                            InputProps={{style: {textTransform: 'capitalize'} }}
                             fullWidth
                           >
                             {options &&

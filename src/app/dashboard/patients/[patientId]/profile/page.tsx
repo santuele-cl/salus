@@ -4,6 +4,7 @@ import {
   TextField,
   Typography,
   InputAdornment,
+  capitalize,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { format } from "date-fns";
@@ -19,7 +20,7 @@ const ProfilePage = async ({
   const data = patient.data;
 
   return (
-    <Stack sx={{ padding: 3, gap: 2 }}>
+    <Stack sx={{ padding: 3, gap: 2}}>
       <Typography variant="h5">Personal Information</Typography>
       <Stack spacing='2px'>
         <Grid2 container spacing={2}>

@@ -46,7 +46,7 @@ const VisitPage = async ({
             Visit details for
             <Typography variant="h6" component="span">{`${format(
               visit.data?.createdAt!,
-              " MMMM d, yyyy h:mm: a"
+              " MMMM d, yyyy h:mm a"
             )}`}</Typography>
           </Typography>
           <Stack direction="row">
@@ -55,7 +55,7 @@ const VisitPage = async ({
               Updated :
               <Typography component="span" variant="subtitle2">{`${format(
                 visit.data?.updatedAt!,
-                " MMMM d, yyyy h:mm: a"
+                " MMMM d, yyyy h:mm a"
               )}`}</Typography>
             </Typography>
           </Stack>
@@ -67,7 +67,9 @@ const VisitPage = async ({
             <Grid2 xs={12} md={6}>
               <TextField
                 defaultValue={visit.data?.chiefComplaint}
-                disabled
+                InputProps={{
+                  readOnly: true,
+                }}
                 label="Chief complaint"
                 fullWidth
               />
@@ -76,7 +78,9 @@ const VisitPage = async ({
               <TextField
                 multiline
                 defaultValue={visit.data?.hpi}
-                disabled
+                InputProps={{
+                  readOnly: true,
+                }}
                 label="History of Present Illness"
                 fullWidth
               />
@@ -84,7 +88,9 @@ const VisitPage = async ({
             <Grid2 xs={12} md={6}>
               <TextField
                 defaultValue={visit.data?.accompaniedBy}
-                disabled
+                InputProps={{
+                  readOnly: true,
+                }}
                 label="Accompanied by"
                 fullWidth
               />

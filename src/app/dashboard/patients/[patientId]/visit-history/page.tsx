@@ -52,7 +52,7 @@ const VisitHistoryPage = async ({
                   </TableCell>
                   <TableCell align="left">{`${format(
                     visit.createdAt,
-                    " MMMM d, yyyy h:mm: a"
+                    " MMMM d, yyyy h:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{visit.chiefComplaint}</TableCell>
                   <TableCell align="right">

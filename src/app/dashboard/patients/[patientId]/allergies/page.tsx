@@ -8,10 +8,9 @@ const AllergiesPage = async ({
 }) => {
   const allergies = await getAllergiesByPatientId(patientId);
   const columns = [
-    { id: "id", label: "ID" },
     { id: "name", label: "Name" },
     { id: "severity", label: "Severity" },
-    { id: "createdAt", label: "Date diagnosed ", type: "date" },
+    { id: "createdAt", label: "Date diagnosed", type: "date" },
   ];
   return (
     <div>
