@@ -51,7 +51,7 @@ model EmployeeRole {
 model Employee {
   id                    String              @id @default(nanoid(8))
   fname                 String
-  mname                 String
+  mname                 String?
   lname                 String
   gender                Gender
   bdate                 DateTime
@@ -81,7 +81,7 @@ model Patient {
   createdAt            DateTime               @default(now())
   updatedAt            DateTime               @updatedAt
   fname                String
-  mname                String
+  mname                String?
   lname                String
   nameSuffix           String?
   gender               Gender

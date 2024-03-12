@@ -1,5 +1,5 @@
 import * as z from "zod";
-import { AppointmentStatus, PhysicalPart } from "@prisma/client";
+import { AppointmentStatus, CivilStatus, Gender, PhysicalPart } from "@prisma/client";
 
 export const AppointmentSchema = z.object({
   title: z.string().min(1, "This field is required"),
@@ -91,18 +91,18 @@ export const NewPasswordSchema = z.object({
 
 export const RegisterSchema = z.object({
   // PERSONAL
-  fname: z.string().min(1, "First Name is required!"),
-  mname: z.string().min(1, "Middle Name is required!"),
-  lname: z.string().min(1, "Last Name is required!"),
+  fname: z.string().min(1, "First Name is required!").regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  mname: z.string().optional(),
+  lname: z.string().min(1, "Last Name is required!").regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   nameSuffix: z.optional(z.string()),
-  gender: z.string(),
+  gender: z.nativeEnum(Gender),
   age: z.coerce.number(),
   bdate: z.coerce.date(),
-  bplace: z.string().min(1, "Birth place is required!"),
-  civilStatus: z.string().min(1, "Civil status is required"),
+  bplace: z.string().min(1, "Birth place is required!").regex(new RegExp(/^[a-zA-Z ,]+$/), "Invalid input"),
+  civilStatus: z.nativeEnum(CivilStatus),
   occupation: z.string().min(1, "Occupation is required"),
   // CONTACT
-  phone: z.string().min(1, "Phone is required"),
+  phone: z.string().regex(new RegExp(/^(09|\+639)\d{9}$/), "Invalid phone format"),
   // ADDRESS
   houseNumber: z.string().min(1, "House number is required"),
   street: z.string().min(1, "Street is required"),
@@ -111,15 +111,12 @@ export const RegisterSchema = z.object({
   province: z.string().min(1, "Province is required"),
   region: z.string().min(1, "Region is required"),
   country: z.string().min(1, "Country is required"),
-  zipCode: z.string().min(1, "Zip code is required"),
+  zipCode: z.string().regex(new RegExp(/^\d{4}$/), "Invalid format"),
   // CONSENT
   consent: z.boolean().refine((value) => value === true, {
     message: "Consent required!",
   }),
-  // HEALTH RELATED
-  isSmoking: z.coerce.boolean(),
-  isCovidVaccinated: z.coerce.boolean(),
-  isDengvaxiaVaccinated: z.coerce.boolean(),
+
   // ACCOUNT
   username: z.string().min(1, "Username is required!"),
   email: z.string().email("Email is required!"),

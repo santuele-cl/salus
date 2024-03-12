@@ -153,6 +153,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     username,
     email,
     password,
+    confirmPassword
   } = validatedData.data;
 
   const isEmailTaken = await getUserByEmail(email);
@@ -174,7 +175,6 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
           patient: {
             create: {
               fname,
-              mname,
               lname,
               nameSuffix,
               gender: gender as Gender,
@@ -201,6 +201,8 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
                   },
                 },
               },
+              ...(mname && { mname: mname }),
+
             },
           },
         },
