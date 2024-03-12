@@ -1,5 +1,17 @@
 import * as z from "zod";
-import { PhysicalPart } from "@prisma/client";
+import { AppointmentStatus, PhysicalPart } from "@prisma/client";
+
+export const AppointmentSchema = z.object({
+  title: z.string().min(1, "This field is required"),
+  status: z.nativeEnum(AppointmentStatus),
+  room: z.string().min(1, "This field is required"),
+  reason: z.string().min(1, "This field is required"),
+  startDate: z.coerce.date(),
+  endDate: z.coerce.date(),
+  patientId: z.string().min(1, "This field is required"),
+  employeeId: z.string().min(1, "This field is required"),
+})
+
 
 export const PhysicalExaminationSchema = z.object({
   physicalPart: z.nativeEnum(PhysicalPart),
