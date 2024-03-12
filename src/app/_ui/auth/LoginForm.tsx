@@ -50,7 +50,6 @@ const LoginForm = () => {
       // console.log("res", res);
 
       if (res?.error) {
-        reset();
         setError(res.error);
       }
 
@@ -60,8 +59,8 @@ const LoginForm = () => {
       }
 
       if (res.twoFactor) setShowTwoFactorInput(true);
-    } catch {
-      setError("Something went asd wrong!");
+    } catch (error) {
+      console.log(error);
     }
 
     setPending(false);

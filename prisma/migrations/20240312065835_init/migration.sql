@@ -1,4 +1,7 @@
 -- CreateEnum
+CREATE TYPE "AppointmentStatus" AS ENUM ('SCHEDULED', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'RESCHEDULED');
+
+-- CreateEnum
 CREATE TYPE "PhysicalPart" AS ENUM ('HEAD_AND_NECK', 'CHEST', 'ABDOMEN', 'BACK', 'UPPER_EXTREMITIES', 'LOWER_EXTREMITIES', 'GENITALS', 'SKIN', 'EYES', 'EARS', 'NOSE', 'MOUTH_AND_THROAT', 'OTHER');
 
 -- CreateEnum
@@ -81,7 +84,7 @@ CREATE TABLE "EmployeeRole" (
 CREATE TABLE "Employee" (
     "id" TEXT NOT NULL,
     "fname" TEXT NOT NULL,
-    "mname" TEXT NOT NULL,
+    "mname" TEXT,
     "lname" TEXT NOT NULL,
     "gender" "Gender" NOT NULL,
     "bdate" TIMESTAMP(3) NOT NULL,
@@ -102,7 +105,7 @@ CREATE TABLE "Patient" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "fname" TEXT NOT NULL,
-    "mname" TEXT NOT NULL,
+    "mname" TEXT,
     "lname" TEXT NOT NULL,
     "nameSuffix" TEXT,
     "gender" "Gender" NOT NULL,
@@ -114,6 +117,23 @@ CREATE TABLE "Patient" (
     "profileId" TEXT NOT NULL,
 
     CONSTRAINT "Patient_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Appointments" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+    "title" TEXT NOT NULL,
+    "status" "AppointmentStatus" NOT NULL,
+    "room" TEXT NOT NULL,
+    "reason" TEXT NOT NULL,
+    "startDate" TIMESTAMP(3) NOT NULL,
+    "endDate" TIMESTAMP(3) NOT NULL,
+    "patientId" TEXT,
+    "employeeId" TEXT,
+
+    CONSTRAINT "Appointments_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -566,6 +586,12 @@ ALTER TABLE "Employee" ADD CONSTRAINT "Employee_employeeRoleId_fkey" FOREIGN KEY
 
 -- AddForeignKey
 ALTER TABLE "Patient" ADD CONSTRAINT "Patient_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Appointments" ADD CONSTRAINT "Appointments_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Appointments" ADD CONSTRAINT "Appointments_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Vaccination" ADD CONSTRAINT "Vaccination_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;

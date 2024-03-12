@@ -1,5 +1,10 @@
 import * as z from "zod";
-import { AppointmentStatus, CivilStatus, Gender, PhysicalPart } from "@prisma/client";
+import {
+  AppointmentStatus,
+  CivilStatus,
+  Gender,
+  PhysicalPart,
+} from "@prisma/client";
 
 export const AppointmentSchema = z.object({
   title: z.string().min(1, "This field is required"),
@@ -10,8 +15,7 @@ export const AppointmentSchema = z.object({
   endDate: z.coerce.date(),
   patientId: z.string().min(1, "This field is required"),
   employeeId: z.string().min(1, "This field is required"),
-})
-
+});
 
 export const PhysicalExaminationSchema = z.object({
   physicalPart: z.nativeEnum(PhysicalPart),
@@ -91,26 +95,52 @@ export const NewPasswordSchema = z.object({
 
 export const RegisterSchema = z.object({
   // PERSONAL
-  fname: z.string().min(1, "First Name is required!").regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  fname: z
+    .string()
+    .min(1, "First Name is required!")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   mname: z.string().optional(),
-  lname: z.string().min(1, "Last Name is required!").regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  lname: z
+    .string()
+    .min(1, "Last Name is required!")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   nameSuffix: z.optional(z.string()),
   gender: z.nativeEnum(Gender),
   age: z.coerce.number(),
   bdate: z.coerce.date(),
-  bplace: z.string().min(1, "Birth place is required!").regex(new RegExp(/^[a-zA-Z ,]+$/), "Invalid input"),
+  bplace: z
+    .string()
+    .min(1, "Birth place is required!")
+    .regex(new RegExp(/^[a-zA-Z ,]+$/), "Invalid input"),
   civilStatus: z.nativeEnum(CivilStatus),
-  occupation: z.string().min(1, "Occupation is required"),
+  occupation: z
+    .string()
+    .min(1, "Occupation is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
   // CONTACT
-  phone: z.string().regex(new RegExp(/^(09|\+639)\d{9}$/), "Invalid phone format"),
+  phone: z
+    .string()
+    .regex(new RegExp(/^(09|\+639)\d{9}$/), "Invalid phone format"),
   // ADDRESS
   houseNumber: z.string().min(1, "House number is required"),
   street: z.string().min(1, "Street is required"),
   barangay: z.string().min(1, "Barangay is required"),
-  city: z.string().min(1, "City is required"),
-  province: z.string().min(1, "Province is required"),
-  region: z.string().min(1, "Region is required"),
-  country: z.string().min(1, "Country is required"),
+  city: z
+    .string()
+    .min(1, "City is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  province: z
+    .string()
+    .min(1, "Province is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  region: z
+    .string()
+    .min(1, "Region is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  country: z
+    .string()
+    .min(1, "Country is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
   zipCode: z.string().regex(new RegExp(/^\d{4}$/), "Invalid format"),
   // CONSENT
   consent: z.boolean().refine((value) => value === true, {
@@ -118,7 +148,13 @@ export const RegisterSchema = z.object({
   }),
 
   // ACCOUNT
-  username: z.string().min(1, "Username is required!"),
+  username: z
+    .string()
+    .min(1, "Username is required!")
+    .regex(
+      new RegExp(/^[^\d]\w*$/),
+      "Username must contain letters and numbers only and must not start with number."
+    ),
   email: z.string().email("Email is required!"),
   password: z.string().min(1, "Password is required!"),
   confirmPassword: z.string().min(1, "Password is required!"),
