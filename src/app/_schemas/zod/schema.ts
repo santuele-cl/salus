@@ -6,35 +6,50 @@ import {
   PhysicalPart,
 } from "@prisma/client";
 
+export const DiagnosisSchema = z.object({
+  condition: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  diagnosisDate: z.coerce.date(),
+  treatment: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  patientId: z.string().min(1, "Required field"),
+  visitId: z.string().min(1, "Required field"),
+  physicianId: z.string().min(1, "Required field"),
+});
+
 export const AppointmentSchema = z.object({
-  title: z.string().min(1, "This field is required"),
+  title: z.string().min(1, "Required field"),
   status: z.nativeEnum(AppointmentStatus),
-  room: z.string().min(1, "This field is required"),
-  reason: z.string().min(1, "This field is required"),
+  room: z.string().min(1, "Required field"),
+  reason: z.string().min(1, "Required field"),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  patientId: z.string().min(1, "This field is required"),
-  employeeId: z.string().min(1, "This field is required"),
+  patientId: z.string().min(1, "Required field"),
+  employeeId: z.string().min(1, "Required field"),
 });
 
 export const PhysicalExaminationSchema = z.object({
   physicalPart: z.nativeEnum(PhysicalPart),
   specifyIfOther: z.string().optional(),
   isNormal: z.coerce.boolean(),
-  remarks: z.string().min(1, "This field is required"),
+  remarks: z.string().min(1, "Required field"),
   visitId: z.string(),
   patientId: z.string(),
 });
 
 export const LaboratoryRequestSchema = z.object({
-  labProcedureId: z.string().min(1, "This field is required"),
-  requestingPhysicianId: z.string().min(1, "This field is required"),
-  visitId: z.string().min(1, "This field is required"),
-  patientId: z.string().min(1, "This field is required"),
+  labProcedureId: z.string().min(1, "Required field"),
+  requestingPhysicianId: z.string().min(1, "Required field"),
+  visitId: z.string().min(1, "Required field"),
+  patientId: z.string().min(1, "Required field"),
 });
 
 export const PrescriptionSchema = z.object({
-  drugsId: z.string().min(1, "This field is required"),
+  drugsId: z.string().min(1, "Required field"),
   dosage: z.coerce.number().refine((value) => value !== 0),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
@@ -48,25 +63,25 @@ export const PrescriptionSchema = z.object({
     .refine((value) => value !== 0)
     .optional(),
   notes: z.string().optional(),
-  physicianId: z.string().min(1, "This field is required"),
-  patientId: z.string().min(1, "This field is required"),
-  visitId: z.string().min(1, "This field is required"),
+  physicianId: z.string().min(1, "Required field"),
+  patientId: z.string().min(1, "Required field"),
+  visitId: z.string().min(1, "Required field"),
 });
 
 export const VisitSchema = z.object({
   accompaniedBy: z.string().optional(),
-  chiefComplaint: z.string().min(1, "This field is required"),
-  hpi: z.string().min(1, "This field is required"),
+  chiefComplaint: z.string().min(1, "Required field"),
+  hpi: z.string().min(1, "Required field"),
 });
 
 export const VitalsSchema = z.object({
   heightInCm: z.coerce.number().refine((value) => value !== 0),
   weightInKg: z.coerce.number().refine((value) => value !== 0),
   bodyTemperatureInCelsius: z.coerce.number().refine((value) => value !== 0),
-  bloodPressure: z.string().min(1, "This field is required"),
-  pulseRate: z.string().min(1, "This field is required"),
-  respiratoryRate: z.string().min(1, "This field is required"),
-  oxygenSaturation: z.string().min(1, "This field is required"),
+  bloodPressure: z.string().min(1, "Required field"),
+  pulseRate: z.string().min(1, "Required field"),
+  respiratoryRate: z.string().min(1, "Required field"),
+  oxygenSaturation: z.string().min(1, "Required field"),
   checkedById: z.string().min(1, "Requred fields"),
 });
 
@@ -74,11 +89,11 @@ export const EvaluationSchema = z.object({
   heightInCm: z.number(),
   weightInKl: z.number(),
   bodyTemperatureInCelsius: z.number(),
-  hbloodPressurepi: z.string().min(1, "This field is required"),
-  pulseRate: z.string().min(1, "This field is required"),
-  respiratoryRate: z.string().min(1, "This field is required"),
-  hpi: z.string().min(1, "This field is required"),
-  oxygenSaturation: z.string().min(1, "This field is required"),
+  hbloodPressurepi: z.string().min(1, "Required field"),
+  pulseRate: z.string().min(1, "Required field"),
+  respiratoryRate: z.string().min(1, "Required field"),
+  hpi: z.string().min(1, "Required field"),
+  oxygenSaturation: z.string().min(1, "Required field"),
 });
 
 export const SettingsSchema = z.object({
