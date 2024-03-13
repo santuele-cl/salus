@@ -24,7 +24,7 @@ const ProfileSidebar = ({
 }) => {
   if (!profile) return <Typography>Loading..</Typography>;
 
-  console.log("profile sidebar", profile);
+  // console.log("profile sidebar", profile);
   return (
     <Stack
       sx={{

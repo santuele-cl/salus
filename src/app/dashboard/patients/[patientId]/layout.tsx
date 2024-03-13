@@ -44,7 +44,7 @@ const Layout = ({
   }, []);
 
   // console.log("patientId", patientId);
-  console.log("profile", profile);
+  // console.log("profile", profile);
   return (
     <Stack
       sx={{
