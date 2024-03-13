@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Divider,
   Stack,
   Table,
   TableBody,
@@ -122,6 +123,7 @@ const PrescriptionsPage = () => {
           </Button>
         </Stack>
       </Stack>
+      <Divider sx={{ my: 1 }} />
       <TableContainer>
         <Table
           sx={{ minWidth: 650, overflow: "auto" }}
