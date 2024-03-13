@@ -15,19 +15,20 @@ import BadgeOutlinedIcon from "@mui/icons-material/BadgeOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
 import DescriptionOutlinedIcon from "@mui/icons-material/DescriptionOutlined";
 import { Dayjs } from "dayjs";
-import PersonOutlinedIcon from '@mui/icons-material/PersonOutlined';
-import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import AssignmentIndOutlinedIcon from "@mui/icons-material/AssignmentIndOutlined";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createAppointment } from "@/actions/appointment";
 import { DateTimePicker } from "@mui/x-date-pickers";
 import { AppointmentSchema } from "@/app/_schemas/zod/schema";
-import AutorenewOutlinedIcon from '@mui/icons-material/AutorenewOutlined';
+import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { AppointmentStatus } from "@prisma/client";
 
-const AppointmentStatusOption = Object.keys(AppointmentStatus) as Array<AppointmentStatus>
-
+const AppointmentStatusOption = Object.keys(
+  AppointmentStatus
+) as Array<AppointmentStatus>;
 
 const SelectAppointmentFormModal = ({
   showAppointmentModal,
@@ -38,13 +39,12 @@ const SelectAppointmentFormModal = ({
   setSelectStartDate,
 }: {
   showAppointmentModal: boolean;
-  selectEndDate: Dayjs | null,
+  selectEndDate: Dayjs | null;
   setSelectEndDate: Dispatch<SetStateAction<Dayjs | null>>;
-  selectStartDate: Dayjs | null,
+  selectStartDate: Dayjs | null;
   setSelectStartDate: Dispatch<SetStateAction<Dayjs | null>>;
   setShowAppointmentModal: Dispatch<SetStateAction<boolean>>;
 }) => {
-
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -53,13 +53,12 @@ const SelectAppointmentFormModal = ({
     setShowAppointmentModal(false);
   };
 
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-    control
+    control,
   } = useForm({
     resolver: zodResolver(AppointmentSchema),
     defaultValues: {
@@ -75,7 +74,7 @@ const SelectAppointmentFormModal = ({
   });
 
   const onSubmit = async (data: z.infer<typeof AppointmentSchema>) => {
-    console.log(data)
+    // console.log(data)
     // setPending(true);
     // setError("");
     // setSuccess("");
@@ -99,7 +98,7 @@ const SelectAppointmentFormModal = ({
     // }
   };
 
-  console.log(errors)
+  // console.log(errors);
 
   return (
     <Modal
@@ -126,7 +125,12 @@ const SelectAppointmentFormModal = ({
             </IconButton>
           </Stack>
           <Divider sx={{ my: 1 }} />
-          <Stack component="form" spacing={2} sx={{ p: 2 }} onSubmit={handleSubmit(onSubmit)}>
+          <Stack
+            component="form"
+            spacing={2}
+            sx={{ p: 2 }}
+            onSubmit={handleSubmit(onSubmit)}
+          >
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <PersonOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
@@ -180,16 +184,18 @@ const SelectAppointmentFormModal = ({
                   </MenuItem>
                 ))}
               </TextField>
-
             </Stack>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <BadgeOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
-              <TextField placeholder="room number" sx={{ flex: "1" }}
+              <TextField
+                placeholder="room number"
+                sx={{ flex: "1" }}
                 {...register("room")}
                 error={errors.room ? true : false}
                 helperText={errors.room?.message}
                 disabled={pending}
-                size="small" />
+                size="small"
+              />
             </Stack>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <AccessTimeOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
@@ -198,29 +204,26 @@ const SelectAppointmentFormModal = ({
                 name="startDate"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) =>
-                  <DateTimePicker
-                    {...field}
-
-
-                  />
-                }
+                render={({ field }) => <DateTimePicker {...field} />}
               />
             </Stack>
-            <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4, justifyContent: "flex-end" }}>
-              <AccessTimeOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)", opacity: '0' }} />
+            <Stack
+              sx={{
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 4,
+                justifyContent: "flex-end",
+              }}
+            >
+              <AccessTimeOutlinedIcon
+                sx={{ color: "rgba(0,0,0,0.3)", opacity: "0" }}
+              />
 
               <Controller
                 name="endDate"
                 control={control}
                 rules={{ required: true }}
-                render={({ field }) =>
-                  <DateTimePicker
-                    {...field}
-
-
-                  />
-                }
+                render={({ field }) => <DateTimePicker {...field} />}
               />
             </Stack>
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>

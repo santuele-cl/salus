@@ -84,3 +84,37 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
 
   return { success: "Diagnosis added!", data: diagnosis };
 }
+
+export async function findDiagnoses(term?: string, patientId?: string) {
+  noStore();
+
+  console.log("findDiagnoses called");
+
+  if (!term) return { error: "No data found!" };
+
+  try {
+    const diagnoses = await db.diagnosis.findMany({
+      where: {
+        ...(patientId && { patientId }),
+        OR: [
+          { id: { contains: term, mode: "insensitive" } },
+          {
+            condition: {
+              contains: term,
+              mode: "insensitive",
+            },
+          },
+        ],
+      },
+      include: { physician: true },
+    });
+
+    if (!diagnoses || diagnoses.length < 1) {
+      return { error: "No diagnoses found!" };
+    } else {
+      return { success: "Users found!", data: diagnoses };
+    }
+  } catch (error) {
+    return { error: "Something went wrong!" };
+  }
+}

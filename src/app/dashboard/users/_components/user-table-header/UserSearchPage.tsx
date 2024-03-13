@@ -3,6 +3,7 @@ import { format } from "date-fns";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import {
   Button,
+  Divider,
   Paper,
   Stack,
   Table,
@@ -93,7 +94,7 @@ const UserSearchPage = () => {
           </LoadingButton>
         </Stack>
       </Stack>
-      <hr />
+      <Divider sx={{ my: 1 }} />
       <TableContainer>
         <Table
           sx={{ minWidth: 650, overflow: "auto" }}
@@ -177,19 +178,20 @@ const UserSearchPage = () => {
           </TableBody>
         </Table>
       </TableContainer>
-      {!users && (
-        <Stack
-          spacing={1}
-          sx={{
-            justifyContent: "center",
-            alignItems: "center",
-            p: 8,
-          }}
-        >
-          <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
-          <Typography>No results found!</Typography>
-        </Stack>
-      )}
+      {!users ||
+        (users?.length && (
+          <Stack
+            spacing={1}
+            sx={{
+              justifyContent: "center",
+              alignItems: "center",
+              p: 8,
+            }}
+          >
+            <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
+            <Typography>No results found!</Typography>
+          </Stack>
+        ))}
     </Paper>
   );
 };

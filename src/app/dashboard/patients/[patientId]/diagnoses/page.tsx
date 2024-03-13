@@ -1,6 +1,14 @@
-import { getDiagnosesByPatientId } from "@/actions/patients/diagnosis";
+"use client";
 import {
+  findDiagnoses,
+  getDiagnosesByPatientId,
+} from "@/actions/patients/diagnosis";
+import { LoadingButton } from "@mui/lab";
+import {
+  Box,
   Button,
+  Divider,
+  Paper,
   Stack,
   Table,
   TableBody,
@@ -8,62 +16,148 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
+import { Diagnosis } from "@prisma/client";
 import { format } from "date-fns";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 
-const DiagnosisPage = async ({
-  params: { patientId },
-}: {
-  params: { patientId: string };
-}) => {
-  const response = await getDiagnosesByPatientId(patientId);
-  const diagnoses = response.data;
+const DiagnosisPage = () => {
+  const { patientId } = useParams();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
+  const [error, setError] = useState("");
+
+  console.log(searchTerm);
+  console.log(diagnoses);
+
+  const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
+
+  const fetchDiagnosis = async () => {
+    const response = await getDiagnosesByPatientId(patientId as string);
+    if (response.success) setDiagnoses(response.data);
+    else if (response.error) setError(response.error);
+    else setError("Fetch unsuccessful. Try again.");
+  };
+
+  const handleSearch = async (e: FormEvent) => {
+    console.log("searching");
+    e.preventDefault();
+    setIsSearching(true);
+    const response = await findDiagnoses(searchTerm, patientId as string);
+    if (response.success) setDiagnoses(response.data);
+    else if (response.error) {
+      setError(response.error);
+      setDiagnoses([]);
+    } else setError("Fetch unsuccessful. Try again.");
+    setIsSearching(false);
+  };
+
+  useEffect(() => {
+    fetchDiagnosis();
+  }, []);
+
   return (
-    <TableContainer>
-      <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell align="left">Condition</TableCell>
-            <TableCell align="left">Date Diagnosed</TableCell>
-            <TableCell align="left">Diagnose by</TableCell>
-            <TableCell align="right">Details</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {diagnoses &&
-            diagnoses.length > 0 &&
-            diagnoses.map((diagnosis) => {
-              const physician = diagnosis.physician;
-              return (
-                <TableRow
-                  key={diagnosis.id}
-                  sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                >
-                  <TableCell align="left">{diagnosis.condition}</TableCell>
-                  <TableCell align="left">{`${format(
-                    diagnosis.diagnosisDate,
-                    " MMMM d, yyyy"
-                  )}`}</TableCell>
-                  <TableCell align="left">{`${physician?.employeeRole?.roleName} ${physician?.fname} ${physician?.lname} `}</TableCell>
+    <Box sx={{ p: 2 }}>
+      <Stack
+        direction="row"
+        sx={{
+          height: "55px",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Stack>
+          <Typography variant="h6" gap={0}>
+            Diagnoses
+          </Typography>
+          <Typography variant="body1" sx={{ mt: "-4px" }}>
+            View patient&apos;s diagnoses history
+          </Typography>
+        </Stack>
+        <Stack
+          component="form"
+          onSubmit={(e) => handleSearch(e)}
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            label="Search by ID or condition"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => handleChange(e.target.value)}
+          />
+          <LoadingButton
+            loading={isSearching}
+            type="submit"
+            variant="contained"
+            sx={{ alignSelf: "stretch" }}
+          >
+            Search
+          </LoadingButton>
+          <Button variant="outlined" onClick={() => fetchDiagnosis()}>
+            Fetch latest
+          </Button>
+        </Stack>
+      </Stack>
+      <Divider sx={{ my: 1 }} />
+      <TableContainer>
+        <Table
+          sx={{ minWidth: 650, overflow: "auto" }}
+          aria-label="simple table"
+        >
+          <TableHead>
+            <TableRow>
+              <TableCell align="left">Condition</TableCell>
+              <TableCell align="left">Date Diagnosed</TableCell>
+              <TableCell align="left">Diagnose by</TableCell>
+              <TableCell align="right">Details</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {diagnoses &&
+              diagnoses.length > 0 &&
+              diagnoses.map((diagnosis) => {
+                const physician = diagnosis.physician;
+                return (
+                  <TableRow
+                    key={diagnosis.id}
+                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                  >
+                    <TableCell align="left">{diagnosis.condition}</TableCell>
+                    <TableCell align="left">{`${format(
+                      diagnosis.diagnosisDate,
+                      " MMMM d, yyyy"
+                    )}`}</TableCell>
+                    <TableCell align="left">{`${physician?.employeeRole?.roleName} ${physician?.fname} ${physician?.lname} `}</TableCell>
 
-                  <TableCell align="right">
-                    <Button
-                      variant="contained"
-                      LinkComponent={Link}
-                      href={`/dashboard/patients/${patientId}/diagnoses/${diagnosis.id}`}
-                    >
-                      View
-                    </Button>
-                    {/* <Button variant="outlined">Select</Button> */}
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-        </TableBody>
-      </Table>
-    </TableContainer>
+                    <TableCell align="right">
+                      <Button
+                        variant="contained"
+                        LinkComponent={Link}
+                        href={`/dashboard/patients/${patientId}/diagnoses/${diagnosis.id}`}
+                      >
+                        View
+                      </Button>
+                      {/* <Button variant="outlined">Select</Button> */}
+                    </TableCell>
+                  </TableRow>
+                );
+              })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Box>
   );
 };
 export default DiagnosisPage;
