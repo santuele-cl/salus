@@ -106,7 +106,19 @@ export async function findDiagnoses(term?: string, patientId?: string) {
           },
         ],
       },
-      include: { physician: true },
+      include: {
+        physician: {
+          select: {
+            fname: true,
+            lname: true,
+            employeeRole: {
+              select: {
+                roleName: true,
+              },
+            },
+          },
+        },
+      },
     });
 
     if (!diagnoses || diagnoses.length < 1) {
