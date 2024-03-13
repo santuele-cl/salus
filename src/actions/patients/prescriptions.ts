@@ -89,15 +89,9 @@ export async function findPrescriptionByTermAndPatientId(
         ],
       },
       include: {
-        physician: {
+        drugs: {
           select: {
-            fname: true,
-            lname: true,
-            employeeRole: {
-              select: {
-                roleName: true,
-              },
-            },
+            name: true,
           },
         },
       },
