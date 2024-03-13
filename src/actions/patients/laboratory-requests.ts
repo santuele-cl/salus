@@ -80,3 +80,46 @@ export async function postLaboratoryRequest(
 
   return { success: "Laboratory request added!", data: laboratoryRequest };
 }
+
+export async function findLaboratoryRequestsByTermAndPatientId(
+  term?: string,
+  patientId?: string
+) {
+  noStore();
+
+  if (!term) return { error: "No data found!" };
+
+  try {
+    const laboratoryRequests = await db.laboratoryRequest.findMany({
+      where: {
+        ...(patientId && { patientId }),
+        OR: [
+          { id: { contains: term, mode: "insensitive" } },
+          {
+            laboratoryProcedure: {
+              procedureName: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        laboratoryProcedure: {
+          select: {
+            procedureName: true,
+          },
+        },
+      },
+    });
+
+    if (!laboratoryRequests || laboratoryRequests.length < 1) {
+      return { error: "No laboratoryRequests found!" };
+    } else {
+      return { success: "Fetch successful!", data: laboratoryRequests };
+    }
+  } catch (error) {
+    return { error: "Something went wrong!" };
+  }
+}
