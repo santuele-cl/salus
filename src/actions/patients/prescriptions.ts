@@ -3,10 +3,12 @@
 import { db } from "@/app/_lib/db";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
 import { Presciption } from "@prisma/client";
-import { unstable_noStore } from "next/cache";
+import { unstable_noStore as noStore } from "next/cache";
+
 import { z } from "zod";
 
 export async function getPrescriptionsByPatientId(patientId: string) {
+  noStore();
   const prescriptions = await db.presciption.findMany({
     where: { patientId },
     include: {
@@ -45,18 +47,67 @@ export async function addPrescription(
 }
 
 export async function getPrescriptionByPrescriptionId(prescriptionId: string) {
-  unstable_noStore();
+  noStore();
   try {
     const prescription = await db.presciption.findUnique({
       where: { id: prescriptionId },
-    include: {
-      drugs: {select: {name: true}}
-    }
+      include: {
+        drugs: { select: { name: true } },
+      },
     });
 
     if (!prescription) return { error: "No prescription data found!" };
 
     return { success: "Prescription found!", data: prescription };
+  } catch (error) {
+    return { error: "Something went wrong!" };
+  }
+}
+
+export async function findPrescriptionByTermAndPatientId(
+  term?: string,
+  patientId?: string
+) {
+  noStore();
+
+  if (!term) return { error: "No data found!" };
+
+  try {
+    const presciptions = await db.presciption.findMany({
+      where: {
+        ...(patientId && { patientId }),
+        OR: [
+          { id: { contains: term, mode: "insensitive" } },
+          {
+            drugs: {
+              name: {
+                contains: term,
+                mode: "insensitive",
+              },
+            },
+          },
+        ],
+      },
+      include: {
+        physician: {
+          select: {
+            fname: true,
+            lname: true,
+            employeeRole: {
+              select: {
+                roleName: true,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    if (!presciptions || presciptions.length < 1) {
+      return { error: "No presciptions found!" };
+    } else {
+      return { success: "Fetch successful!", data: presciptions };
+    }
   } catch (error) {
     return { error: "Something went wrong!" };
   }

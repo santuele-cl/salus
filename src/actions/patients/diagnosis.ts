@@ -85,10 +85,11 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
   return { success: "Diagnosis added!", data: diagnosis };
 }
 
-export async function findDiagnoses(term?: string, patientId?: string) {
+export async function findDiagnosesByTermAndPatientId(
+  term?: string,
+  patientId?: string
+) {
   noStore();
-
-  console.log("findDiagnoses called");
 
   if (!term) return { error: "No data found!" };
 
@@ -124,7 +125,7 @@ export async function findDiagnoses(term?: string, patientId?: string) {
     if (!diagnoses || diagnoses.length < 1) {
       return { error: "No diagnoses found!" };
     } else {
-      return { success: "Users found!", data: diagnoses };
+      return { success: "Fetch successful!", data: diagnoses };
     }
   } catch (error) {
     return { error: "Something went wrong!" };
