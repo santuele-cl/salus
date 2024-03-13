@@ -1,33 +1,127 @@
+"use client";
 import {
+  Box,
   Button,
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
+  Typography,
 } from "@mui/material";
-import { getPrescriptionsByPatientId } from "@/actions/patients/prescriptions";
+import {
+  findPrescriptionByTermAndPatientId,
+  getPrescriptionsByPatientId,
+} from "@/actions/patients/prescriptions";
 import { format } from "date-fns";
 import Link from "next/link";
+import { useParams } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
+import { Presciption } from "@prisma/client";
+import { LoadingButton } from "@mui/lab";
 
-const PrescriptionsPage = async ({
-  params: { patientId },
-}: {
-  params: { patientId: string };
-}) => {
-  const response = await getPrescriptionsByPatientId(patientId);
-  const prescriptions = response.data;
-  const columns = [
-    { id: "durationInDays", label: "Duration (in days)" },
-    { id: "dosage", label: "Dosage" },
-    { id: "frequencyPerDay", label: "Frequency (in days)" },
-    { id: "startDate", label: "Start date", type: "date" },
-    { id: "endDate", label: "End date", type: "date" },
-  ];
+const columns = [
+  { id: "durationInDays", label: "Duration (in days)" },
+  { id: "dosage", label: "Dosage" },
+  { id: "frequencyPerDay", label: "Frequency (in days)" },
+  { id: "startDate", label: "Start date", type: "date" },
+  { id: "endDate", label: "End date", type: "date" },
+];
+
+const PrescriptionsPage = () => {
+  const { patientId } = useParams();
+
+  const [searchTerm, setSearchTerm] = useState("");
+  const [isSearching, setIsSearching] = useState(false);
+
+  const [prescriptions, setPrescriptions] = useState<Presciption[] | null>(
+    null
+  );
+  const [error, setError] = useState("");
+
+  console.log(searchTerm);
+  console.log(prescriptions);
+
+  const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
+
+  const fetchPrescriptions = async () => {
+    const response = await getPrescriptionsByPatientId(patientId as string);
+    if (response.success) setPrescriptions(response.data);
+    else if (response.error) setError(response.error);
+    else setError("Fetch unsuccessful. Try again.");
+  };
+
+  const handleSearch = async (e: FormEvent) => {
+    console.log("searching");
+    e.preventDefault();
+    setIsSearching(true);
+    const response = await findPrescriptionByTermAndPatientId(
+      searchTerm,
+      patientId as string
+    );
+    if (response.success) setPrescriptions(response.data);
+    else if (response.error) {
+      setError(response.error);
+      setPrescriptions([]);
+    } else setError("Fetch unsuccessful. Try again.");
+    setIsSearching(false);
+  };
+
+  useEffect(() => {
+    fetchPrescriptions();
+  }, []);
 
   return (
-    <div>
+    <Box sx={{ p: 2 }}>
+      <Stack
+        direction="row"
+        sx={{
+          height: "55px",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
+        <Stack>
+          <Typography variant="h6" gap={0}>
+            Prescriptions
+          </Typography>
+          <Typography variant="body1" sx={{ mt: "-4px" }}>
+            View patient&apos;s prescriptions history
+          </Typography>
+        </Stack>
+        <Stack
+          component="form"
+          onSubmit={(e) => handleSearch(e)}
+          direction="row"
+          spacing={2}
+          sx={{
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <TextField
+            label="Search by ID or Drug name"
+            size="small"
+            value={searchTerm}
+            onChange={(e) => handleChange(e.target.value)}
+          />
+          <LoadingButton
+            loading={isSearching}
+            disabled={!searchTerm}
+            type="submit"
+            variant="contained"
+            sx={{ alignSelf: "stretch" }}
+          >
+            Search
+          </LoadingButton>
+          <Button variant="outlined" onClick={() => fetchPrescriptions()}>
+            Fetch latest
+          </Button>
+        </Stack>
+      </Stack>
       <TableContainer>
         <Table
           sx={{ minWidth: 650, overflow: "auto" }}
@@ -96,7 +190,7 @@ const PrescriptionsPage = async ({
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Box>
   );
 };
 export default PrescriptionsPage;

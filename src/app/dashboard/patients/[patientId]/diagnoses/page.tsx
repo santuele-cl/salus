@@ -1,7 +1,7 @@
 "use client";
 import {
-  findDiagnoses,
   getDiagnosesByPatientId,
+  findDiagnosesByTermAndPatientId,
 } from "@/actions/patients/diagnosis";
 import { LoadingButton } from "@mui/lab";
 import {
@@ -50,7 +50,10 @@ const DiagnosisPage = () => {
     console.log("searching");
     e.preventDefault();
     setIsSearching(true);
-    const response = await findDiagnoses(searchTerm, patientId as string);
+    const response = await findDiagnosesByTermAndPatientId(
+      searchTerm,
+      patientId as string
+    );
     if (response.success) setDiagnoses(response.data);
     else if (response.error) {
       setError(response.error);
@@ -99,6 +102,7 @@ const DiagnosisPage = () => {
           />
           <LoadingButton
             loading={isSearching}
+            disabled={!searchTerm}
             type="submit"
             variant="contained"
             sx={{ alignSelf: "stretch" }}

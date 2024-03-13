@@ -84,7 +84,7 @@ const LaboratoryResults = async ({
                     <Button
                       variant="contained"
                       LinkComponent={Link}
-                      href={`/dashboard/patients/${patientId}/laboratory-requests/${datum.id}`}
+                      href={`/dashboard/patients/${patientId}/laboratory-results/${datum.id}`}
                     >
                       View
                     </Button>
