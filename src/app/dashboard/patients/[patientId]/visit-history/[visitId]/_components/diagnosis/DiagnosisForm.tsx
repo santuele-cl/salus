@@ -15,10 +15,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { DiagnosisSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
-import { LaboratoryProcedures } from "@prisma/client";
 import { useSession } from "next-auth/react";
-import { getLaboratoryProcedures } from "@/actions/patients/laboratory-procedures";
-import { postLaboratoryRequest } from "@/actions/patients/laboratory-requests";
+import { addDiagnosis } from "@/actions/patients/diagnosis";
 
 interface DiagnosisFieldType {
   id: keyof z.infer<typeof DiagnosisSchema>;
@@ -70,31 +68,31 @@ const DiagnosisForm = ({
 
   const onSubmit = async (values: any) => {
     console.log("values", values);
-    // console.log("prescription values", values);
-    // const parse = DiagnosisSchema.safeParse(values);
+    console.log("prescription values", values);
+    const parse = DiagnosisSchema.safeParse(values);
 
-    // if (!parse.success) return setError("Parse Error");
+    if (!parse.success) return setError("Parse Error");
 
-    // setError("");
-    // setSuccess("");
+    setError("");
+    setSuccess("");
 
-    // setPending(true);
+    setPending(true);
 
-    // try {
-    //   const res = await postLaboratoryRequest(values);
-    //   if (res?.error) {
-    //     reset();
-    //     setError(res.error);
-    //   }
-    //   if (res?.success) {
-    //     reset();
-    //     setSuccess(res.success);
-    //   }
-    // } catch {
-    //   setError("Something went wrong!");
-    // } finally {
-    //   setPending(false);
-    // }
+    try {
+      const res = await addDiagnosis(values);
+      if (res?.error) {
+        reset();
+        setError(res.error);
+      }
+      if (res?.success) {
+        reset();
+        setSuccess(res.success);
+      }
+    } catch {
+      setError("Something went wrong!");
+    } finally {
+      setPending(false);
+    }
   };
 
   console.log("form error", errors);

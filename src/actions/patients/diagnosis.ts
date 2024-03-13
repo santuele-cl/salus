@@ -1,7 +1,9 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { DiagnosisSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore } from "next/cache";
+import { z } from "zod";
 
 export async function getDiagnosesByPatientId(patientId: string) {
   noStore();
@@ -65,4 +67,20 @@ export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
   } catch (error) {
     return { error: "Something went wrong!" };
   }
+}
+
+export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
+  const parsedValues = DiagnosisSchema.safeParse(values);
+
+  if (!parsedValues.success) return { error: "Parse error!" };
+
+  const diagnosis = await db.diagnosis.create({
+    data: {
+      ...(parsedValues.data && parsedValues.data),
+    },
+  });
+
+  if (!diagnosis) return { error: "Error. Diagnosis not added!" };
+
+  return { success: "Diagnosis added!", data: diagnosis };
 }
