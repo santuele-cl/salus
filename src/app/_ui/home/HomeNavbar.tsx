@@ -12,6 +12,7 @@ import Link from "next/link";
 import Logo from "../dashboard/Logo";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const HomeNavbar = () => {
   const [activeLink, setActiveLink] = useState("")
@@ -50,11 +51,10 @@ const HomeNavbar = () => {
             </Stack>
             <Stack sx={{ flexDirection: "row", gap: 1 }} >
               <Stack sx={{ flexDirection: "row", gap: 1 }}>
-                <Button variant={pathname === "/" ? "contained" : "text"} LinkComponent={Link} href="/" sx={{}}>Home</Button>
-                <Link scroll={false} href="#about">About</Link>
-                <Button variant={pathname === "/#about" ? "contained" : "text"} LinkComponent={Link} href="#about" sx={{}} >About</Button>
-                <Button variant={pathname === "/contacts" ? "contained" : "text"} LinkComponent={Link} href="/" sx={{}}>Contacts</Button>
-                <Button variant={pathname === "/faq" ? "contained" : "text"} LinkComponent={Link} href="/" sx={{}}>FAQ</Button>
+                <Button variant={activeLink === "" ? "contained" : "text"} LinkComponent={Link} href="/" sx={{}} onClick={() => setActiveLink("")}>Home</Button>
+                <Button variant={activeLink === "about" ? "contained" : "text"} LinkComponent={Link} href="#about" sx={{}} onClick={() => setActiveLink("about")}>About</Button>
+                <Button variant={activeLink === "contacts" ? "contained" : "text"} LinkComponent={Link} href="#contacts" sx={{}} onClick={() => setActiveLink("contacts")}>Contacts</Button>
+                <Button variant={activeLink === "faq" ? "contained" : "text"} LinkComponent={Link} href="#faq" sx={{}} onClick={() => setActiveLink("faq")}>FAQ</Button>
               </Stack>
               <Stack sx={{ flexDirection: "row", gap: 1 }}>
                 <Button variant="outlined" LinkComponent={Link} href="/auth/register" color="secondary">Sign up</Button>
