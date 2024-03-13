@@ -18,6 +18,7 @@ import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
 import Vital from "./_components/Vital";
 import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
 import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
+import DiagnosisFormDrawer from "./_components/diagnosis/DiagnosisFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -204,7 +205,7 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Diagnosis
                 </Typography>
-                <LibraryAddOutlinedIcon sx={{ fontSize: 25 }} />
+                <DiagnosisFormDrawer visitId={visitId} patientId={patientId} />
               </Stack>
               <Stack
                 sx={{

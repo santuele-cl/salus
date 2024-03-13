@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { LaboratoryRequestSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
-import { Drugs, LaboratoryProcedures, LaboratoryRequest } from "@prisma/client";
+import { LaboratoryProcedures } from "@prisma/client";
 import { getDrugs } from "@/actions/patients/drugs";
 import { useSession } from "next-auth/react";
 import { getLaboratoryProcedures } from "@/actions/patients/laboratory-procedures";
