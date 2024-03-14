@@ -154,6 +154,11 @@ model FamilyMedicalHistory {
   patientId    String?
 }
 
+model Test {
+  id   String   @id @default(nanoid(16))
+  time DateTime
+}
+
 model SocialHistory {
   id               String           @id @default(nanoid(16))
   alcoholUse       AlcoholUse       @default(NONE)
