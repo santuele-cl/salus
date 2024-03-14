@@ -141,7 +141,7 @@ const PrescriptionsPage = () => {
           </TableHead>
           <TableBody>
             {prescriptions &&
-              prescriptions.length > 0 &&
+              prescriptions.length &&
               prescriptions.map((datum: any, i: number) => {
                 const selected = columns.map(({ id, type }, index: number) => {
                   switch (type) {

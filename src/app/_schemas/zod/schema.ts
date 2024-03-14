@@ -1,10 +1,29 @@
 import * as z from "zod";
 import {
+  AllergySeverity,
   AppointmentStatus,
   CivilStatus,
   Gender,
   PhysicalPart,
 } from "@prisma/client";
+import dayjs, { Dayjs } from "dayjs";
+
+export const TextSchema = z.object({
+  dateTime: z.coerce.date(),
+});
+
+export const AllergySchema = z.object({
+  name: z
+    .string()
+    .min(1, "Allergy Name is required!")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  description: z
+    .string()
+    .regex(new RegExp(/^(?:[a-zA-Z ]*|[ ]*)$/), "Invalid input"),
+  severity: z.nativeEnum(AllergySeverity),
+  dateDiagnosed: z.coerce.date(),
+  patientId: z.string().min(1, "Patiend ID is required"),
+});
 
 export const DiagnosisSchema = z.object({
   condition: z
