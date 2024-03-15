@@ -118,8 +118,10 @@ const PrescriptionsPage = () => {
           >
             Search
           </LoadingButton>
+        </Stack>
+        <Stack sx={{ alignItems: "center", gap: 1, flexDirection: "row" }}>
           <Button variant="outlined" onClick={() => fetchPrescriptions()}>
-            Fetch latest
+            Reload
           </Button>
         </Stack>
       </Stack>

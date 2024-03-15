@@ -1,36 +1,41 @@
 "use client";
-import { Drawer, Stack } from "@mui/material";
+import { Button, Drawer, Stack } from "@mui/material";
 
-import { useState } from "react";
-import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import DiagnosisForm from "./DiagnosisForm";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
 const DiagnosisFormDrawer = ({
   visitId,
   patientId,
+  show,
+  setShow,
 }: {
-  visitId: string;
+  visitId?: string;
   patientId: string;
+  show: boolean;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const [showDiagnosisFormDrawer, setShowDiagnosisFormDrawer] = useState(false);
-
   return (
     <Stack>
-      <Drawer
-        anchor="right"
-        open={showDiagnosisFormDrawer}
-        onClose={() => setShowDiagnosisFormDrawer(false)}
-      >
+      <Drawer anchor="right" open={show} onClose={() => setShow(false)}>
         <DiagnosisForm
           visitId={visitId}
           patientId={patientId}
-          setShowDiagnosisFormDrawer={setShowDiagnosisFormDrawer}
+          setShowDiagnosisFormDrawer={setShow}
         />
       </Drawer>
-      <LibraryAddOutlinedIcon
+      <Button
+        variant="contained"
+        startIcon={<AddOutlinedIcon />}
+        onClick={() => setShow(true)}
+      >
+        Add
+      </Button>
+      {/* <LibraryAddOutlinedIcon
         sx={{ fontSize: 25, cursor: "pointer", color: "primary.main" }}
-        onClick={() => setShowDiagnosisFormDrawer((prev) => !prev)}
-      />
+        onClick={() => setShow((prev) => !prev)}
+      /> */}
     </Stack>
   );
 };

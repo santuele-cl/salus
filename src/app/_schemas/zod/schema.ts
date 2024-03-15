@@ -32,7 +32,7 @@ export const DiagnosisSchema = z.object({
     .min(1, "Required field")
     .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   patientId: z.string().min(1, "Required field"),
-  visitId: z.string().min(1, "Required field"),
+  visitId: z.string().optional(),
   physicianId: z.string().min(1, "Required field"),
 });
 
