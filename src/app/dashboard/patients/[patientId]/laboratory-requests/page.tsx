@@ -2,6 +2,7 @@
 import {
   Box,
   Button,
+  Chip,
   Divider,
   Stack,
   Table,
@@ -21,14 +22,12 @@ import Link from "next/link";
 import { LoadingButton } from "@mui/lab";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-import { LaboratoryRequest } from "@prisma/client";
+import { LaboratoryRequest, LaboratoryRequestStatus } from "@prisma/client";
 import dayjs from "dayjs";
+import LaboratoryRequestFormDrawer from "../visit-history/[visitId]/_components/laboratory-request/LaboratoryRequestFormDrawer";
 
 const LaboratoryRequestPage = () => {
-  // const response = await getLaboratoryRequestsByPatientId(patientId);
-  // const laboratoryRequests = response.data;
   const columns = [
-    { id: "status", label: "Status" },
     { id: "dateRequested", label: "Date Requested", type: "date" },
   ];
 
@@ -36,6 +35,8 @@ const LaboratoryRequestPage = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [showLaboratoryRequestFormDrawer, setShowLaboratoryRequestFormDrawer] =
+    useState(false);
 
   const [laboratoryRequests, setLaboratoryRequests] = useState<
     LaboratoryRequest[] | null
@@ -121,6 +122,11 @@ const LaboratoryRequestPage = () => {
           <Button variant="outlined" onClick={() => fetchLaboratoryRequests()}>
             Reload
           </Button>
+          <LaboratoryRequestFormDrawer
+            patientId={patientId as string}
+            show={showLaboratoryRequestFormDrawer}
+            setShow={setShowLaboratoryRequestFormDrawer}
+          />
         </Stack>
       </Stack>
       <Divider sx={{ my: 1 }} />
@@ -132,6 +138,7 @@ const LaboratoryRequestPage = () => {
           <TableHead>
             <TableRow>
               <TableCell align="left">Laboratory procedure</TableCell>
+              <TableCell align="left">Status</TableCell>
 
               {columns.map(({ label }, i) => (
                 <TableCell key={label + i}>{label}</TableCell>
@@ -171,13 +178,30 @@ const LaboratoryRequestPage = () => {
                   </TableCell>
                 );
 
+                const statusField = (
+                  <TableCell component="th" scope="row" align="left">
+                    <Chip
+                      sx={{ fontWeight: "bold", borderWidth: "1px" }}
+                      label={datum["status"]}
+                      color={
+                        datum["status"] === LaboratoryRequestStatus.COMPLETED
+                          ? "success"
+                          : datum["status"] === LaboratoryRequestStatus.CANCELED
+                          ? "error"
+                          : "warning"
+                      }
+                      variant="outlined"
+                    />
+                  </TableCell>
+                );
+
                 return (
                   <TableRow
                     key={datum + i}
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     {customField}
-
+                    {statusField}
                     {selected}
                     <TableCell align="right">
                       <Button

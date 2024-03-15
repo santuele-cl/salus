@@ -37,15 +37,14 @@ const hiddenFields = [""];
 const LaboratoryRequestForm = ({
   visitId,
   patientId,
-  setShowLaoratoryRequestFormDrawer,
+  setShow,
 }: {
   patientId: string;
-  visitId: string;
-  setShowLaoratoryRequestFormDrawer: Dispatch<SetStateAction<boolean>>;
+  visitId?: string;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
   console.log(session);
-  const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [labProcedures, setLabProcedures] = useState<
@@ -55,7 +54,7 @@ const LaboratoryRequestForm = ({
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
     reset,
     control,
   } = useForm({
@@ -65,21 +64,17 @@ const LaboratoryRequestForm = ({
       takenEveryHour: null,
       requestingPhysicianId: session.data?.user.empId,
       patientId,
-      visitId,
+      ...(visitId && { visitId }),
     },
   });
 
   const onSubmit = async (values: any) => {
-    // console.log("values", values);
-    // console.log("prescription values", values);
     const parse = LaboratoryRequestSchema.safeParse(values);
 
     if (!parse.success) return setError("Parse Error");
 
     setError("");
     setSuccess("");
-
-    setPending(true);
 
     try {
       const res = await postLaboratoryRequest(values);
@@ -93,8 +88,6 @@ const LaboratoryRequestForm = ({
       }
     } catch {
       setError("Something went wrong!");
-    } finally {
-      setPending(false);
     }
   };
 
@@ -155,16 +148,16 @@ const LaboratoryRequestForm = ({
         <Button
           type="submit"
           variant="contained"
-          disabled={pending || !session.data?.user.empId}
+          disabled={isSubmitting || !session.data?.user.empId}
           sx={{ p: 2 }}
         >
           Add
         </Button>
         <Button
           variant="outlined"
-          disabled={pending}
+          disabled={isSubmitting}
           sx={{ p: 2 }}
-          onClick={() => setShowLaoratoryRequestFormDrawer(false)}
+          onClick={() => setShow(false)}
         >
           Cancel
         </Button>

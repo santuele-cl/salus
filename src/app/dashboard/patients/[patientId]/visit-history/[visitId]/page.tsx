@@ -11,16 +11,17 @@ import PhysicalExaminations from "./_components/PhysicalExaminations";
 import MedicalInformationOutlinedIcon from "@mui/icons-material/MedicalInformationOutlined";
 import Diagnosis from "./_components/Diagnosis";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
-import LaboratoryRequest from "./_components/LaboratoryRequest";
+import LaboratoryRequest from "./_components/laboratory-request/LaboratoryRequest";
 import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
 import PrescriptionFormDrawer from "./_components/prescription/PrescriptionFormDrawer";
 import Vital from "./_components/Vital";
-import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
+import LaboratoryRequestDrawer from "./_components/laboratory-request/LaboratoryRequestFormDrawer";
 import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
 import DiagnosisFormDrawer from "./_components/diagnosis/DiagnosisFormDrawer";
 import dayjs from "dayjs";
 import CustomDiagnosisFormDrawer from "./_components/diagnosis/CustomDiagnosisFormDrawer";
 import CustomPrescriptionFormDrawer from "./_components/prescription/CustomPrescriptionFormDrawer";
+import CustomLaboratoryRequestFormDrawer from "./_components/laboratory-request/CustomLaboratoryRequestFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -309,7 +310,7 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Laboratory Request
                 </Typography>
-                <LaboratoryRequestDrawer
+                <CustomLaboratoryRequestFormDrawer
                   visitId={visitId}
                   patientId={patientId}
                 />
