@@ -2,26 +2,27 @@
 import { useEffect, useMemo, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
 import { Calendar, ToolbarProps, dayjsLocalizer } from "react-big-calendar";
-import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+import { Appointments } from "@prisma/client";
 import { Box } from "@mui/material";
 
-import SelectAppointmentFormModal from "./SelectAppointmentFormModal";
+import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
+
 import CustomToolbar from "./CustomToolbar";
+import { getAppointments, updateAppointment } from "@/actions/appointment";
+import CreateAppointmentFormModal from "./CreateAppointmentFormModal";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
-import { getAppointments, updateAppointment } from "@/actions/appointment";
-import { Appointments } from "@prisma/client";
-import TestSelectAppointmentFormModal from "./TestSelectAppointmentFormModal";
-import CreateAppointmentFormModal from "./CreateAppointmentFormModal";
 
 const localizer = dayjsLocalizer(dayjs);
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 export default function DnDCalendar() {
-  const [selectStartDate, setSelectStartDate] = useState<Dayjs | null>(null);
-  const [selectEndDate, setSelectEndDate] = useState<Dayjs | null>(null);
-  const [showAppointmentModal, setShowAppointmentModal] = useState(false);
+  const [selectStartDate, setSelectStartDate] = useState<Dayjs>(dayjs());
+  const [selectEndDate, setSelectEndDate] = useState<Dayjs>(
+    dayjs().add(1, "hour")
+  );
+  console.log(selectEndDate, selectStartDate);
   const [showCreateAppointmentModal, setShowCreateAppointmentModal] =
     useState(false);
   const [step, setStep] = useState(30);
@@ -49,14 +50,11 @@ export default function DnDCalendar() {
           );
         },
       },
-      // defaultDate: new Date(2015, 3, 13),
     }),
     []
   );
 
   const handleEventDrop = async (props: any) => {
-    // console.log("event drop", props);
-
     setAppointments((prevAppointments) => {
       return prevAppointments.filter(
         (appointment) => appointment.id !== props.event.id
@@ -68,25 +66,18 @@ export default function DnDCalendar() {
       props.event.id
     );
 
-    // console.log("drop response",response)
     fetchAppointments();
   };
-  const handleEventResize = (props: any) => {
-    // console.log("event resize", props);
-  };
+  const handleEventResize = (props: any) => {};
   const handleEventSelect = (props: any) => {
-    // console.log(props)
     setSelectEndDate(dayjs(props.end));
     setSelectStartDate(dayjs(props.start));
     setShowCreateAppointmentModal(true);
-    // console.log(selectStartDate, selectEndDate)
   };
 
-  const handleShowAppointmentModal = () => {};
-
   const handleCloseAppointmentForm = () => {
-    setSelectEndDate(null);
-    setSelectStartDate(null);
+    setSelectStartDate(dayjs());
+    setSelectEndDate(dayjs().add(1, "hour"));
     setShowCreateAppointmentModal((prev) => !prev);
   };
 
@@ -94,7 +85,6 @@ export default function DnDCalendar() {
     fetchAppointments();
   }, []);
 
-  // console.log(selectEndDate);
   return (
     <Box
       sx={{
@@ -102,8 +92,6 @@ export default function DnDCalendar() {
         height: "100vh",
       }}
     >
-      {/* {showAppointmentModal && <SelectAppointmentFormModal showAppointmentModal={showAppointmentModal} setShowAppointmentModal={setShowAppointmentModal} selectStartDate={selectStartDate} selectEndDate={selectEndDate} setSelectStartDate={setSelectStartDate} setSelectEndDate={setSelectEndDate} />} */}
-      {/* {showAppointmentModal && <TestSelectAppointmentFormModal showAppointmentModal={showAppointmentModal} setShowAppointmentModal={setShowAppointmentModal} />} */}
       {showCreateAppointmentModal && (
         <CreateAppointmentFormModal
           selectStartDate={selectStartDate}

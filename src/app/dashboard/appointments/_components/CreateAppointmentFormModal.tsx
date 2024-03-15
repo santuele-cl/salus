@@ -40,10 +40,10 @@ const CreateAppointmentFormModal = ({
   setSelectStartDate,
   handleCloseAppointmentForm,
 }: {
-  selectEndDate: Dayjs | null;
-  setSelectEndDate: Dispatch<SetStateAction<Dayjs | null>>;
-  selectStartDate: Dayjs | null;
-  setSelectStartDate: Dispatch<SetStateAction<Dayjs | null>>;
+  selectEndDate: Dayjs;
+  setSelectEndDate: Dispatch<SetStateAction<Dayjs>>;
+  selectStartDate: Dayjs;
+  setSelectStartDate: Dispatch<SetStateAction<Dayjs>>;
   showCreateAppointmentModal: boolean;
   setShowCreateAppointmentModal: Dispatch<SetStateAction<boolean>>;
   handleCloseAppointmentForm: () => void;
@@ -58,17 +58,15 @@ const CreateAppointmentFormModal = ({
     formState: { errors },
     reset,
     control,
-  } = useForm({
+  } = useForm<z.infer<typeof AppointmentSchema>>({
     resolver: zodResolver(AppointmentSchema),
     defaultValues: {
       title: "",
       status: AppointmentStatus.SCHEDULED as AppointmentStatus,
       room: "",
       reason: "",
-      startDate: selectStartDate ? selectStartDate : (dayjs() as Dayjs | null),
-      endDate: selectEndDate
-        ? selectEndDate
-        : (dayjs().add(1, "hour") as Dayjs | null),
+      startDate: selectStartDate.toDate(),
+      endDate: selectEndDate.toDate(),
       patientId: "",
       employeeId: "",
     },
@@ -89,7 +87,7 @@ const CreateAppointmentFormModal = ({
       if (res?.success) {
         reset();
         setSuccess(res.success);
-        setSelectStartDate(null), setSelectEndDate(null);
+        setSelectStartDate(dayjs()), setSelectEndDate(dayjs());
       }
     } catch {
       setError("Something went asd wrong!");
@@ -214,10 +212,10 @@ const CreateAppointmentFormModal = ({
                         },
                       }}
                       label="Start Date"
-                      value={field.value}
+                      value={dayjs(field.value)}
                       inputRef={field.ref}
                       onChange={(date) => {
-                        field.onChange(date);
+                        field.onChange(date?.toDate());
                       }}
                     />
                   );
@@ -243,10 +241,10 @@ const CreateAppointmentFormModal = ({
                         },
                       }}
                       label="End Date"
-                      value={field.value}
+                      value={dayjs(field.value)}
                       inputRef={field.ref}
                       onChange={(date) => {
-                        field.onChange(date);
+                        field.onChange(date?.toDate());
                       }}
                     />
                   );
