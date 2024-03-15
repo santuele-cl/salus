@@ -19,11 +19,29 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Diagnosis } from "@prisma/client";
+import { Diagnosis, Employee, Prisma } from "@prisma/client";
 import { format } from "date-fns";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
+
+type DiagnosesReturnType = Partial<Employee> & Diagnosis;
+
+type DiagnosisWithPhysicianDetails = Prisma.DiagnosisGetPayload<{
+  include: {
+    physician: {
+      select: {
+        fname: true;
+        lname: true;
+        employeeRole: {
+          select: {
+            roleName: true;
+          };
+        };
+      };
+    };
+  };
+}>;
 
 const DiagnosisPage = () => {
   const { patientId } = useParams();
@@ -31,7 +49,9 @@ const DiagnosisPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
 
-  const [diagnoses, setDiagnoses] = useState<Diagnosis[] | null>(null);
+  const [diagnoses, setDiagnoses] = useState<
+    DiagnosisWithPhysicianDetails[] | null
+  >(null);
   const [error, setError] = useState("");
 
   console.log(searchTerm);
@@ -124,7 +144,7 @@ const DiagnosisPage = () => {
             <TableRow>
               <TableCell align="left">Condition</TableCell>
               <TableCell align="left">Date Diagnosed</TableCell>
-              <TableCell align="left">Diagnose by</TableCell>
+              <TableCell align="left">Diagnosed by</TableCell>
               <TableCell align="right">Details</TableCell>
             </TableRow>
           </TableHead>

@@ -8,10 +8,6 @@ import {
 } from "@prisma/client";
 import dayjs, { Dayjs } from "dayjs";
 
-export const TextSchema = z.object({
-  dateTime: z.coerce.date(),
-});
-
 export const AllergySchema = z.object({
   name: z
     .string()
