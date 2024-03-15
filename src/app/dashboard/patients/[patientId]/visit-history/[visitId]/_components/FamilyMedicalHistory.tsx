@@ -41,7 +41,7 @@ const FamilyMedicalHistory = ({
                   <Typography variant="subtitle2">{field}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     familyMedicalHistory[field]
-                  ).format("MMMM d, yyyy")}`}</Typography>
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }
