@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 import { getLaboratoryResultsByPatientId } from "@/actions/patients/laboratory-results";
 import Link from "next/link";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const columns = [
   { id: "testName", label: "Test Name" },
@@ -51,7 +51,9 @@ const LaboratoryResults = async ({
                         component="th"
                         scope="row"
                         key={id + index}
-                      >{`${format(datum[id], " MMMM d, yyyy")}`}</TableCell>
+                      >{`${dayjs(datum[id]).format(
+                        "MMMM d, YYYY"
+                      )}`}</TableCell>
                     );
 
                   default:

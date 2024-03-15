@@ -20,7 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 import { Diagnosis, Employee, Prisma } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -159,10 +159,9 @@ const DiagnosisPage = () => {
                     sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                   >
                     <TableCell align="left">{diagnosis.condition}</TableCell>
-                    <TableCell align="left">{`${format(
-                      diagnosis.diagnosisDate,
-                      " MMMM d, yyyy"
-                    )}`}</TableCell>
+                    <TableCell align="left">{`${dayjs(
+                      diagnosis.diagnosisDate
+                    ).format("MMMM d, YYYY")}`}</TableCell>
                     <TableCell align="left">{`${physician?.employeeRole?.roleName} ${physician?.fname} ${physician?.lname} `}</TableCell>
 
                     <TableCell align="right">

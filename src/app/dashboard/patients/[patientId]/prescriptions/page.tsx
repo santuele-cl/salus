@@ -17,12 +17,12 @@ import {
   findPrescriptionByTermAndPatientId,
   getPrescriptionsByPatientId,
 } from "@/actions/patients/prescriptions";
-import { format } from "date-fns";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { Presciption } from "@prisma/client";
 import { LoadingButton } from "@mui/lab";
+import dayjs from "dayjs";
 
 const columns = [
   { id: "durationInDays", label: "Duration (in days)" },
@@ -151,7 +151,9 @@ const PrescriptionsPage = () => {
                           component="th"
                           scope="row"
                           key={id + index}
-                        >{`${format(datum[id], " MMMM d, yyyy")}`}</TableCell>
+                        >{`${dayjs(datum[id]).format(
+                          "MMMM d, YYYY"
+                        )}`}</TableCell>
                       );
 
                     default:

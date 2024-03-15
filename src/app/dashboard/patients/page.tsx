@@ -1,5 +1,4 @@
 "use client";
-import { format } from "date-fns";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import {
   Button,
@@ -23,6 +22,7 @@ import { usePathname } from "next/navigation";
 import HomeOutlined from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
+import dayjs from "dayjs";
 
 interface PatientsType {
   error?: string;
@@ -172,9 +172,8 @@ const PatientsPage = () => {
                       <TableCell align="right">{fname}</TableCell>
                       <TableCell align="right">{mname}</TableCell>
                       <TableCell align="right">{lname}</TableCell>
-                      <TableCell align="right">{`${format(
-                        bdate,
-                        " MMMM d, yyyy h:mm a"
+                      <TableCell align="right">{`${dayjs(bdate).format(
+                        "MMMM d, YYYY"
                       )}`}</TableCell>
                       <TableCell
                         align="right"

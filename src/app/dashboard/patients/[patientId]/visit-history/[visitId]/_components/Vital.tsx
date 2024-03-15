@@ -1,6 +1,6 @@
 import { Box, Stack, Typography } from "@mui/material";
 import { Drugs, Presciption, Vitals } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 interface VitalsField {
   label: string;
@@ -32,10 +32,9 @@ const Vital = ({ vitals }: { vitals: Vitals }) => {
 
           if (type === "date") {
             content = (
-              <Box sx={{ marginLeft: "auto", fontStyle: "italic" }}>{`${format(
-                vitals[id]!,
-                " MMMM d, yyyy h:mm a"
-              )}`}</Box>
+              <Box sx={{ marginLeft: "auto", fontStyle: "italic" }}>{`${dayjs(
+                vitals[id]
+              ).format("MMMM d, YYYY h:mm a")}`}</Box>
             );
           } else {
             content = (

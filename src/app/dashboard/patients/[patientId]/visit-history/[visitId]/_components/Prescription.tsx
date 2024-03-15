@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { Presciption, Diagnosis, Employee } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const include: Array<keyof Presciption> = [
   "dosage",
@@ -47,10 +47,9 @@ const Prescription = ({
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{field}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    prescription[field],
-                    " MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    prescription[field]
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }

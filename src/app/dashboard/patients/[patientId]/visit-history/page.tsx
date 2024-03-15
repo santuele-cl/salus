@@ -1,6 +1,5 @@
 import { getVisitsByProfileId } from "@/actions/patients/visits";
 import {
-  Box,
   Button,
   Divider,
   Stack,
@@ -11,9 +10,9 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { format } from "date-fns";
 import Link from "next/link";
 import TableHeader from "./_components/TableHeader";
+import dayjs from "dayjs";
 
 const VisitHistoryPage = async ({
   params: { patientId },
@@ -50,9 +49,8 @@ const VisitHistoryPage = async ({
                   <TableCell component="th" scope="row">
                     {visit.id}
                   </TableCell>
-                  <TableCell align="left">{`${format(
-                    visit.createdAt,
-                    " MMMM d, yyyy h:mm a"
+                  <TableCell align="left">{`${dayjs(visit.createdAt).format(
+                    "MMMM d, YYYY h:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{visit.chiefComplaint}</TableCell>
                   <TableCell align="right">

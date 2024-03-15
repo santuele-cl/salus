@@ -20,7 +20,6 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { format } from "date-fns";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
@@ -28,6 +27,7 @@ import { Allergies } from "@prisma/client";
 import { LoadingButton } from "@mui/lab";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import AddAllergyForm from "./_components/AddAllergyForm";
+import dayjs from "dayjs";
 
 const columns = [
   { id: "name", label: "Name" },
@@ -160,7 +160,9 @@ const AllergiesPage = () => {
                           component="th"
                           scope="row"
                           key={id + index}
-                        >{`${format(datum[id], " MMMM d, yyyy")}`}</TableCell>
+                        >{`${dayjs(datum[id]).format(
+                          "MMMM d, YYYY"
+                        )}`}</TableCell>
                       );
 
                     default:

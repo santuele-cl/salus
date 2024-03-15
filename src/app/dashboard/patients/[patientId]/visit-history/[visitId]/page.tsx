@@ -1,6 +1,5 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
 import { Divider, Stack, TextField, Typography } from "@mui/material";
-import { format } from "date-fns";
 import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -19,6 +18,7 @@ import Vital from "./_components/Vital";
 import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
 import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
 import DiagnosisFormDrawer from "./_components/diagnosis/DiagnosisFormDrawer";
+import dayjs from "dayjs";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -45,19 +45,17 @@ const VisitPage = async ({
         >
           <Typography variant="body1" fontWeight={400}>
             Visit details for
-            <Typography variant="h6" component="span">{`${format(
-              visit.data?.createdAt!,
-              " MMMM d, yyyy h:mm a"
-            )}`}</Typography>
+            <Typography variant="h6" component="span">{`${dayjs(
+              visit.data?.createdAt
+            ).format("MMMM d, YYYY h:mm a")}`}</Typography>
           </Typography>
           <Stack direction="row">
             <UpdateIcon sx={{ fontSize: 22 }} />
             <Typography component="span">
               Updated :
-              <Typography component="span" variant="subtitle2">{`${format(
-                visit.data?.updatedAt!,
-                " MMMM d, yyyy h:mm a"
-              )}`}</Typography>
+              <Typography component="span" variant="subtitle2">{`${dayjs(
+                visit.data?.updatedAt
+              ).format("MMMM d, YYYY h:mm a")}`}</Typography>
             </Typography>
           </Stack>
         </Stack>

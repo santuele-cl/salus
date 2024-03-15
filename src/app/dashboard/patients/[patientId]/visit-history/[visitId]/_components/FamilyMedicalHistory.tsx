@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Stack, Typography } from "@mui/material";
 import { FamilyMedicalHistory } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const include: Array<keyof FamilyMedicalHistory> = [
   "ageOfOnset",
@@ -39,10 +39,9 @@ const FamilyMedicalHistory = ({
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{field}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    familyMedicalHistory[field]!,
-                    "MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    familyMedicalHistory[field]
+                  ).format("MMMM d, yyyy")}`}</Typography>
                 </Stack>
               );
             }

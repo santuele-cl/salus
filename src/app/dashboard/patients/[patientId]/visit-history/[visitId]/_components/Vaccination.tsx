@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Stack, Typography } from "@mui/material";
 import { Vaccination } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const vaccinationsSelectedFields: Array<keyof Vaccination> = [
   "administeredAt",
@@ -36,10 +36,9 @@ const Vaccination = ({ vaccination }: { vaccination: Vaccination }) => {
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{field}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    vaccination[field]!,
-                    "MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    vaccination[field]
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }
