@@ -4,8 +4,8 @@ import {
 } from "@/actions/patients/prescriptions";
 import { Stack } from "@mui/system";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import Prescriptions from "../../visit-history/[visitId]/_components/Prescriptions";
-import Prescription from "../../visit-history/[visitId]/_components/Prescription";
+import Prescriptions from "../../visit-history/[visitId]/_components/prescription/Prescriptions";
+import Prescription from "../../visit-history/[visitId]/_components/prescription/Prescription";
 import { getLaboratoryRequestByLaboratoryRequestId } from "@/actions/patients/laboratory-requests";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
 import { Box } from "@mui/material";

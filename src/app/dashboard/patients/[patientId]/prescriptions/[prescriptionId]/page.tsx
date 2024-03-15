@@ -1,8 +1,8 @@
 import { getPrescriptionByPrescriptionId } from "@/actions/patients/prescriptions";
 import { Stack } from "@mui/system";
 import LocalPharmacyIcon from "@mui/icons-material/LocalPharmacy";
-import Prescriptions from "../../visit-history/[visitId]/_components/Prescription";
-import Prescription from "../../visit-history/[visitId]/_components/Prescription";
+import Prescriptions from "../../visit-history/[visitId]/_components/prescription/Prescription";
+import Prescription from "../../visit-history/[visitId]/_components/prescription/Prescription";
 
 const PrescriptionPage = async ({
   params: { prescriptionId },

@@ -4,7 +4,7 @@ import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import MonitorHeartOutlinedIcon from "@mui/icons-material/MonitorHeartOutlined";
-import Prescriptions from "./_components/Prescriptions";
+import Prescriptions from "./_components/prescription/Prescriptions";
 import AccessibilityIcon from "@mui/icons-material/Accessibility";
 import { Drugs } from "@prisma/client";
 import PhysicalExaminations from "./_components/PhysicalExaminations";
@@ -13,13 +13,14 @@ import Diagnosis from "./_components/Diagnosis";
 import BiotechOutlinedIcon from "@mui/icons-material/BiotechOutlined";
 import LaboratoryRequest from "./_components/LaboratoryRequest";
 import VitalSignsFormDrawer from "./_components/VitalSignsFormDrawer";
-import PrescriptionFormDrawer from "./_components/PrescriptionFormDrawer";
+import PrescriptionFormDrawer from "./_components/prescription/PrescriptionFormDrawer";
 import Vital from "./_components/Vital";
 import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
 import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
 import DiagnosisFormDrawer from "./_components/diagnosis/DiagnosisFormDrawer";
 import dayjs from "dayjs";
 import CustomDiagnosisFormDrawer from "./_components/diagnosis/CustomDiagnosisFormDrawer";
+import CustomPrescriptionFormDrawer from "./_components/prescription/CustomPrescriptionFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -189,7 +190,7 @@ const VisitPage = async ({
                 </Stack>
               </Stack>
             </Grid2>
-            {/* DIAGNOSIS */}
+            {/* DIAGNOSIS */}0
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -255,7 +256,7 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Prescriptions
                 </Typography>
-                <PrescriptionFormDrawer
+                <CustomPrescriptionFormDrawer
                   visitId={visitId}
                   patientId={patientId}
                 />
