@@ -8,10 +8,11 @@ const VaccinationsPage = async ({
 }) => {
   const vaccination = await getVaccinationsByPatientId(patientId);
   const columns = [
-    { id: "id", label: "ID" },
     { id: "vaccineName", label: "Vaccine name" },
     { id: "dosage", label: "Dosage" },
-    { id: "nextDueDate", label: "Next appointment ", type: "date" },
+    { id: "nextDueDate", label: "Next appointment", type: "date" },
+    { id: "administeredBy", label: "Administered By"},
+
   ];
   return (
     <div>

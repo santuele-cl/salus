@@ -4,10 +4,10 @@ import { Drugs, Presciption } from "@prisma/client";
 import dayjs from "dayjs";
 
 const prescriptionSelectedFields: Array<keyof Presciption> = [
-  "dosage",
-  "notes",
   "startDate",
   "endDate",
+  "dosage",
+  "notes",
   "frequencyPerDay",
   "durationInDays",
 ];
