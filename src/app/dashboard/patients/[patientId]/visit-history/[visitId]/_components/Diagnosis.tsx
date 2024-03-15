@@ -1,8 +1,8 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { Diagnosis, Employee } from "@prisma/client";
-import { format } from "date-fns";
 import DiagnosisPage from "../../../diagnoses/page";
+import dayjs from "dayjs";
 
 const diagnosisSelectedFields: Array<keyof Diagnosis> = [
   "condition",
@@ -40,10 +40,9 @@ const Diagnosis = ({ diagnosis }: { diagnosis: Diagnosis }) => {
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{label}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    diagnosis[field],
-                    " MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    diagnosis[field]
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }

@@ -1,7 +1,7 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Box, Stack, Typography } from "@mui/material";
 import { PhysicalExamination } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const physicalExaminationsSelectedFields: Array<keyof PhysicalExamination> = [
   "isNormal",
@@ -41,10 +41,9 @@ const PhysicalExaminations = ({
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{label}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    physicalExamination[field],
-                    " MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    physicalExamination[field]
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }

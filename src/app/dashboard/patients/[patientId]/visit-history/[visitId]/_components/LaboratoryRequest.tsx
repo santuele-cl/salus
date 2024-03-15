@@ -1,12 +1,11 @@
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { Stack, Typography } from "@mui/material";
 import {
-  Diagnosis,
   Employee,
   LaboratoryProcedures,
   LaboratoryRequest,
 } from "@prisma/client";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 
 const laboratoryRequestSelectedFields: Array<keyof LaboratoryRequest> = [
   "status",
@@ -47,10 +46,9 @@ const LaboratoryRequest = ({
                   sx={{ flexDirection: "row", justifyContent: "space-between" }}
                 >
                   <Typography variant="subtitle2">{field}</Typography>
-                  <Typography sx={{ fontStyle: "italic" }}>{`${format(
-                    laboratoryRequest[field]!,
-                    " MMMM d, yyyy"
-                  )}`}</Typography>
+                  <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
+                    laboratoryRequest[field]
+                  ).format("MMMM d, YYYY")}`}</Typography>
                 </Stack>
               );
             }

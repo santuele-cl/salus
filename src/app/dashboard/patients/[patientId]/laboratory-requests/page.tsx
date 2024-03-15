@@ -17,12 +17,12 @@ import {
   findLaboratoryRequestsByTermAndPatientId,
   getLaboratoryRequestsByPatientId,
 } from "@/actions/patients/laboratory-requests";
-import { format } from "date-fns";
 import Link from "next/link";
 import { LoadingButton } from "@mui/lab";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
 import { LaboratoryRequest } from "@prisma/client";
+import dayjs from "dayjs";
 
 const LaboratoryRequestPage = () => {
   // const response = await getLaboratoryRequestsByPatientId(patientId);
@@ -149,7 +149,9 @@ const LaboratoryRequestPage = () => {
                           component="th"
                           scope="row"
                           key={id + index}
-                        >{`${format(datum[id], " MMMM d, yyyy")}`}</TableCell>
+                        >{`${dayjs(datum[id]).format(
+                          "MMMM d, YYYY"
+                        )}`}</TableCell>
                       );
 
                     default:

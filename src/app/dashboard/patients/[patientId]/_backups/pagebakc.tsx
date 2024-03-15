@@ -1,6 +1,5 @@
 "use client";
 import { TabType } from "@/app/_data/types";
-import { format } from "date-fns";
 import {
   Box,
   Button,
@@ -23,6 +22,7 @@ import { Patient } from "@prisma/client";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import dayjs from "dayjs";
 
 const TABS = [
   {
@@ -145,9 +145,8 @@ const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
                       <TableCell align="right">{fname}</TableCell>
                       <TableCell align="right">{mname}</TableCell>
                       <TableCell align="right">{lname}</TableCell>
-                      <TableCell align="right">{`${format(
-                        bdate,
-                        " MMMM d, yyyy"
+                      <TableCell align="right">{`${dayjs(bdate).format(
+                        "MMMM d, YYYY"
                       )}`}</TableCell>
                       <TableCell
                         align="right"

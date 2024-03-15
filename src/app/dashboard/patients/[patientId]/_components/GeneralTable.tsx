@@ -9,7 +9,7 @@ import {
   TableRow,
   Typography,
 } from "@mui/material";
-import { format } from "date-fns";
+import dayjs from "dayjs";
 import Link from "next/link";
 import { ReactNode } from "react";
 
@@ -27,7 +27,7 @@ interface GeneralTableType {
 }
 
 const GeneralTable = ({ data, columns, baseUrl }: GeneralTableType) => {
-  console.log(data)
+  console.log(data);
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">
@@ -46,10 +46,11 @@ const GeneralTable = ({ data, columns, baseUrl }: GeneralTableType) => {
               switch (type) {
                 case "date":
                   return (
-                    <TableCell component="th" scope="row" key={id + index}>{`${format(
-                      datum[id],
-                      " MMMM d, yyyy"
-                    )}`}</TableCell>
+                    <TableCell
+                      component="th"
+                      scope="row"
+                      key={id + index}
+                    >{`${dayjs(datum[id]).format("MMMM d, yyyy")}`}</TableCell>
                   );
 
                 default:
