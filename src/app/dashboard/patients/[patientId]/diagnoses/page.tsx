@@ -8,7 +8,7 @@ import {
   Box,
   Button,
   Divider,
-  Paper,
+  Drawer,
   Stack,
   Table,
   TableBody,
@@ -19,13 +19,15 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Diagnosis, Employee, Prisma } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import dayjs from "dayjs";
 import Link from "next/link";
 import { useParams } from "next/navigation";
 import { FormEvent, useEffect, useState } from "react";
-
-type DiagnosesReturnType = Partial<Employee> & Diagnosis;
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+// import AddDiagnosisForm from "./_components/AddDiagnosisForm";
+import DiagnosisForm from "../visit-history/[visitId]/_components/diagnosis/DiagnosisForm";
+import DiagnosisFormDrawer from "../visit-history/[visitId]/_components/diagnosis/DiagnosisFormDrawer";
 
 type DiagnosisWithPhysicianDetails = Prisma.DiagnosisGetPayload<{
   include: {
@@ -48,6 +50,7 @@ const DiagnosisPage = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [showDiagnosisFormDrawer, setShowDiagnosisFormDrawer] = useState(false);
 
   const [diagnoses, setDiagnoses] = useState<
     DiagnosisWithPhysicianDetails[] | null
@@ -129,9 +132,16 @@ const DiagnosisPage = () => {
           >
             Search
           </LoadingButton>
+        </Stack>
+        <Stack sx={{ alignItems: "center", gap: 1, flexDirection: "row" }}>
           <Button variant="outlined" onClick={() => fetchDiagnosis()}>
-            Fetch latest
+            Reload
           </Button>
+          <DiagnosisFormDrawer
+            patientId={patientId as string}
+            show={showDiagnosisFormDrawer}
+            setShow={setShowDiagnosisFormDrawer}
+          />
         </Stack>
       </Stack>
       <Divider sx={{ my: 1 }} />

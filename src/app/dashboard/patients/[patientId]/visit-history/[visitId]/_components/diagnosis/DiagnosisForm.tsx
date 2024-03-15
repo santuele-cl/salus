@@ -11,12 +11,14 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { DiagnosisSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { useSession } from "next-auth/react";
 import { addDiagnosis } from "@/actions/patients/diagnosis";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 interface DiagnosisFieldType {
   id: keyof z.infer<typeof DiagnosisSchema>;
@@ -38,7 +40,7 @@ const DiagnosisForm = ({
   setShowDiagnosisFormDrawer,
 }: {
   patientId: string;
-  visitId: string;
+  visitId?: string;
   setShowDiagnosisFormDrawer: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
@@ -46,7 +48,6 @@ const DiagnosisForm = ({
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
-  const date = new Date();
 
   const {
     register,
@@ -58,11 +59,11 @@ const DiagnosisForm = ({
     resolver: zodResolver(DiagnosisSchema),
     defaultValues: {
       condition: "",
-      diagnosisDate: date,
+      diagnosisDate: dayjs().toDate(),
       treatment: "",
       patientId,
-      visitId,
       physicianId: session.data?.user.empId,
+      ...(visitId && { visitId }),
     },
   });
 
@@ -109,22 +110,36 @@ const DiagnosisForm = ({
           />
         )}
         {error && <FormStatusText message={error} status="error" />}
-        {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}
       </Stack>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
         {fields.map(({ id, label, type }, index) => {
           if (type === "date") {
             return (
-              <TextField
-                InputLabelProps={{ shrink: true }}
-                type="date"
+              <Controller
                 key={id + index}
-                label={label}
-                {...register(id)}
-                error={errors[id] ? true : false}
-                helperText={errors[id]?.message}
-                disabled={pending}
+                control={control}
+                name={id}
+                rules={{ required: true }}
+                render={({ field }) => {
+                  return (
+                    <DatePicker
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          error: errors[id] ? true : false,
+                          helperText: errors[id]?.message,
+                        },
+                      }}
+                      label={label}
+                      value={dayjs(field.value)}
+                      inputRef={field.ref}
+                      onChange={(date) => {
+                        field.onChange(date?.toDate());
+                      }}
+                    />
+                  );
+                }}
               />
             );
           }

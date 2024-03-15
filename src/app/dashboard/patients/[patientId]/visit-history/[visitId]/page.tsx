@@ -19,6 +19,7 @@ import LaboratoryRequestDrawer from "./_components/LaboratoryRequestFormDrawer";
 import PhysicalExamFormDrawer from "./_components/physical-exam/PhysicalExamFormDrawer";
 import DiagnosisFormDrawer from "./_components/diagnosis/DiagnosisFormDrawer";
 import dayjs from "dayjs";
+import CustomDiagnosisFormDrawer from "./_components/diagnosis/CustomDiagnosisFormDrawer";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -203,7 +204,10 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Diagnosis
                 </Typography>
-                <DiagnosisFormDrawer visitId={visitId} patientId={patientId} />
+                <CustomDiagnosisFormDrawer
+                  patientId={patientId}
+                  visitId={visitId}
+                />
               </Stack>
               <Stack
                 sx={{

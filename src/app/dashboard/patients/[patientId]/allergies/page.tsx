@@ -3,7 +3,6 @@ import {
   findAllergiesByTermAndPatientId,
   getAllergiesByPatientId,
 } from "@/actions/patients/allergies";
-
 import {
   Box,
   Button,
@@ -121,17 +120,19 @@ const AllergiesPage = () => {
           >
             Search
           </LoadingButton>
+        </Stack>
+        <Stack sx={{ alignItems: "center", gap: 1, flexDirection: "row" }}>
           <Button variant="outlined" onClick={() => fetchAllergies()}>
-            Fetch latest
+            Reload
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddOutlinedIcon />}
+            onClick={() => setShowAddAllergyForm(true)}
+          >
+            Add
           </Button>
         </Stack>
-        <Button
-          variant="contained"
-          startIcon={<AddOutlinedIcon />}
-          onClick={() => setShowAddAllergyForm(true)}
-        >
-          Add
-        </Button>
       </Stack>
       <Divider sx={{ my: 1 }} />
       <TableContainer>
