@@ -23,6 +23,7 @@ import { FormEvent, useEffect, useState } from "react";
 import { Presciption } from "@prisma/client";
 import { LoadingButton } from "@mui/lab";
 import dayjs from "dayjs";
+import PrescriptionFormDrawer from "../visit-history/[visitId]/_components/prescription/PrescriptionFormDrawer";
 
 const columns = [
   { id: "durationInDays", label: "Duration (in days)" },
@@ -37,6 +38,8 @@ const PrescriptionsPage = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [showPrescriptionFormDrawer, setShowPrescriptionFormDrawer] =
+    useState(false);
 
   const [prescriptions, setPrescriptions] = useState<Presciption[] | null>(
     null
@@ -123,6 +126,11 @@ const PrescriptionsPage = () => {
           <Button variant="outlined" onClick={() => fetchPrescriptions()}>
             Reload
           </Button>
+          <PrescriptionFormDrawer
+            patientId={patientId as string}
+            show={showPrescriptionFormDrawer}
+            setShow={setShowPrescriptionFormDrawer}
+          />
         </Stack>
       </Stack>
       <Divider sx={{ my: 1 }} />

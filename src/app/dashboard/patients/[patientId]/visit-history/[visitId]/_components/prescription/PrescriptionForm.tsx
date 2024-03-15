@@ -21,7 +21,7 @@ import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { addPrescription } from "@/actions/patients/prescriptions";
 import { Drugs } from "@prisma/client";
 import { getDrugs } from "@/actions/patients/drugs";
-import DrugsOptions from "./DrugsOptions";
+import DrugsOptions from "../DrugsOptions";
 import { useSession } from "next-auth/react";
 
 interface PrescriptionFieldType {
@@ -45,11 +45,11 @@ const hiddenFields = [""];
 const PrescriptionForm = ({
   visitId,
   patientId,
-  setShowPrescriptionFormDrawer,
+  setShow,
 }: {
   patientId: string;
-  visitId: string;
-  setShowPrescriptionFormDrawer: Dispatch<SetStateAction<boolean>>;
+  visitId?: string;
+  setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
   console.log(session);
@@ -80,7 +80,7 @@ const PrescriptionForm = ({
       takenEveryHour: null,
       physicianId: session.data?.user.empId,
       patientId,
-      visitId,
+      ...(visitId && { visitId }),
     },
   });
 
@@ -218,7 +218,7 @@ const PrescriptionForm = ({
           variant="outlined"
           disabled={pending}
           sx={{ p: 2 }}
-          onClick={() => setShowPrescriptionFormDrawer(false)}
+          onClick={() => setShow(false)}
         >
           Cancel
         </Button>

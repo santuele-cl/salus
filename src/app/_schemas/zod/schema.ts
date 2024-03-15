@@ -1,4 +1,4 @@
-import * as z from "zod";
+import { z } from "zod";
 import {
   AllergySeverity,
   AppointmentStatus,
@@ -6,7 +6,6 @@ import {
   Gender,
   PhysicalPart,
 } from "@prisma/client";
-import dayjs, { Dayjs } from "dayjs";
 
 export const AllergySchema = z.object({
   name: z
@@ -52,14 +51,14 @@ export const PhysicalExaminationSchema = z.object({
   specifyIfOther: z.string().optional(),
   isNormal: z.coerce.boolean(),
   remarks: z.string().min(1, "Required field"),
-  visitId: z.string(),
+  visitId: z.string().optional(),
   patientId: z.string(),
 });
 
 export const LaboratoryRequestSchema = z.object({
   labProcedureId: z.string().min(1, "Required field"),
   requestingPhysicianId: z.string().min(1, "Required field"),
-  visitId: z.string().min(1, "Required field"),
+  visitId: z.string().optional(),
   patientId: z.string().min(1, "Required field"),
 });
 
@@ -80,7 +79,7 @@ export const PrescriptionSchema = z.object({
   notes: z.string().optional(),
   physicianId: z.string().min(1, "Required field"),
   patientId: z.string().min(1, "Required field"),
-  visitId: z.string().min(1, "Required field"),
+  visitId: z.string().optional(),
 });
 
 export const VisitSchema = z.object({

@@ -4,7 +4,7 @@ import { Button, Drawer, Stack } from "@mui/material";
 import { useState } from "react";
 import VitalSignsForm from "./VitalSignsForm";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
-import PrescriptionForm from "./PrescriptionForm";
+import PrescriptionForm from "./prescription/PrescriptionForm";
 import LaboratoryRequestForm from "./LaboratoryRequestForm";
 
 const LaboratoryRequestFormDrawer = ({

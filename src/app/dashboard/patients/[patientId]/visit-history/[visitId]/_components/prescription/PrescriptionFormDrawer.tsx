@@ -1,28 +1,29 @@
 "use client";
 import { Button, Drawer, Stack } from "@mui/material";
 
-import React, { Dispatch, SetStateAction, useState } from "react";
-import DiagnosisForm from "./DiagnosisForm";
+import { Dispatch, SetStateAction, useState } from "react";
+import VitalSignsForm from "../VitalSignsForm";
+import PrescriptionForm from "./PrescriptionForm";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 
-const DiagnosisFormDrawer = ({
+const PrescriptionFormDrawer = ({
   visitId,
   patientId,
   show,
   setShow,
 }: {
-  visitId?: string;
-  patientId: string;
   show: boolean;
   setShow: Dispatch<SetStateAction<boolean>>;
+  visitId?: string;
+  patientId: string;
 }) => {
   return (
     <Stack>
       <Drawer anchor="right" open={show} onClose={() => setShow(false)}>
-        <DiagnosisForm
+        <PrescriptionForm
           visitId={visitId}
           patientId={patientId}
-          setShowDiagnosisFormDrawer={setShow}
+          setShow={setShow}
         />
       </Drawer>
       <Button
@@ -35,4 +36,4 @@ const DiagnosisFormDrawer = ({
     </Stack>
   );
 };
-export default DiagnosisFormDrawer;
+export default PrescriptionFormDrawer;
