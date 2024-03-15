@@ -4,20 +4,13 @@ import { Presciption, Diagnosis, Employee } from "@prisma/client";
 import { format } from "date-fns";
 
 const include: Array<keyof Presciption> = [
-  "createdAt",
   "dosage",
-  "drugsId",
   "durationInDays",
   "endDate",
   "frequencyPerDay",
-  "id",
   "notes",
-  "patientId",
-  "physicianId",
   "startDate",
   "takenEveryHour",
-  "updatedAt",
-  "visitId",
 ];
 
 const Prescription = ({
