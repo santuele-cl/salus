@@ -182,7 +182,6 @@ const DiagnosisPage = () => {
                       >
                         View
                       </Button>
-                      {/* <Button variant="outlined">Select</Button> */}
                     </TableCell>
                   </TableRow>
                 );
