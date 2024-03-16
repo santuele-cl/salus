@@ -7,6 +7,59 @@ import {
   PhysicalPart,
 } from "@prisma/client";
 
+export const RegisterEmployeeSchema = z.object({
+  fname: z
+    .string()
+    .min(1, "First Name is required!")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  mname: z.string().optional(),
+  lname: z
+    .string()
+    .min(1, "Last Name is required!")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  gender: z.nativeEnum(Gender),
+  bdate: z.coerce.date(),
+  age: z.coerce.number(),
+  // CONTACT
+  phone: z
+    .string()
+    .regex(new RegExp(/^(09|\+639)\d{9}$/), "Invalid phone format"),
+  // Address
+  houseNumber: z.string().min(1, "House number is required"),
+  street: z.string().min(1, "Street is required"),
+  barangay: z.string().min(1, "Barangay is required"),
+  city: z
+    .string()
+    .min(1, "City is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  province: z
+    .string()
+    .min(1, "Province is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  region: z
+    .string()
+    .min(1, "Region is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  country: z
+    .string()
+    .min(1, "Country is required")
+    .regex(new RegExp(/^[a-zA-Z\s]+$/)),
+  zipCode: z.string().regex(new RegExp(/^\d{4}$/), "Invalid format"),
+  // ACCOUNT
+  username: z
+    .string()
+    .min(1, "Username is required!")
+    .regex(
+      new RegExp(/^[^\d]\w*$/),
+      "Username must contain letters and numbers only and must not start with number."
+    ),
+  email: z.string().email("Email is required!"),
+  password: z.string().min(1, "Password is required!"),
+  confirmPassword: z.string().min(1, "Password is required!"),
+});
+
+export const ContactInforSchema = z.object({});
+
 export const FamilyMedicalHistorySchema = z.object({
   condition: z
     .string()
