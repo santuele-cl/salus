@@ -163,6 +163,14 @@ CREATE TABLE "FamilyMedicalHistory" (
 );
 
 -- CreateTable
+CREATE TABLE "Test" (
+    "id" TEXT NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Test_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
 CREATE TABLE "SocialHistory" (
     "id" TEXT NOT NULL,
     "alcoholUse" "AlcoholUse" NOT NULL DEFAULT 'NONE',
