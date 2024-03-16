@@ -7,6 +7,19 @@ import {
   PhysicalPart,
 } from "@prisma/client";
 
+export const FamilyMedicalHistorySchema = z.object({
+  condition: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  relationship: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  ageOfOnset: z.coerce.number(),
+  patientId: z.string().min(1, "Required field"),
+});
+
 export const AllergySchema = z.object({
   name: z
     .string()

@@ -2,6 +2,8 @@
 
 import { unstable_noStore as noStore } from "next/cache";
 import { db } from "@/app/_lib/db";
+import { z } from "zod";
+import { FamilyMedicalHistorySchema } from "@/app/_schemas/zod/schema";
 
 export async function getFamilyMedicalHistoriesByPatientID(patientId: string) {
   noStore();
@@ -44,4 +46,53 @@ export async function getFamilyMedicalHistoryByFamilyMedicalHistoryId(
   } catch (error) {
     return { error: "Something went wrong!" };
   }
+}
+
+export async function findFamilyMedicalHistoryByTermAndPatientId(
+  term?: string,
+  patientId?: string
+) {
+  noStore();
+
+  if (!term) return { error: "No data found!" };
+
+  try {
+    const familyMedicalHistories = await db.familyMedicalHistory.findMany({
+      where: {
+        ...(patientId && { patientId }),
+        OR: [
+          { id: { contains: term, mode: "insensitive" } },
+          { condition: { contains: term, mode: "insensitive" } },
+          { relationship: { contains: term, mode: "insensitive" } },
+        ],
+      },
+    });
+
+    if (!familyMedicalHistories || familyMedicalHistories.length < 1) {
+      return { error: "No data found!" };
+    } else {
+      return { success: "Fetch successful!", data: familyMedicalHistories };
+    }
+  } catch (error) {
+    return { error: "Something went wrong!" };
+  }
+}
+
+export async function addFamilyMedicalHistory(
+  values: z.infer<typeof FamilyMedicalHistorySchema>
+) {
+  const validatedValues = FamilyMedicalHistorySchema.safeParse(values);
+
+  if (!validatedValues.success) return { error: "Parse error!" };
+
+  const familyMedicalHistory = await db.familyMedicalHistory.create({
+    data: {
+      ...(validatedValues.data && validatedValues.data),
+    },
+  });
+
+  if (!familyMedicalHistory)
+    return { error: "Error. Family medical data not added!" };
+
+  return { success: "Family medical data added!", data: familyMedicalHistory };
 }
