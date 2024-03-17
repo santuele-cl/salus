@@ -170,6 +170,14 @@ export const PrescriptionSchema = z.object({
   visitId: z.string().optional(),
 });
 
+export const RoleSchema = z.object({
+  id: z.string().min(1, "Required field"),
+  roleName: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+});
+
 export const VisitSchema = z.object({
   accompaniedBy: z.string().optional(),
   chiefComplaint: z.string().min(1, "Required field"),
