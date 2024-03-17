@@ -132,7 +132,9 @@ const MultiStepForm = () => {
           >
             <Stack gap={4}>
               <Stack>
-                <Typography variant="h5">{currentStepDetails.label}</Typography>
+                <Typography variant="h5">
+                  {activeStep !== 3 && currentStepDetails.label}
+                </Typography>
                 <Typography color="gray.main">
                   {currentStepDetails.description}
                 </Typography>

@@ -1,6 +1,7 @@
 "use client";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import {
+  Box,
   Button,
   Divider,
   Paper,
@@ -24,6 +25,8 @@ import HomeOutlined from "@mui/icons-material/HomeOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import PersonAddAltOutlinedIcon from "@mui/icons-material/PersonAddAltOutlined";
 import { findUser, toggleUserIsActive } from "@/actions/users/users";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import AddEmployeeFormModal from "./AddEmployeeFormModal";
 
 interface UsersResponseType {
   error?: string;
@@ -36,6 +39,8 @@ const UserSearchPage = () => {
   const [users, setUsers] = useState<User[] | undefined>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [isSearching, setIsSearching] = useState(false);
+  const [showAddEmployeeFormModal, setShowAddEmployeeFormModal] =
+    useState(false);
   const insufficientSearchTerm = searchTerm.length < 1;
 
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
@@ -85,13 +90,34 @@ const UserSearchPage = () => {
           <LoadingButton
             loading={isSearching}
             type="submit"
-            variant="contained"
+            variant="outlined"
             sx={{ alignSelf: "stretch" }}
             // onClick={handleSearch}
           >
             Search
           </LoadingButton>
         </Stack>
+        <Stack gap={2} direction="row">
+          <Button
+            variant="contained"
+            startIcon={<AddOutlinedIcon />}
+            onClick={() => setShowAddEmployeeFormModal(true)}
+          >
+            Add Employee
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddOutlinedIcon />}
+            // onClick={() => setShowAddEmployeeFormModal(true)}
+            disabled={true}
+          >
+            Add Patient
+          </Button>
+        </Stack>
+        <AddEmployeeFormModal
+          show={showAddEmployeeFormModal}
+          setShow={setShowAddEmployeeFormModal}
+        />
       </Stack>
       <Divider sx={{ my: 1 }} />
       <TableContainer>
@@ -163,21 +189,23 @@ const UserSearchPage = () => {
             ) : (
               <TableRow
                 sx={{
-                  "&:last-child td, &:last-child th": { border: 0, p: 0 },
+                  "&:last-child td, &:last-child th": { border: 0 },
                 }}
               >
-                <TableCell component="th" scope="row"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  -
+                </TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      {!users ||
+      {/* {!users ||
         (users?.length && (
           <Stack
             spacing={1}
@@ -190,7 +218,7 @@ const UserSearchPage = () => {
             <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
             <Typography>No results found!</Typography>
           </Stack>
-        ))}
+        ))} */}
     </Paper>
   );
 };

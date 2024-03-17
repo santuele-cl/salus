@@ -26,6 +26,9 @@ export const {
 
       const existingUser = await getUserById(user.id as string);
 
+      // Prevent signin if deactivated
+      if (!existingUser?.isActive) return false;
+
       // Prevent signin user does not exist and without email verification
       if (!existingUser || !existingUser.emailVerified) return false;
 

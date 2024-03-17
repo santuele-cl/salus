@@ -11,6 +11,7 @@ import {
   RegisterSchema,
   ResetPasswordSchema,
   NewPasswordSchema,
+  RegisterEmployeeSchema,
 } from "../../app/_schemas/zod/schema";
 import { getUserByEmail } from "@/app/_data/user";
 import {
@@ -42,6 +43,9 @@ export async function login(
   const { email, password, code } = validatedCredentials.data;
 
   const existingUser = await getUserByEmail(email);
+
+  if (!existingUser?.isActive)
+    return { error: "Your account has been deactivated." };
 
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email does not exist!" };
@@ -153,7 +157,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     username,
     email,
     password,
-    confirmPassword
+    confirmPassword,
   } = validatedData.data;
 
   const isEmailTaken = await getUserByEmail(email);
@@ -202,7 +206,101 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
                 },
               },
               ...(mname && { mname: mname }),
+            },
+          },
+        },
+      },
+    },
+  });
 
+  const verificationToken = await generateVerficationToken(email);
+
+  await sendVerificationEmail(verificationToken.email, verificationToken.token);
+
+  return { success: "Confirmation email sent." };
+}
+
+export async function createEmployee(
+  registerData: z.infer<typeof RegisterEmployeeSchema>
+) {
+  const validatedData = RegisterEmployeeSchema.safeParse(registerData);
+
+  if (!validatedData.success) {
+    return { error: "Invalid register data." };
+  }
+
+  const {
+    fname,
+    mname,
+    lname,
+    gender,
+    age,
+    bdate,
+    phone,
+    houseNumber,
+    street,
+    barangay,
+    city,
+    province,
+    region,
+    country,
+    zipCode,
+    username,
+    email,
+    password,
+    confirmPassword,
+    employeeRoleId,
+    serviceDepartmentId,
+    clinicalDepartmentId,
+  } = validatedData.data;
+
+  const isEmailTaken = await getUserByEmail(email);
+
+  if (isEmailTaken) {
+    return { error: "Email already taken." };
+  }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  const user = await db.user.create({
+    data: {
+      email,
+      password: hashedPassword,
+      username,
+      role: "EMPLOYEE",
+      profile: {
+        create: {
+          isEmployee: true,
+          isPatient: false,
+          employee: {
+            create: {
+              fname,
+              serviceDepartmentId,
+              employeeRoleId,
+              clinicalDepartmentId,
+              lname,
+              gender: gender as Gender,
+              age,
+              bdate,
+              contactInfo: {
+                create: {
+                  phone,
+                  email,
+                  address: {
+                    create: {
+                      houseNumber,
+                      street,
+                      barangay,
+                      city,
+                      province,
+                      region,
+                      country,
+                      zipCode,
+                    },
+                  },
+                },
+              },
+              ...(mname && { mname: mname }),
             },
           },
         },
