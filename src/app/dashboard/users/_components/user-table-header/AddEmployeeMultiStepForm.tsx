@@ -8,12 +8,6 @@ import {
   Button,
   Stack,
   Box,
-  TextField,
-  Paper,
-  MenuItem,
-  FormGroup,
-  FormControlLabel,
-  Checkbox,
 } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { useForm } from "react-hook-form";
@@ -24,6 +18,10 @@ import { EMP_STEPS } from "@/app/_data/constant";
 import { createEmployee, createUser } from "@/actions/auth";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { z } from "zod";
+import EmpPersonalInfoStep from "./EmpPersonalInfoStep";
+import EmpContactInfoStep from "./EmpContactInfoStep";
+import EmpDepartmentAndRoleStep from "./EmpDepartmentAndRoleStep";
+import EmpAccountDetails from "./EmpAccountDetails";
 
 const AddEmployeeMultiStepForm = () => {
   const [pending, setPending] = useState(false);
@@ -42,7 +40,6 @@ const AddEmployeeMultiStepForm = () => {
     trigger,
     reset,
     control,
-    getValues,
     formState: { errors },
   } = useForm<z.infer<typeof RegisterEmployeeSchema>>({
     resolver: zodResolver(RegisterEmployeeSchema),
@@ -82,8 +79,6 @@ const AddEmployeeMultiStepForm = () => {
     }
   };
 
-  // console.log("errors", errors);
-  // console.log(getValues());
   return (
     <Stack height="100%">
       {/* STEPPER NAV */}
@@ -107,16 +102,11 @@ const AddEmployeeMultiStepForm = () => {
         spacing={2}
         flexGrow="1"
         flexShrink="1"
-        // sx={{
-        // overflowY: "auto",
-        // }}
-        // overflowY="auto"
         height="450px"
         justifyContent="space-between"
       >
         <Box
           sx={{
-            // maxHeight: "320px",
             overflowY: "auto",
             p: 2,
           }}
@@ -129,109 +119,22 @@ const AddEmployeeMultiStepForm = () => {
               </Typography>
             </Stack>
             <Grid2 container direction="row" spacing={3}>
-              {currentStepDetails.fields.map(
-                ({ label, id, placeholder, type, options }) => {
-                  if (type === "select") {
-                    return (
-                      <Grid2 xs={12} sm={6} key={id}>
-                        <TextField
-                          select
-                          label={label}
-                          {...register(id)}
-                          error={errors[id] ? true : false}
-                          helperText={errors[id]?.message as string}
-                          placeholder={placeholder}
-                          InputProps={{
-                            style: { textTransform: "capitalize" },
-                          }}
-                          fullWidth
-                        >
-                          {options &&
-                            options?.map(({ label, value }, i) => (
-                              <MenuItem
-                                value={value}
-                                key={i}
-                                defaultChecked={i === 0}
-                              >
-                                {label}
-                              </MenuItem>
-                            ))}
-                        </TextField>
-                      </Grid2>
-                    );
-                  } else if (type === "date") {
-                    return (
-                      <Grid2 xs={12} sm={6} key={id}>
-                        <TextField
-                          type="date"
-                          label={label}
-                          {...register(id)}
-                          error={errors[id] ? true : false}
-                          helperText={errors[id]?.message as string}
-                          placeholder={placeholder}
-                          fullWidth
-                        />
-                      </Grid2>
-                    );
-                  } else if (type === "number") {
-                    return (
-                      <Grid2 xs={12} sm={6} key={id}>
-                        <TextField
-                          type="number"
-                          label={label}
-                          {...register(id)}
-                          error={errors[id] ? true : false}
-                          helperText={errors[id]?.message as string}
-                          placeholder={placeholder}
-                          fullWidth
-                        />
-                      </Grid2>
-                    );
-                  } else if (type === "password") {
-                    return (
-                      <Grid2 xs={12} sm={6} key={id}>
-                        <TextField
-                          label={label}
-                          type="password"
-                          {...register(id)}
-                          error={errors[id] ? true : false}
-                          helperText={errors[id]?.message as string}
-                          placeholder={placeholder}
-                          fullWidth
-                        />
-                      </Grid2>
-                    );
-                  }
-                  return (
-                    <Grid2 xs={12} sm={6} key={id}>
-                      <TextField
-                        label={label}
-                        {...register(id)}
-                        error={errors[id] ? true : false}
-                        helperText={errors[id]?.message as string}
-                        placeholder={placeholder}
-                        fullWidth
-                      />
-                    </Grid2>
-                  );
-                }
+              {activeStep === 0 && (
+                <EmpPersonalInfoStep register={register} errors={errors} />
+              )}
+              {activeStep === 1 && (
+                <EmpContactInfoStep register={register} errors={errors} />
+              )}
+              {activeStep === 2 && (
+                <EmpDepartmentAndRoleStep register={register} errors={errors} />
+              )}
+              {activeStep === 3 && (
+                <EmpAccountDetails register={register} errors={errors} />
               )}
             </Grid2>
           </Stack>
         </Box>
-        {/* {isLastStep && (
-          <Box sx={{ p: 2 }}>
-            {currentStepDetails.fields.map(({ id, label }, i) => (
-              <FormGroup key={i}>
-                <FormControlLabel
-                  {...register(id)}
-                  control={<Checkbox />}
-                  label={label}
-                />
-              </FormGroup>
-            ))}
-          </Box>
-        )} */}
+
         {/* STEP NAVIGATION */}
         <Stack
           direction="row"

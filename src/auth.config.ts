@@ -24,6 +24,8 @@ export default {
           try {
             const user = await getUserByEmail(email);
 
+            if (!user?.isActive) return null;
+
             if (!user || !user.password) return null;
 
             const passwordMatch = await compare(password, user.password);

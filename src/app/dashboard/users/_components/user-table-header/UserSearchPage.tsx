@@ -1,6 +1,7 @@
 "use client";
 import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import {
+  Box,
   Button,
   Divider,
   Paper,
@@ -96,13 +97,23 @@ const UserSearchPage = () => {
             Search
           </LoadingButton>
         </Stack>
-        <Button
-          variant="contained"
-          startIcon={<AddOutlinedIcon />}
-          onClick={() => setShowAddEmployeeFormModal(true)}
-        >
-          Add Employee
-        </Button>
+        <Stack gap={2} direction="row">
+          <Button
+            variant="contained"
+            startIcon={<AddOutlinedIcon />}
+            onClick={() => setShowAddEmployeeFormModal(true)}
+          >
+            Add Employee
+          </Button>
+          <Button
+            variant="contained"
+            startIcon={<AddOutlinedIcon />}
+            // onClick={() => setShowAddEmployeeFormModal(true)}
+            disabled={true}
+          >
+            Add Patient
+          </Button>
+        </Stack>
         <AddEmployeeFormModal
           show={showAddEmployeeFormModal}
           setShow={setShowAddEmployeeFormModal}
@@ -178,21 +189,23 @@ const UserSearchPage = () => {
             ) : (
               <TableRow
                 sx={{
-                  "&:last-child td, &:last-child th": { border: 0, p: 0 },
+                  "&:last-child td, &:last-child th": { border: 0 },
                 }}
               >
-                <TableCell component="th" scope="row"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
-                <TableCell align="right"></TableCell>
+                <TableCell component="th" scope="row">
+                  -
+                </TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
+                <TableCell align="left">-</TableCell>
               </TableRow>
             )}
           </TableBody>
         </Table>
       </TableContainer>
-      {!users ||
+      {/* {!users ||
         (users?.length && (
           <Stack
             spacing={1}
@@ -205,7 +218,7 @@ const UserSearchPage = () => {
             <FindInPageOutlinedIcon sx={{ fontSize: 70 }} />
             <Typography>No results found!</Typography>
           </Stack>
-        ))}
+        ))} */}
     </Paper>
   );
 };

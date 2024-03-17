@@ -44,6 +44,9 @@ export async function login(
 
   const existingUser = await getUserByEmail(email);
 
+  if (!existingUser?.isActive)
+    return { error: "Your account has been deactivated." };
+
   if (!existingUser || !existingUser.email || !existingUser.password) {
     return { error: "Email does not exist!" };
   }
@@ -246,6 +249,9 @@ export async function createEmployee(
     email,
     password,
     confirmPassword,
+    employeeRoleId,
+    serviceDepartmentId,
+    clinicalDepartmentId,
   } = validatedData.data;
 
   const isEmailTaken = await getUserByEmail(email);
@@ -269,6 +275,9 @@ export async function createEmployee(
           employee: {
             create: {
               fname,
+              serviceDepartmentId,
+              employeeRoleId,
+              clinicalDepartmentId,
               lname,
               gender: gender as Gender,
               age,

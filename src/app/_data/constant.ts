@@ -65,7 +65,7 @@ export const STEPS: Step[] = [
   },
   {
     id: 3,
-
+    label: "Consent",
     fields: [
       {
         id: "consent",
@@ -118,6 +118,24 @@ export const EMP_STEPS: RegisterEmployeeStep[] = [
   },
   {
     id: 2,
+    label: "Employment Information",
+    description: "Input the role and department assignment of the employee",
+    fields: [
+      {
+        id: "clinicalDepartmentId",
+        label: "Clinical Department",
+        type: "select",
+      },
+      {
+        id: "serviceDepartmentId",
+        label: "Service Department",
+        type: "select",
+      },
+      { id: "employeeRoleId", label: "Role", type: "select" },
+    ],
+  },
+  {
+    id: 3,
     label: "Account Details",
     description: "Input the information needed to create an account",
     fields: [

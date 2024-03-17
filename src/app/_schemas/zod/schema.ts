@@ -56,6 +56,28 @@ export const RegisterEmployeeSchema = z.object({
   email: z.string().email("Email is required!"),
   password: z.string().min(1, "Password is required!"),
   confirmPassword: z.string().min(1, "Password is required!"),
+  // EMPLOYMENT INFO
+  clinicalDepartmentId: z
+    .string()
+    .min(1, "Required field")
+    .regex(
+      new RegExp(/^[^\d]\w*$/),
+      "Username must contain letters and numbers only and must not start with number."
+    ),
+  serviceDepartmentId: z
+    .string()
+    .min(1, "Required field")
+    .regex(
+      new RegExp(/^[^\d]\w*$/),
+      "Username must contain letters and numbers only and must not start with number."
+    ),
+  employeeRoleId: z
+    .string()
+    .min(1, "Required field")
+    .regex(
+      new RegExp(/^[^\d]\w*$/),
+      "Username must contain letters and numbers only and must not start with number."
+    ),
 });
 
 export const ContactInforSchema = z.object({});
