@@ -12,11 +12,13 @@ import {
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import SettingsIcon from "@mui/icons-material/Settings";
+import LockPersonIcon from "@mui/icons-material/LockPerson";
 import ArticleOutlinedIcon from "@mui/icons-material/ArticleOutlined";
 import ExpandMoreOutlinedIcon from "@mui/icons-material/ExpandMoreOutlined";
 import ExpandLessOutlinedIcon from "@mui/icons-material/ExpandLessOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import MedicationIcon from "@mui/icons-material/Medication";
+import DomainIcon from "@mui/icons-material/Domain";
 import FolderOutlinedIcon from "@mui/icons-material/FolderOutlined";
 import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
@@ -57,14 +59,15 @@ const sidebarLinks: SidebarLink = {
         icon: () => <GroupIcon />,
       },
       {
-        label: "Drugs",
-        icon: () => <MedicationIcon />,
-      },
-
-      {
         label: "Appointments",
         icon: () => <CalendarMonthIcon />,
       },
+      { label: "Departments", icon: () => <DomainIcon /> },
+      {
+        label: "Drugs",
+        icon: () => <MedicationIcon />,
+      },
+      { label: "Roles and permissions", icon: () => <LockPersonIcon /> },
     ],
   },
   settings: {

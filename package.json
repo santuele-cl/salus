@@ -25,6 +25,7 @@
     "@mui/lab": "^5.0.0-alpha.166",
     "@mui/material": "^5.15.10",
     "@mui/material-nextjs": "^5.15.9",
+    "@mui/x-data-grid": "^6.19.6",
     "@mui/x-date-pickers": "^6.19.6",
     "@prisma/client": "^5.10.2",
     "@tanstack/react-query": "^5.24.8",
