@@ -1,11 +1,9 @@
-import RolesTable from "./_components/RolesTable";
 import { Paper, Stack, Typography } from "@mui/material";
 import { Suspense } from "react";
-import Search from "./_components/Search";
-import AddRoleFormModal from "./_components/AddRoleFormModal";
-import TableSkeleton from "@/app/_ui/TableSkeleton";
+import ClinicalDepartmentsTable from "./_components/ClinicalDepartmentsTable";
+import AddClinicalDepartmentFormModal from "./_components/AddClinicalDepartmentFormModal";
 
-const RolesAndPermissionPage = async ({
+const page = async ({
   searchParams: { query = "", page = "1" },
 }: {
   searchParams: {
@@ -16,7 +14,7 @@ const RolesAndPermissionPage = async ({
   return (
     <Stack gap={2}>
       <Typography variant="h4" sx={{ my: 2 }}>
-        Roles and Permissions
+        Clinical Departments
       </Typography>
       <Paper elevation={1} sx={{ p: 2 }}>
         <Stack
@@ -26,21 +24,23 @@ const RolesAndPermissionPage = async ({
             alignItems: "center",
           }}
         >
-          <Search placeholder="Search" />
-          <AddRoleFormModal />
+          {/* <Search placeholder="Search" /> */}
+          <AddClinicalDepartmentFormModal />
         </Stack>
       </Paper>
 
       <Paper elevation={1} sx={{ p: 2 }}>
         <Suspense
           key={query + page}
-          fallback={<TableSkeleton />}
-          // fallback={<h1>Loading..</h1>}
+          //   fallback={<InvoicesTableSkeleton />}
+          fallback={<h1>Loading..</h1>}
         >
-          <RolesTable />
+          {/* <RolesTable /> */}
+          <ClinicalDepartmentsTable />
         </Suspense>
       </Paper>
     </Stack>
   );
 };
-export default RolesAndPermissionPage;
+
+export default page;

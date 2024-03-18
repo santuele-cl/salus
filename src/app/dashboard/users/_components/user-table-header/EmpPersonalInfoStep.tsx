@@ -1,6 +1,5 @@
 "use client";
 
-import { getClinicalDepartments } from "@/actions/users/clinical-department";
 import { getEmployeeRoles } from "@/actions/users/employee-role";
 import { getServiceDeparments } from "@/actions/users/service-department";
 import { RegisterEmployeeStep } from "@/app/_data/types";
