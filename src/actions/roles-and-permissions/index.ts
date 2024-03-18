@@ -22,6 +22,12 @@ export async function addRole(roleData: z.infer<typeof RoleSchema>) {
 
   if (!parse.success) return { error: "Invalid data!" };
 
+  const isExisting = await db.employeeRole.findUnique({
+    where: { id: parse.data.id },
+  });
+
+  if (isExisting) return { error: "Role ID taken!" };
+
   const newRole = await db.employeeRole.create({ data: roleData });
   if (!newRole) return { error: "Database error" };
 
@@ -37,7 +43,7 @@ export async function deleteRole(roleId: string) {
     where: { id: roleId },
   });
 
-  if (!existingRole) return { error: "Role not found!" };
+  if (!existingRole) return { error: "Role does not exist!" };
 
   const deletedRole = await db.employeeRole.delete({ where: { id: roleId } });
   if (!deletedRole) return { error: "Database error. Role not deleted!" };
@@ -45,4 +51,31 @@ export async function deleteRole(roleId: string) {
   revalidatePath("/dashboard/roles-and-permissions");
 
   return { success: "Role added!", data: deletedRole };
+}
+
+export async function updateRole(
+  roleId: string,
+  values: Partial<z.infer<typeof RoleSchema>>
+) {
+  if (!values) return { error: "Missing data!" };
+
+  const parse = RoleSchema.safeParse(values);
+
+  if (!parse.success) return { error: "Invalid data!" };
+
+  const isExisting = await db.employeeRole.findUnique({
+    where: { id: roleId },
+  });
+
+  if (!isExisting) return { error: "Role does not exist!" };
+
+  const updatedRole = await db.employeeRole.update({
+    where: { id: roleId },
+    data: { ...parse.data },
+  });
+
+  if (!updatedRole) return { error: "Database error. Update failed!" };
+
+  revalidatePath("/dashboard/roles-and-permissions");
+  return { success: "Update successful!", data: updatedRole };
 }
