@@ -170,12 +170,31 @@ export const PrescriptionSchema = z.object({
   visitId: z.string().optional(),
 });
 
+export const ClinicalDepartmentSchema = z.object({
+  id: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  name: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  head: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  description: z.string().optional(),
+});
+
 export const RoleSchema = z.object({
   id: z.string().min(1, "Required field"),
   roleName: z
     .string()
     .min(1, "Required field")
-    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+    .regex(
+      new RegExp(/^[a-zA-Z_]+$/),
+      "Only letters, space and underscore allowed"
+    ),
 });
 
 export const VisitSchema = z.object({

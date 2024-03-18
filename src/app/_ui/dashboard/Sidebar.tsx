@@ -35,70 +35,98 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { toKebabCase } from "@/app/_utils/utils";
 import { useState } from "react";
+import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-type SidebarLinkType = {
+type Link = {
   label: string;
+  path?: string;
   icon: () => React.ReactNode;
 };
 
-type SidebarLink = {
-  [index: string]: { label: string; links: SidebarLinkType[] };
-  // otherInfo?: { label: string; links: SidebarLinkType[] };
-  // settings?: { label: string; links: SidebarLinkType[] };
+type SidebarLink = Link & {
+  subLinks?: Omit<Link, "icon">[];
 };
-const sidebarLinks: SidebarLink = {
-  general: {
+
+type SidebarLinks = {
+  label: string;
+  links: SidebarLink[];
+};
+
+const sidebarLinks: SidebarLinks[] = [
+  {
     label: "",
     links: [
       {
         label: "Patients",
+        path: "patients",
         icon: () => <FamilyRestroomIcon />,
       },
       {
         label: "Users",
+        path: "users",
         icon: () => <GroupIcon />,
       },
       {
         label: "Appointments",
+        path: "appointments",
         icon: () => <CalendarMonthIcon />,
       },
-      { label: "Departments", icon: () => <DomainIcon /> },
+      {
+        label: "Departments",
+        icon: () => <DomainIcon />,
+        subLinks: [
+          {
+            label: "Clinical Departments",
+            path: "clinical-departments",
+          },
+          {
+            label: "Service Departments",
+            path: "service-departments",
+          },
+        ],
+      },
       {
         label: "Drugs",
+        path: "drugs",
         icon: () => <MedicationIcon />,
       },
-      { label: "Roles and permissions", icon: () => <LockPersonIcon /> },
+      {
+        label: "Roles and permissions",
+        path: "roles-and-permissions",
+        icon: () => <LockPersonIcon />,
+      },
     ],
   },
-  settings: {
+  {
     label: "Account Settings",
     links: [
       {
         label: "Settings",
+        path: "settings",
         icon: () => <SettingsIcon />,
+      },
+      {
+        label: "Logs",
+        icon: () => <ArticleOutlinedIcon />,
+        subLinks: [
+          {
+            label: "Login",
+            path: "login-logs",
+          },
+          {
+            label: "Error",
+            path: "error-logs",
+          },
+        ],
       },
     ],
   },
-  // otherInfo: {
-  //   label: "Other information",
-  //   links: [
-  //     { label: "Knowledge Base", icon: () => <HelpOutlineOutlinedIcon /> },
-  //   ],
-  // },
-  // settings: {
-  //   label: "Settings",
-  //   links: [
-  //     {
-  //       label: "Personal Settings",
-  //       icon: () => <ManageAccountsOutlinedIcon />,
-  //     },
-  //   ],
-  // },
-};
+];
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
-  const [logsDrop, setLogsDrop] = useState(true);
+  // setOpen(prev => {return {...prev, asdlfk: true}})
   const segments = usePathname().split("/");
+
   return (
     <List
       sx={{
@@ -112,71 +140,82 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
     >
       {children}
 
-      {Object.keys(sidebarLinks).map((key, i) => (
-        <Box key={key + String(i)}>
-          {sidebarLinks[key].label && (
-            <ListSubheader component="div">
-              {sidebarLinks[key].label}
-            </ListSubheader>
-          )}
-          {sidebarLinks[key].links.map(({ label, icon }, i) => (
-            <ListItemButton
-              sx={() => {
-                const style: SxProps = {
-                  bgcolor: "primary.main",
-                  color: "common.white",
-                };
+      {sidebarLinks.map(({ label, links }, i) => {
+        return (
+          <Box key={label + String(i)}>
+            {label && <ListSubheader component="div">{label}</ListSubheader>}
 
-                return {
-                  "&.Mui-selected:hover, &.Mui-selected, :hover": style,
-                  "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
-                    { color: "#fff" },
-                };
-              }}
-              key={label + String(i)}
-              selected={segments[2] === toKebabCase(label)}
-              LinkComponent={Link}
-              href={`/dashboard/${toKebabCase(label)}`}
-            >
-              <ListItemIcon
-                sx={{
-                  "&.Mui-selected": { color: "common.white !important" },
-                }}
-              >
-                {icon()}
-              </ListItemIcon>
-              <ListItemText primary={label} />
-            </ListItemButton>
-          ))}
-        </Box>
-      ))}
-      <ListItemButton onClick={() => setLogsDrop((prev) => !prev)}>
-        <ListItemIcon>
-          <ArticleOutlinedIcon />
-        </ListItemIcon>
-        <ListItemText primary="Logs" />
-        {logsDrop ? (
-          <ExpandLessOutlinedIcon sx={{ fontSize: 20 }} />
-        ) : (
-          <ExpandMoreOutlinedIcon sx={{ fontSize: 20 }} />
-        )}
-      </ListItemButton>
-      <Collapse in={logsDrop} timeout="auto" unmountOnExit>
-        <List component="div" disablePadding>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <LockOpenOutlinedIcon />
-            </ListItemIcon>
-            <ListItemText primary="Login" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }}>
-            <ListItemIcon>
-              <ErrorOutlineIcon />
-            </ListItemIcon>
-            <ListItemText primary="Error" />
-          </ListItemButton>
-        </List>
-      </Collapse>
+            {links.map(({ label, icon, subLinks }, i) => {
+              if (subLinks) {
+                return (
+                  <Box key={label + i}>
+                    <ListItemButton>
+                      <ListItemIcon>{icon()}</ListItemIcon>
+                      <ListItemText primary={label} />
+                    </ListItemButton>
+                    <List component="div" disablePadding>
+                      {subLinks.map(({ label, path }, j) => {
+                        if (path)
+                          return (
+                            <ListItemButton
+                              sx={{ pl: 4 }}
+                              LinkComponent={Link}
+                              href={path}
+                              key={j}
+                            >
+                              <ListItemIcon>
+                                <FiberManualRecordIcon sx={{ fontSize: 12 }} />
+                              </ListItemIcon>
+                              <ListItemText primary={label} />
+                            </ListItemButton>
+                          );
+                        else
+                          return (
+                            <ListItemButton sx={{ pl: 4 }} key={j}>
+                              <ListItemIcon>
+                                <FiberManualRecordIcon sx={{ fontSize: 12 }} />
+                              </ListItemIcon>
+                              <ListItemText primary={label} />
+                            </ListItemButton>
+                          );
+                      })}
+                    </List>
+                  </Box>
+                );
+              } else
+                return (
+                  <ListItemButton
+                    sx={() => {
+                      const style: SxProps = {
+                        bgcolor: "primary.main",
+                        color: "common.white",
+                      };
+
+                      return {
+                        "&.Mui-selected:hover, &.Mui-selected, :hover": style,
+                        "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
+                          { color: "#fff" },
+                      };
+                    }}
+                    key={label + String(i)}
+                    selected={segments[2] === toKebabCase(label)}
+                    LinkComponent={Link}
+                    href={`/dashboard/${toKebabCase(label)}`}
+                  >
+                    <ListItemIcon
+                      sx={{
+                        "&.Mui-selected": { color: "common.white !important" },
+                      }}
+                    >
+                      {icon()}
+                    </ListItemIcon>
+                    <ListItemText primary={label} />
+                  </ListItemButton>
+                );
+            })}
+          </Box>
+        );
+      })}
     </List>
   );
 }

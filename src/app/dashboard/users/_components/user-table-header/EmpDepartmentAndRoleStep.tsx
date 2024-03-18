@@ -1,6 +1,6 @@
 "use client";
 
-import { getClinicalDepartments } from "@/actions/users/clinical-department";
+import { getClinicalDepartments } from "@/actions/departments/clinical-departments";
 import { getEmployeeRoles } from "@/actions/users/employee-role";
 import { getServiceDeparments } from "@/actions/users/service-department";
 import { MenuItem, TextField } from "@mui/material";
