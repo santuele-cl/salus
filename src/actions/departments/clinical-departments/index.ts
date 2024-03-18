@@ -38,3 +38,24 @@ export const addClinicalDepartment = async (
     data: newClinicalDepartment,
   };
 };
+
+export async function deleteClinicalDepartment(clinicalDepartmentId: string) {
+  if (!clinicalDepartmentId) return { error: "Role ID missing!" };
+
+  const existingClinicalDepartment = await db.clinicalDepartment.findUnique({
+    where: { id: clinicalDepartmentId },
+  });
+
+  if (!existingClinicalDepartment)
+    return { error: "Clinical department does not exist!" };
+
+  const deletedClinicalDepartment = await db.clinicalDepartment.delete({
+    where: { id: clinicalDepartmentId },
+  });
+  if (!deletedClinicalDepartment)
+    return { error: "Database error. Clinical department not deleted!" };
+
+  revalidatePath("/dashboard/clinical-departments");
+
+  return { success: "Role added!", data: deletedClinicalDepartment };
+}

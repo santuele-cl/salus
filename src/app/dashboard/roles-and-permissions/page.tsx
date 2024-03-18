@@ -1,9 +1,9 @@
 import RolesTable from "./_components/RolesTable";
 import { Paper, Stack, Typography } from "@mui/material";
 import { Suspense } from "react";
-import Search from "./_components/Search";
 import AddRoleFormModal from "./_components/AddRoleFormModal";
 import TableSkeleton from "@/app/_ui/TableSkeleton";
+import RoleSearch from "./_components/Search";
 
 const RolesAndPermissionPage = async ({
   searchParams: { query = "", page = "1" },
@@ -26,7 +26,7 @@ const RolesAndPermissionPage = async ({
             alignItems: "center",
           }}
         >
-          <Search placeholder="Search" />
+          <RoleSearch placeholder="Search" />
           <AddRoleFormModal />
         </Stack>
       </Paper>

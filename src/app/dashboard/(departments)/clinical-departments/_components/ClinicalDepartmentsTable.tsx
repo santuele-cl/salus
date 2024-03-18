@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@mui/material";
 import dayjs from "dayjs";
+import DeleteClinicalDepartment from "./DeleteRole";
 
 const ClinicalDepartmentsTable = async () => {
   const response = await getClinicalDepartments();
@@ -92,15 +93,7 @@ const ClinicalDepartmentsTable = async () => {
                         gap: 1,
                       }}
                     >
-                      <Button
-                        variant="outlined"
-                        color="error"
-                        //   LinkComponent={Link}
-                        //   href={`${pathname}/${id}/visit-history`}
-                        // onClick={() => deleteRole(id)}
-                      >
-                        DELETE
-                      </Button>
+                      <DeleteClinicalDepartment clinicalDepartmentId={id} />
                       <Button
                         variant="contained"
                         //   LinkComponent={Link}
