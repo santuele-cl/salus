@@ -10,7 +10,8 @@ import {
   TableRow,
 } from "@mui/material";
 import dayjs from "dayjs";
-import DeleteClinicalDepartment from "./DeleteRole";
+import DeleteClinicalDepartment from "./DeleteClinicalDepartment";
+import EditClinicalDepartmentFormModal from "./EditClinicalDepartmentFormModal";
 
 const ClinicalDepartmentsTable = async () => {
   const response = await getClinicalDepartments();
@@ -63,9 +64,9 @@ const ClinicalDepartmentsTable = async () => {
         </TableHead>
         <TableBody>
           {response && response.data && response.data.length ? (
-            response.data.map((role) => {
+            response.data.map((clinicalDepartment) => {
               const { id, description, createdAt, updatedAt, head, name } =
-                role;
+                clinicalDepartment;
               return (
                 <TableRow
                   key={id}
@@ -93,14 +94,13 @@ const ClinicalDepartmentsTable = async () => {
                         gap: 1,
                       }}
                     >
-                      <DeleteClinicalDepartment clinicalDepartmentId={id} />
-                      <Button
-                        variant="contained"
-                        //   LinkComponent={Link}
-                        //   href={`${pathname}/${id}/visit-history`}
-                      >
-                        UPDATE
-                      </Button>
+                      <DeleteClinicalDepartment
+                        clinicalDepartmentId={id}
+                        clinicalDepartmentName={name}
+                      />
+                      <EditClinicalDepartmentFormModal
+                        clinicalDepartment={clinicalDepartment}
+                      />
                     </Stack>
                   </TableCell>
                 </TableRow>

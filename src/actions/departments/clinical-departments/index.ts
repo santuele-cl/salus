@@ -39,8 +39,39 @@ export const addClinicalDepartment = async (
   };
 };
 
+export async function updateClinicalDepartment(
+  clinicalDepartmentId: string,
+  values: Partial<z.infer<typeof ClinicalDepartmentSchema>>
+) {
+  if (!values) return { error: "Missing data!" };
+
+  const parse = ClinicalDepartmentSchema.safeParse(values);
+
+  if (!parse.success) return { error: "Invalid data!" };
+
+  const isExisting = await db.clinicalDepartment.findUnique({
+    where: { id: clinicalDepartmentId },
+  });
+
+  if (!isExisting) return { error: "Clinical department does not exist!" };
+
+  const updatedClinicalDepartment = await db.clinicalDepartment.update({
+    where: { id: clinicalDepartmentId },
+    data: { ...parse.data },
+  });
+
+  if (!updatedClinicalDepartment)
+    return { error: "Database error. Update failed!" };
+
+  revalidatePath("/dashboard/clinical-departments");
+  return {
+    success: `${updatedClinicalDepartment.name} updated!`,
+    data: updatedClinicalDepartment,
+  };
+}
+
 export async function deleteClinicalDepartment(clinicalDepartmentId: string) {
-  if (!clinicalDepartmentId) return { error: "Role ID missing!" };
+  if (!clinicalDepartmentId) return { error: "Clinical deparment ID missing!" };
 
   const existingClinicalDepartment = await db.clinicalDepartment.findUnique({
     where: { id: clinicalDepartmentId },
@@ -57,5 +88,8 @@ export async function deleteClinicalDepartment(clinicalDepartmentId: string) {
 
   revalidatePath("/dashboard/clinical-departments");
 
-  return { success: "Role added!", data: deletedClinicalDepartment };
+  return {
+    success: `${deletedClinicalDepartment.name} clinical department deleted!`,
+    data: deletedClinicalDepartment,
+  };
 }

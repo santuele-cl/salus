@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import { ClinicalDepartment } from "@prisma/client";
+import { updateClinicalDepartment } from "@/actions/departments/clinical-departments";
 
 export default function EditClinicalDeparmentForm({
   setOpen,
@@ -52,7 +53,7 @@ export default function EditClinicalDeparmentForm({
     setError("");
     setSuccess("");
     try {
-      const res = await updateRole(clinicalDepartment.id, data);
+      const res = await updateClinicalDepartment(clinicalDepartment.id, data);
       console.log("res", res);
       if (res?.error) {
         reset();
@@ -77,7 +78,7 @@ export default function EditClinicalDeparmentForm({
           alignItems: "flex-start",
         }}
       >
-        <Typography variant="h6">Edit Role</Typography>
+        <Typography variant="h6">Edit Clinical Department</Typography>
         <IconButton onClick={() => setOpen(false)} color="error" size="small">
           <CloseOutlinedIcon fontSize="medium" />
         </IconButton>
@@ -86,7 +87,7 @@ export default function EditClinicalDeparmentForm({
       <Divider sx={{ my: 2 }} />
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
         <TextField
-          label="Role ID"
+          label="Department ID"
           {...register("id")}
           error={errors.id ? true : false}
           helperText={errors.id?.message}
