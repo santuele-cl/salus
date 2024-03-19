@@ -2,6 +2,8 @@ import { Paper, Stack, Typography } from "@mui/material";
 import { Suspense } from "react";
 import ClinicalDepartmentsTable from "./_components/ClinicalDepartmentsTable";
 import AddClinicalDepartmentFormModal from "./_components/AddClinicalDepartmentFormModal";
+import TableSkeleton from "@/app/_ui/TableSkeleton";
+import ClinicalDepartmentSearch from "./_components/ClinicalDepartmentSearch";
 
 const page = async ({
   searchParams: { query = "", page = "1" },
@@ -24,18 +26,13 @@ const page = async ({
             alignItems: "center",
           }}
         >
-          {/* <Search placeholder="Search" /> */}
+          <ClinicalDepartmentSearch placeholder="Search" />
           <AddClinicalDepartmentFormModal />
         </Stack>
       </Paper>
 
       <Paper elevation={1} sx={{ p: 2 }}>
-        <Suspense
-          key={query + page}
-          //   fallback={<InvoicesTableSkeleton />}
-          fallback={<h1>Loading..</h1>}
-        >
-          {/* <RolesTable /> */}
+        <Suspense key={query + page} fallback={<TableSkeleton />}>
           <ClinicalDepartmentsTable />
         </Suspense>
       </Paper>

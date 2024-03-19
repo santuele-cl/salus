@@ -5,7 +5,11 @@ import { useDebouncedCallback } from "use-debounce";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import { Stack, TextField } from "@mui/material";
 
-export default function RoleSearch({ placeholder }: { placeholder: string }) {
+export default function ClinicalDepartmentSearch({
+  placeholder,
+}: {
+  placeholder: string;
+}) {
   const searchParams = useSearchParams();
   const { replace } = useRouter();
   const pathname = usePathname();
