@@ -20,9 +20,9 @@ import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { addPrescription } from "@/actions/patients/prescriptions";
 import { Drugs } from "@prisma/client";
-import { getDrugs } from "@/actions/patients/drugs";
 import DrugsOptions from "../DrugsOptions";
 import { useSession } from "next-auth/react";
+import { getDrugs } from "@/actions/drugs";
 
 interface PrescriptionFieldType {
   id: keyof z.infer<typeof PrescriptionSchema>;

@@ -108,6 +108,29 @@ export const AllergySchema = z.object({
   patientId: z.string().min(1, "Patiend ID is required"),
 });
 
+export const DrugSchema = z.object({
+  id: z
+    .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z][a-zA-Z0-9]*$/), "Invalid input"),
+  name: z
+    .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  drugCategoryId: z
+    .string({
+      invalid_type_error: "Invalid input",
+    })
+    .min(1, "required"),
+  drugFormId: z.string().min(1, "required"),
+  strength: z.string().min(1, "required"),
+  manufacturer: z
+    .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  priceInCents: z.coerce.number(),
+});
+
 export const DiagnosisSchema = z.object({
   condition: z
     .string()

@@ -2,9 +2,10 @@
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { Button, Modal, Stack } from "@mui/material";
 import { useState } from "react";
-import AddClinicalDepartmentsForm from "./AddClinicalDepartmentsForm";
+import AddDrugForm from "./AddDrugForm";
+// import AddServiceDepartmentsForm from "./AddServiceDepartmentForm";
 
-const AddClinicalDepartmentFormModal = () => {
+export default function AddDrugFormModal() {
   const [open, setOpen] = useState(false);
   return (
     <Stack>
@@ -14,7 +15,7 @@ const AddClinicalDepartmentFormModal = () => {
         size="large"
         onClick={() => setOpen(true)}
       >
-        Add Clinical Deparment
+        Add Drug
       </Button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <Stack
@@ -24,10 +25,9 @@ const AddClinicalDepartmentFormModal = () => {
             minHeight: "100vh",
           }}
         >
-          <AddClinicalDepartmentsForm setOpen={setOpen} />
+          <AddDrugForm setOpen={setOpen} />
         </Stack>
       </Modal>
     </Stack>
   );
-};
-export default AddClinicalDepartmentFormModal;
+}

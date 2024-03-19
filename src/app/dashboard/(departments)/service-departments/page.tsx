@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import TableSkeleton from "@/app/_ui/TableSkeleton";
 import ServiceDepartmentsTable from "./_components/ServiceDepartmentsTable";
 import AddServiceDepartmentFormModal from "./_components/AddServiceDepartmentFormModal";
-import ServiceDepartmentSearch from "./ServiceDepartmentSearch";
+import ServiceDepartmentSearch from "./_components/ServiceDepartmentSearch";
 
 export default async function ServiceDepartmentsPage({
   searchParams: { query = "", page = "1" },

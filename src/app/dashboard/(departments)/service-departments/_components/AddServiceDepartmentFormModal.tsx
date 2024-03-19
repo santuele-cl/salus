@@ -14,7 +14,7 @@ export default function AddServiceDepartmentFormModal() {
         size="large"
         onClick={() => setOpen(true)}
       >
-        Create Service Department
+        Add Service Department
       </Button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <Stack

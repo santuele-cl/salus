@@ -16,7 +16,6 @@ import { z } from "zod";
 import { LaboratoryRequestSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { LaboratoryProcedures } from "@prisma/client";
-import { getDrugs } from "@/actions/patients/drugs";
 import { useSession } from "next-auth/react";
 import { getLaboratoryProcedures } from "@/actions/patients/laboratory-procedures";
 import { postLaboratoryRequest } from "@/actions/patients/laboratory-requests";
