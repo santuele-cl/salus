@@ -10,20 +10,20 @@ import {
   Typography,
 } from "@mui/material";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import { deleteClinicalDepartment } from "@/actions/departments/clinical-departments";
 import { useState } from "react";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import { deleteServiceDepartment } from "@/actions/departments/service-deparments";
 
-export default function DeleteClinicalDepartment({
-  clinicalDepartmentId,
-  clinicalDepartmentName,
+export default function DeleteServiceDepartment({
+  serviceDepartmentId,
+  serviceDepartmentName,
 }: {
-  clinicalDepartmentName: string;
-  clinicalDepartmentId: string;
+  serviceDepartmentName: string;
+  serviceDepartmentId: string;
 }) {
-  const deleteClinicalDepartmentWithId = deleteClinicalDepartment.bind(
+  const deleteServiceDepartmentWithId = deleteServiceDepartment.bind(
     null,
-    clinicalDepartmentId
+    serviceDepartmentId
   );
   const [open, setOpen] = useState(false);
 
@@ -38,7 +38,7 @@ export default function DeleteClinicalDepartment({
           }}
         >
           <Paper sx={{ p: 3, width: 450 }}>
-            <form action={deleteClinicalDepartmentWithId}>
+            <form action={deleteServiceDepartmentWithId}>
               <Stack
                 sx={{
                   flexDirection: "row",
@@ -66,7 +66,7 @@ export default function DeleteClinicalDepartment({
                     sx={{ fontWeight: 600, mx: 1 }}
                     variant="h5"
                   >
-                    {clinicalDepartmentName}
+                    {serviceDepartmentName}
                   </Typography>
                   ?
                 </Typography>

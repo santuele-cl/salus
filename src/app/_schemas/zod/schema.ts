@@ -186,6 +186,22 @@ export const ClinicalDepartmentSchema = z.object({
   description: z.string().optional(),
 });
 
+export const ServiceDepartmentSchema = z.object({
+  id: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  name: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  head: z
+    .string()
+    .min(1, "Required field")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  description: z.string().optional(),
+});
+
 export const RoleSchema = z.object({
   id: z.string().min(1, "Required field"),
   roleName: z
