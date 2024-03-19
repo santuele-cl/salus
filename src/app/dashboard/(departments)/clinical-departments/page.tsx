@@ -5,7 +5,7 @@ import AddClinicalDepartmentFormModal from "./_components/AddClinicalDepartmentF
 import TableSkeleton from "@/app/_ui/TableSkeleton";
 import ClinicalDepartmentSearch from "./_components/ClinicalDepartmentSearch";
 
-const page = async ({
+const ClinicalDepartmentsPage = async ({
   searchParams: { query = "", page = "1" },
 }: {
   searchParams: {
@@ -40,4 +40,4 @@ const page = async ({
   );
 };
 
-export default page;
+export default ClinicalDepartmentsPage;

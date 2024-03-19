@@ -1,6 +1,5 @@
 "use client";
-
-import { ClinicalDepartmentSchema } from "@/app/_schemas/zod/schema";
+import { ServiceDepartmentSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,14 +15,14 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { ClinicalDepartment } from "@prisma/client";
-import { updateClinicalDepartment } from "@/actions/departments/clinical-departments";
+import { ServiceDepartment } from "@prisma/client";
+import { updateServiceDepartment } from "@/actions/departments/service-deparments";
 
-export default function EditClinicalDeparmentForm({
+export default function EditServiceDepartmentForm({
   setOpen,
-  clinicalDepartment,
+  serviceDepartment,
 }: {
-  clinicalDepartment: ClinicalDepartment;
+  serviceDepartment: ServiceDepartment;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [pending, setPending] = useState(false);
@@ -35,22 +34,22 @@ export default function EditClinicalDeparmentForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<z.infer<typeof ClinicalDepartmentSchema>>({
-    resolver: zodResolver(ClinicalDepartmentSchema),
+  } = useForm<z.infer<typeof ServiceDepartmentSchema>>({
+    resolver: zodResolver(ServiceDepartmentSchema),
     defaultValues: {
-      id: clinicalDepartment.id,
-      name: clinicalDepartment.name,
-      head: clinicalDepartment.head,
-      description: clinicalDepartment.description || "",
+      id: serviceDepartment.id,
+      name: serviceDepartment.name,
+      head: serviceDepartment.head,
+      description: serviceDepartment.description || "",
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof ClinicalDepartmentSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ServiceDepartmentSchema>) => {
     setPending(true);
     setError("");
     setSuccess("");
     try {
-      const res = await updateClinicalDepartment(clinicalDepartment.id, data);
+      const res = await updateServiceDepartment(serviceDepartment.id, data);
       console.log("res", res);
       if (res?.error) {
         reset();
@@ -75,7 +74,7 @@ export default function EditClinicalDeparmentForm({
           alignItems: "flex-start",
         }}
       >
-        <Typography variant="h6">Edit Clinical Department</Typography>
+        <Typography variant="h6">Edit Service Department</Typography>
         <IconButton onClick={() => setOpen(false)} color="error" size="small">
           <CloseOutlinedIcon fontSize="medium" />
         </IconButton>

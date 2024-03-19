@@ -1,6 +1,6 @@
 "use client";
 
-import { ClinicalDepartmentSchema } from "@/app/_schemas/zod/schema";
+import { ServiceDepartmentSchema } from "@/app/_schemas/zod/schema";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -16,14 +16,11 @@ import { Dispatch, SetStateAction, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
-import { ClinicalDepartment } from "@prisma/client";
-import { updateClinicalDepartment } from "@/actions/departments/clinical-departments";
+import { addServiceDepartment } from "@/actions/departments/service-deparments";
 
-export default function EditClinicalDeparmentForm({
+export default function AddServiceDepartmentsForm({
   setOpen,
-  clinicalDepartment,
 }: {
-  clinicalDepartment: ClinicalDepartment;
   setOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   const [pending, setPending] = useState(false);
@@ -35,22 +32,17 @@ export default function EditClinicalDeparmentForm({
     handleSubmit,
     formState: { errors, isSubmitting },
     reset,
-  } = useForm<z.infer<typeof ClinicalDepartmentSchema>>({
-    resolver: zodResolver(ClinicalDepartmentSchema),
-    defaultValues: {
-      id: clinicalDepartment.id,
-      name: clinicalDepartment.name,
-      head: clinicalDepartment.head,
-      description: clinicalDepartment.description || "",
-    },
+  } = useForm<z.infer<typeof ServiceDepartmentSchema>>({
+    resolver: zodResolver(ServiceDepartmentSchema),
+    defaultValues: { id: "", description: "", name: "", head: "" },
   });
 
-  const onSubmit = async (data: z.infer<typeof ClinicalDepartmentSchema>) => {
+  const onSubmit = async (data: z.infer<typeof ServiceDepartmentSchema>) => {
     setPending(true);
     setError("");
     setSuccess("");
     try {
-      const res = await updateClinicalDepartment(clinicalDepartment.id, data);
+      const res = await addServiceDepartment(data);
       console.log("res", res);
       if (res?.error) {
         reset();
@@ -61,7 +53,7 @@ export default function EditClinicalDeparmentForm({
         setSuccess(res.success);
       }
     } catch {
-      setError("Something went wrong!");
+      setError("Something went asd wrong!");
     } finally {
       setPending(false);
     }
@@ -75,7 +67,7 @@ export default function EditClinicalDeparmentForm({
           alignItems: "flex-start",
         }}
       >
-        <Typography variant="h6">Edit Clinical Department</Typography>
+        <Typography variant="h6">New Service Department</Typography>
         <IconButton onClick={() => setOpen(false)} color="error" size="small">
           <CloseOutlinedIcon fontSize="medium" />
         </IconButton>
@@ -88,30 +80,30 @@ export default function EditClinicalDeparmentForm({
           {...register("id")}
           error={errors.id ? true : false}
           helperText={errors.id?.message}
+          // placeholder="123456"
           disabled={isSubmitting}
         />
         <TextField
-          label="Department Name"
+          label="Deptment Name"
           {...register("name")}
           error={errors.name ? true : false}
           helperText={errors.name?.message}
           disabled={isSubmitting}
         />
         <TextField
-          label="Department Head"
+          label="Deptment Head"
           {...register("head")}
           error={errors.head ? true : false}
           helperText={errors.head?.message}
           disabled={isSubmitting}
         />
         <TextField
-          label="Description"
+          label="Description (optional)"
           {...register("description")}
           error={errors.description ? true : false}
           helperText={errors.description?.message}
           disabled={isSubmitting}
         />
-
         {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}
         <Button
@@ -128,7 +120,7 @@ export default function EditClinicalDeparmentForm({
           disabled={isSubmitting}
           sx={{ p: 2 }}
         >
-          Update
+          Add
         </Button>
       </Stack>
     </Paper>
