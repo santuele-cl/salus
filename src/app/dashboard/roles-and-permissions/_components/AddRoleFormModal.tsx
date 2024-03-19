@@ -15,7 +15,7 @@ const AddRoleFormModal = () => {
         size="large"
         onClick={() => setOpen(true)}
       >
-        Add New Role
+        Add Role
       </Button>
       <Modal open={open} onClose={() => setOpen(false)}>
         <Stack
