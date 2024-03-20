@@ -37,14 +37,10 @@ import { toKebabCase } from "@/app/_utils/utils";
 import { useState } from "react";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
 
-type Link = {
+type SidebarLink = {
   label: string;
   path?: string;
   icon: () => React.ReactNode;
-};
-
-type SidebarLink = Link & {
-  subLinks?: Omit<Link, "icon">[];
 };
 
 type SidebarLinks = {
@@ -73,17 +69,8 @@ const sidebarLinks: SidebarLinks[] = [
       },
       {
         label: "Departments",
+        path: "departments/clinical-departments",
         icon: () => <DomainIcon />,
-        subLinks: [
-          {
-            label: "Clinical Departments",
-            path: "clinical-departments",
-          },
-          {
-            label: "Service Departments",
-            path: "service-departments",
-          },
-        ],
       },
       {
         label: "Drugs",
@@ -95,6 +82,11 @@ const sidebarLinks: SidebarLinks[] = [
         path: "roles-and-permissions",
         icon: () => <LockPersonIcon />,
       },
+      {
+        label: "Logs",
+        icon: () => <ArticleOutlinedIcon />,
+        path: "logs/login",
+      },
     ],
   },
   {
@@ -104,20 +96,6 @@ const sidebarLinks: SidebarLinks[] = [
         label: "Settings",
         path: "settings",
         icon: () => <SettingsIcon />,
-      },
-      {
-        label: "Logs",
-        icon: () => <ArticleOutlinedIcon />,
-        subLinks: [
-          {
-            label: "Login",
-            path: "login-logs",
-          },
-          {
-            label: "Error",
-            path: "error-logs",
-          },
-        ],
       },
     ],
   },
@@ -131,7 +109,7 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
     <List
       sx={{
         height: "100%",
-        width: 250,
+        width: 330,
 
         p: 2,
       }}
@@ -145,73 +123,36 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
           <Box key={label + String(i)}>
             {label && <ListSubheader component="div">{label}</ListSubheader>}
 
-            {links.map(({ label, icon, subLinks }, i) => {
-              if (subLinks) {
-                return (
-                  <Box key={label + i}>
-                    <ListItemButton>
-                      <ListItemIcon>{icon()}</ListItemIcon>
-                      <ListItemText primary={label} />
-                    </ListItemButton>
-                    <List component="div" disablePadding>
-                      {subLinks.map(({ label, path }, j) => {
-                        if (path)
-                          return (
-                            <ListItemButton
-                              sx={{ pl: 4 }}
-                              LinkComponent={Link}
-                              href={path}
-                              key={j}
-                            >
-                              <ListItemIcon>
-                                <FiberManualRecordIcon sx={{ fontSize: 12 }} />
-                              </ListItemIcon>
-                              <ListItemText primary={label} />
-                            </ListItemButton>
-                          );
-                        else
-                          return (
-                            <ListItemButton sx={{ pl: 4 }} key={j}>
-                              <ListItemIcon>
-                                <FiberManualRecordIcon sx={{ fontSize: 12 }} />
-                              </ListItemIcon>
-                              <ListItemText primary={label} />
-                            </ListItemButton>
-                          );
-                      })}
-                    </List>
-                  </Box>
-                );
-              } else
-                return (
-                  <ListItemButton
-                    sx={() => {
-                      const style: SxProps = {
-                        bgcolor: "primary.main",
-                        color: "common.white",
-                      };
+            {links.map(({ label, icon, path }, i) => {
+              return (
+                <ListItemButton
+                  sx={() => {
+                    const style: SxProps = {
+                      bgcolor: "primary.main",
+                      color: "common.white",
+                    };
 
-                      return {
-                        "&.Mui-selected:hover, &.Mui-selected, :hover": style,
-                        "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
-                          { color: "#fff" },
-                      };
+                    return {
+                      "&.Mui-selected:hover, &.Mui-selected, :hover": style,
+                      "&.Mui-selected .MuiListItemIcon-root, :hover .MuiListItemIcon-root":
+                        { color: "#fff" },
+                    };
+                  }}
+                  key={label + String(i)}
+                  selected={segments[2] === toKebabCase(label)}
+                  LinkComponent={Link}
+                  href={`/dashboard/${path}`}
+                >
+                  <ListItemIcon
+                    sx={{
+                      "&.Mui-selected": { color: "common.white !important" },
                     }}
-                    key={label + String(i)}
-                    selected={segments[2] === toKebabCase(label)}
-                    LinkComponent={Link}
-                    href={`/dashboard/${toKebabCase(label)}`}
                   >
-                    <ListItemIcon
-                      sx={{
-                        "&.Mui-selected": { color: "common.white !important" },
-                      }}
-                    >
-                      {icon()}
-                    </ListItemIcon>
-                    <ListItemText primary={label} />
-                  </ListItemButton>
-                );
+                    {icon()}
+                  </ListItemIcon>
+                  <ListItemText primary={label} />
+                </ListItemButton>
+              );
             })}
           </Box>
         );

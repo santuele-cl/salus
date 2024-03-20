@@ -11,6 +11,7 @@ import {
   DRUG_FORMS,
   SAMPLE_DRUGS,
 } from "../_data/tpdh/drugs";
+import { SAMPLE_LOGS } from "../_data/tpdh/sample-logs";
 
 const db = new PrismaClient();
 
@@ -812,10 +813,32 @@ const seed = async () => {
 
   const APPOINTMENTS = await db.appointments.createMany({
     data: [
-      {id: "APPOINTMENT_1", patientId: "PATIENT3", title: "Appointment 1", status: "SCHEDULED", reason: "reason", room: "123", employeeId: "EMP1", endDate: new Date(2024, 2, 15, 12, 0, 0), startDate: new Date(2024, 2, 15, 11, 0, 0)},
-      {id: "APPOINTMENT_2", patientId: "PATIENT2", title: "Appointment 2", status: "SCHEDULED", reason: "reason", room: "123", employeeId: "EMP1", endDate: new Date(2024, 2, 15, 16, 30, 0), startDate: new Date(2024, 2, 15, 14, 0, 0)},
-    ]
-  })
+      {
+        id: "APPOINTMENT_1",
+        patientId: "PATIENT3",
+        title: "Appointment 1",
+        status: "SCHEDULED",
+        reason: "reason",
+        room: "123",
+        employeeId: "EMP1",
+        endDate: new Date(2024, 2, 15, 12, 0, 0),
+        startDate: new Date(2024, 2, 15, 11, 0, 0),
+      },
+      {
+        id: "APPOINTMENT_2",
+        patientId: "PATIENT2",
+        title: "Appointment 2",
+        status: "SCHEDULED",
+        reason: "reason",
+        room: "123",
+        employeeId: "EMP1",
+        endDate: new Date(2024, 2, 15, 16, 30, 0),
+        startDate: new Date(2024, 2, 15, 14, 0, 0),
+      },
+    ],
+  });
+
+  const SEEDED_LOGS = await db.log.createMany({ data: SAMPLE_LOGS });
 
   // const PATI = await db.user.create({
   //   data: {
