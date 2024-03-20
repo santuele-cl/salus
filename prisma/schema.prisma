@@ -25,6 +25,7 @@ model User {
   updatedAt             DateTime               @updatedAt
 
   profile Profile?
+  Log     Log[]
 }
 
 model Profile {
@@ -106,6 +107,25 @@ model Patient {
 
   profile   Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
   profileId String  @unique
+}
+
+enum LogType {
+  LOGIN
+  REGISTER
+  ERROR
+  OTHER
+}
+
+model Log {
+  id           String   @id @default(nanoid(16))
+  type         LogType  @default(OTHER)
+  userId       String?
+  logTime      DateTime @default(now())
+  ipAddress    String?
+  userAgent    String?
+  errorMessage String?
+
+  user User? @relation(fields: [userId], references: [id])
 }
 
 enum AppointmentStatus {

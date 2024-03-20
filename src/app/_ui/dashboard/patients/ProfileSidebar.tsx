@@ -30,7 +30,7 @@ const ProfileSidebar = ({
       sx={{
         flexDirection: {
           xs: "row",
-          xl: "column",
+          // xl: "column",
         },
         p: 2,
       }}

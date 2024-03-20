@@ -5,14 +5,14 @@ import AddClinicalDepartmentFormModal from "./_components/AddClinicalDepartmentF
 import TableSkeleton from "@/app/_ui/TableSkeleton";
 import ClinicalDepartmentSearch from "./_components/ClinicalDepartmentSearch";
 
-const ClinicalDepartmentsPage = async ({
+export default async function ClinicalDepartmentsPage({
   searchParams: { query = "", page = "1" },
 }: {
   searchParams: {
     query?: string;
     page?: string;
   };
-}) => {
+}) {
   return (
     <Stack gap={2}>
       <Typography variant="h4" sx={{ my: 2 }}>
@@ -38,6 +38,4 @@ const ClinicalDepartmentsPage = async ({
       </Paper>
     </Stack>
   );
-};
-
-export default ClinicalDepartmentsPage;
+}

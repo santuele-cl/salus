@@ -53,22 +53,22 @@ const Layout = ({
         width: "100%",
         flexDirection: {
           xs: "column",
-          xl: "row",
+          // xl: "row",
         },
         position: "relative",
       }}
     >
       {/* PROFILE SIDEBAR */}
       <Paper
-        sx={{
-          alignItems: "start",
-          overflowY: "auto",
-          flexShrink: "0",
-          width: {
-            xs: "100%",
-            xl: 300,
-          },
-        }}
+      // sx={{
+      //   alignItems: "start",
+      //   overflowY: "auto",
+      //   flexShrink: "0",
+      //   width: {
+      //     xs: "100%",
+      //     // xl: 300,
+      //   },
+      // }}
       >
         {profile && contactInfo && (
           <ProfileSidebar profile={profile} contactInfo={contactInfo} />

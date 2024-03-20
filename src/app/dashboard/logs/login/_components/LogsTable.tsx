@@ -1,5 +1,7 @@
-import { getDrugs } from "@/actions/drugs";
+import { getClinicalDepartments } from "@/actions/departments/clinical-departments";
+import { getLogs } from "@/actions/logs/logs";
 import {
+  Button,
   Stack,
   Table,
   TableBody,
@@ -8,18 +10,31 @@ import {
   TableHead,
   TableRow,
 } from "@mui/material";
-import { Prisma } from "@prisma/client";
+import { LogType } from "@prisma/client";
 import dayjs from "dayjs";
-import DeleteDrug from "./DeleteDrug";
-import EditClinicalDepartmentFormModal from "../../departments/clinical-departments/_components/EditClinicalDepartmentFormModal";
-import EditDrugFormModal from "./EditDrugFormModal";
+// import DeleteClinicalDepartment from "./DeleteClinicalDepartment";
+// import EditClinicalDepartmentFormModal from "./EditClinicalDepartmentFormModal";
 
-type DrugWithFormAndCategory = Prisma.DrugsGetPayload<{
-  include: { drugForm: true; drugCategory: true };
-}>;
+interface TableProps {
+  type?: LogType;
+  userId?: string;
+  query?: string;
+  page?: number;
+}
 
-export default async function DrugsTable() {
-  const response = await getDrugs();
+export default async function LogsTable(props: TableProps) {
+  const { type, userId, query, page } = props;
+  const propsKey = Object.keys(props);
+
+  console.log("propsKey", propsKey);
+
+  const response = await getLogs({
+    // type: "LOGIN",
+    type: type,
+    userId: userId,
+    query: query,
+    page: Number(page) || 1,
+  });
 
   return (
     <TableContainer>
@@ -27,40 +42,40 @@ export default async function DrugsTable() {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 600, fontSize: "0.9rem" }}>
-              ID
+              LOG ID
             </TableCell>
             <TableCell sx={{ fontWeight: 600, fontSize: "0.9rem" }}>
-              Drug Name
+              TYPE
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              Manufacturer
+              LOG TIME
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              Price
+              USER ID
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              Category
+              IP ADDRESS
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              Form
+              USER AGENT
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              Last updated
+              ERROR MESSAGE
             </TableCell>
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
@@ -72,18 +87,16 @@ export default async function DrugsTable() {
         </TableHead>
         <TableBody>
           {response && response.data && response.data.length ? (
-            response.data.map((drug: DrugWithFormAndCategory) => {
+            response.data.map((log) => {
               const {
                 id,
-                updatedAt,
-                name,
-                drugCategory,
-                drugForm,
-                manufacturer,
-                priceInCents,
-                strength,
-              } = drug;
-
+                type,
+                logTime,
+                userId,
+                ipAddress,
+                userAgent,
+                errorMessage,
+              } = log;
               return (
                 <TableRow
                   key={id}
@@ -94,14 +107,21 @@ export default async function DrugsTable() {
                   <TableCell component="th" scope="row">
                     {id}
                   </TableCell>
-                  <TableCell align="left">{name}</TableCell>
-                  <TableCell align="left">{manufacturer}</TableCell>
-                  <TableCell align="left">{priceInCents}</TableCell>
-                  <TableCell align="left">{drugCategory?.name}</TableCell>
-                  <TableCell align="left">{drugForm?.name}</TableCell>
-                  <TableCell align="left">{`${dayjs(updatedAt).format(
-                    "MMMM DD, YYYY hh:mm a"
+                  <TableCell component="th" scope="row">
+                    {type}
+                  </TableCell>
+                  <TableCell align="left">{`${dayjs(logTime).format(
+                    "MMMM d, YYYY hh:mm a"
                   )}`}</TableCell>
+                  <TableCell align="left">{userId}</TableCell>
+                  <TableCell align="left">{ipAddress}</TableCell>
+                  <TableCell
+                    align="left"
+                    sx={{ textWrap: "pretty", maxWidth: "30px" }}
+                  >
+                    {userAgent}
+                  </TableCell>
+                  <TableCell align="left">{errorMessage}</TableCell>
                   <TableCell align="right">
                     <Stack
                       sx={{
@@ -109,10 +129,7 @@ export default async function DrugsTable() {
                         justifyContent: "flex-end",
                         gap: 1,
                       }}
-                    >
-                      <DeleteDrug drugId={id} drugName={name} />
-                      <EditDrugFormModal drug={drug} />
-                    </Stack>
+                    ></Stack>
                   </TableCell>
                 </TableRow>
               );
@@ -124,8 +141,7 @@ export default async function DrugsTable() {
               }}
             >
               <TableCell component="th" scope="row"></TableCell>
-              <TableCell align="right"></TableCell>
-              <TableCell align="right"></TableCell>
+              <TableCell align="right">Empty</TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
