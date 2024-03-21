@@ -2,8 +2,16 @@
 
 import { db } from "@/app/_lib/db";
 import { DiagnosisSchema } from "@/app/_schemas/zod/schema";
-import { unstable_noStore as noStore } from "next/cache";
+import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { z } from "zod";
+import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+import { headers } from "next/headers";
+import { useSession } from "next-auth/react";
+import { auth } from "@/auth";
+import dayjs from "dayjs";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = [];
 
 export async function getDiagnosesByPatientId(patientId: string) {
   noStore();
@@ -70,9 +78,41 @@ export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
 }
 
 export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
+  const session = await auth();
+  console.log(session);
+  if (
+    !session ||
+    !session.user ||
+    !session.expires ||
+    !session.user.empId ||
+    !session.user.empRole
+  )
+    return { error: "Unauthorized! asdf" };
+
+  console.log(dayjs().isAfter(dayjs(session.expires)));
+
+  // if (!writeAllowed.includes(session.user.empRole.roleName))
+  //   return { error: "Unauthorized!" };
+
   const parsedValues = DiagnosisSchema.safeParse(values);
 
   if (!parsedValues.success) return { error: "Parse error!" };
+
+  const headersList = headers();
+  const ipAddress = headersList.get("x-forwarded-for") || "";
+  const userAgent = headersList.get("user-agent") || "";
+
+  const log = await createChartLog({
+    action: "Add diagnosis",
+    status: "pending",
+    userAgent,
+    ipAddress,
+    employeeId: session?.user.empId,
+    logDescription: "",
+    patientId: parsedValues.data.physicianId,
+  });
+
+  if (!log) return { error: "Database error. Log not saved!" };
 
   const diagnosis = await db.diagnosis.create({
     data: {
@@ -80,8 +120,21 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
     },
   });
 
-  if (!diagnosis) return { error: "Error. Diagnosis not added!" };
+  if (!diagnosis) {
+    await updateChartLogStatus({
+      logId: log.data?.id,
+      status: "failed",
+    });
 
+    return { error: "Error. Diagnosis not added!" };
+  }
+
+  await updateChartLogStatus({
+    logId: log.data?.id,
+    status: "success",
+  });
+
+  // TODO: Use revalidate tag to refresh diagnosis data
   return { success: "Diagnosis added!", data: diagnosis };
 }
 

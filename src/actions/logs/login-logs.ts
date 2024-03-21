@@ -79,6 +79,12 @@ export async function updateLoginLogStatus({
   if (!logId) return { error: "Missing log id!" };
   if (!status) return { error: "Missing log status!" };
 
+  const isExisting = await db.chartLogs.findUnique({
+    where: { id: logId },
+  });
+
+  if (!isExisting) return { error: "Log does not exist!" };
+
   const updatedLog = await db.loginLogs.update({
     where: { id: logId },
     data: { status },
