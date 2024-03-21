@@ -1,7 +1,4 @@
 -- CreateEnum
-CREATE TYPE "LogType" AS ENUM ('LOGIN', 'REGISTER', 'ERROR', 'OTHER');
-
--- CreateEnum
 CREATE TYPE "AppointmentStatus" AS ENUM ('SCHEDULED', 'CONFIRMED', 'CANCELLED', 'COMPLETED', 'RESCHEDULED');
 
 -- CreateEnum
@@ -123,16 +120,31 @@ CREATE TABLE "Patient" (
 );
 
 -- CreateTable
-CREATE TABLE "Log" (
+CREATE TABLE "LoginLogs" (
     "id" TEXT NOT NULL,
-    "type" "LogType" NOT NULL DEFAULT 'OTHER',
-    "userId" TEXT,
     "logTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "ipAddress" TEXT,
     "userAgent" TEXT,
     "errorMessage" TEXT,
+    "status" TEXT,
+    "userId" TEXT NOT NULL,
 
-    CONSTRAINT "Log_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "LoginLogs_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "ChartLogs" (
+    "id" TEXT NOT NULL,
+    "action" TEXT NOT NULL,
+    "logTime" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "logDescription" TEXT,
+    "ipAddress" TEXT,
+    "userAgent" TEXT,
+    "status" TEXT,
+    "patientId" TEXT,
+    "employeeId" TEXT,
+
+    CONSTRAINT "ChartLogs_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -612,7 +624,13 @@ ALTER TABLE "Employee" ADD CONSTRAINT "Employee_employeeRoleId_fkey" FOREIGN KEY
 ALTER TABLE "Patient" ADD CONSTRAINT "Patient_profileId_fkey" FOREIGN KEY ("profileId") REFERENCES "Profile"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Log" ADD CONSTRAINT "Log_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "LoginLogs" ADD CONSTRAINT "LoginLogs_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ChartLogs" ADD CONSTRAINT "ChartLogs_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "ChartLogs" ADD CONSTRAINT "ChartLogs_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Appointments" ADD CONSTRAINT "Appointments_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE SET NULL ON UPDATE CASCADE;

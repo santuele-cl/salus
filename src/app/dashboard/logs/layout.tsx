@@ -5,8 +5,8 @@ import { usePathname } from "next/navigation";
 
 const TABS = [
   { label: "Login Logs", href: "/dashboard/logs/login" },
+  { label: "Chart Logs", href: "/dashboard/logs/chart" },
   { label: "Error Logs", href: "/dashboard/logs/error" },
-  { label: "Access Logs", href: "/dashboard/logs/access" },
 ];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
