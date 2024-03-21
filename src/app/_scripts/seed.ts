@@ -11,98 +11,41 @@ import {
   DRUG_FORMS,
   SAMPLE_DRUGS,
 } from "../_data/tpdh/drugs";
-import { SAMPLE_LOGS } from "../_data/tpdh/sample-logs";
+import { SAMPLE_LOGIN_LOGS } from "../_data/tpdh/sample-login-logs";
+import { SAMPLE_CHART_LOGS } from "../_data/tpdh/sample-chart-logs";
 
 const db = new PrismaClient();
 
-// export const UPSERT_ROLE =
-
 const seed = async () => {
-  // EMPLOYEE_ROLES.map(async (role, i) => {
-  //   await db.employeeRole.upsert({
-  //     where: { id: role.id },
-  //     update: role,
-  //     create: role,
-  //   });
-  // });
   const SEEDED_EMP_ROLES = await db.employeeRole.createMany({
     data: EMPLOYEE_ROLES,
   });
 
-  // SERVICE_DEPT.map(async (dept, i) => {
-  //   await db.serviceDepartment.upsert({
-  //     where: { id: dept.id },
-  //     update: dept,
-  //     create: dept,
-  //   });
-  // });
   const SEEDED_SERVICE_DEPT = await db.serviceDepartment.createMany({
     data: SERVICE_DEPT,
   });
 
-  // CLINICAL_DEPT.map(async (dept, i) => {
-  //   await db.clinicalDepartment.upsert({
-  //     where: { id: dept.id },
-  //     update: dept,
-  //     create: dept,
-  //   });
-  // });
   const SEEDED_CLINICAL_DEPT = await db.clinicalDepartment.createMany({
     data: CLINICAL_DEPT,
   });
 
-  // LAB_CATEGORY_SEED_DATA.map(async (item, i) => {
-  //   await db.laboratoryProcedureCategory.upsert({
-  //     where: { id: item.id },
-  //     update: item,
-  //     create: item,
-  //   });
-  // });
   const SEEDED_LAB_PROCEDURES_CAT =
     await db.laboratoryProcedureCategory.createMany({
       data: LAB_CATEGORY_SEED_DATA,
     });
 
-  // PROCEDURE_SEED_DATA_FLATTEN.map(async (item, i) => {
-  //   await db.laboratoryProcedures.upsert({
-  //     where: { id: item.id },
-  //     update: item,
-  //     create: item,
-  //   });
-  // });
   const SEEDED_LAB_PROCEDURES = await db.laboratoryProcedures.createMany({
     data: PROCEDURE_SEED_DATA_FLATTEN,
   });
 
-  // DRUGS_CATEGORIES.map(async (item, i) => {
-  //   await db.drugCategory.upsert({
-  //     where: { id: item.id },
-  //     update: item,
-  //     create: item,
-  //   });
-  // });
   const SEEDED_DRUG_CATEGORIES = await db.drugCategory.createMany({
     data: DRUGS_CATEGORIES,
   });
 
-  // DRUG_FORMS.map(async (item, i) => {
-  //   await db.drugForm.upsert({
-  //     where: { id: item.id },
-  //     update: item,
-  //     create: item,
-  //   });
-  // });
   const SEEDED_DRUG_FORMS = await db.drugForm.createMany({
     data: DRUG_FORMS,
   });
 
-  // SAMPLE_DRUGS.map(async (item, i) => {
-  //   await db.drugs.upsert({
-  //     where: { id: item.id },
-  //     update: item,
-  //     create: item,
-  //   });
-  // });
   const SEEDED_DRUGS = await db.drugs.createMany({
     data: SAMPLE_DRUGS,
   });
@@ -838,21 +781,13 @@ const seed = async () => {
     ],
   });
 
-  const SEEDED_LOGS = await db.log.createMany({ data: SAMPLE_LOGS });
+  const SEEDED_CHART_LOGS = await db.chartLogs.createMany({
+    data: SAMPLE_CHART_LOGS,
+  });
 
-  // const PATI = await db.user.create({
-  //   data: {
-  //     profile: {
-  //       create: {
-  //         patient: {
-  //           create: {
-  //             chart: {},
-  //           },
-  //         },
-  //       },
-  //     },
-  //   },
-  // });
+  const SEEDED_LOGIN_LOGS = await db.loginLogs.createMany({
+    data: SAMPLE_LOGIN_LOGS,
+  });
 };
 
 seed()

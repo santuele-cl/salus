@@ -1,9 +1,8 @@
 import { Paper, Stack, Typography } from "@mui/material";
 import { Suspense } from "react";
 import TableSkeleton from "@/app/_ui/TableSkeleton";
-import LoginLogsTable from "./_components/LogsTable";
 import SearchLogs from "../_components/SearchLogs";
-import LogsTable from "./_components/LogsTable";
+import ChartLogsTable from "./_components/ChartLogsTable";
 
 export default async function LoginLogsPage({
   searchParams: { query, page },
@@ -23,7 +22,7 @@ export default async function LoginLogsPage({
         }}
       >
         <Typography variant="h4" sx={{ my: 2 }}>
-          Login Logs
+          Chart Logs
         </Typography>
         <Paper sx={{ py: 2, px: 3 }} elevation={1}>
           <SearchLogs placeholder="Search..." />
@@ -32,7 +31,7 @@ export default async function LoginLogsPage({
 
       <Paper elevation={1} sx={{ p: 2 }}>
         <Suspense fallback={<TableSkeleton />}>
-          <LogsTable query={query} page={Number(page)} />
+          <ChartLogsTable query={query} page={Number(page)} />
         </Suspense>
       </Paper>
     </Stack>

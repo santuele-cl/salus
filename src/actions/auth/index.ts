@@ -31,11 +31,19 @@ import {
   getTwoFactorTokenByEmail,
 } from "@/app/_data/two-factor";
 import { CivilStatus, Gender } from "@prisma/client";
+import { createLoginLog, updateLoginLogStatus } from "../logs/login-logs";
+import { revalidatePath, unstable_noStore } from "next/cache";
+import { headers } from "next/headers";
 
 export async function login(
   credentials: z.infer<typeof LoginSchema>,
   callbackUrl?: string | null
 ) {
+  const headersList = headers();
+  const ipAddress = headersList.get("x-forwarded-for") || "";
+  const userAgent = headersList.get("user-agent") || "";
+
+  unstable_noStore();
   const validatedCredentials = LoginSchema.safeParse(credentials);
 
   if (!validatedCredentials.success) return { error: "Invalid data." };
@@ -100,6 +108,15 @@ export async function login(
     }
   }
 
+  const loginLog = await createLoginLog({
+    ipAddress,
+    userAgent,
+    userId: existingUser.id,
+    status: "failed",
+  });
+
+  if (!loginLog) console.log("Database error. Log not saved!");
+
   try {
     await signIn("credentials", {
       email,
@@ -117,6 +134,15 @@ export async function login(
     }
     throw error;
   }
+
+  const udpatedLog = await updateLoginLogStatus({
+    logId: loginLog.data?.id,
+    status: "success",
+  });
+
+  if (!udpatedLog) console.log("Database error. Log not saved!");
+
+  revalidatePath("/dashboard/logs/login");
 
   return { success: "Login successful." };
 }
