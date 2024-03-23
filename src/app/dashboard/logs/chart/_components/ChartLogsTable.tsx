@@ -108,7 +108,7 @@ export default async function ChartLogsTable(props: TableProps) {
                   <TableCell align="left">{action}</TableCell>
 
                   <TableCell align="left">{`${dayjs(logTime).format(
-                    "MMMM d, YYYY hh:mm a"
+                    "MMMM DD, YYYY hh:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{logDescription}</TableCell>
                   <TableCell align="left">{patientId}</TableCell>

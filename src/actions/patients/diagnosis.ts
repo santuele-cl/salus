@@ -79,20 +79,13 @@ export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
 
 export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
   const session = await auth();
-  console.log(session);
+
   if (
     !session ||
-    !session.user ||
-    !session.expires ||
-    !session.user.empId ||
-    !session.user.empRole
+    !session.user.empRole ||
+    !writeAllowed.includes(session.user.empRole.roleName)
   )
-    return { error: "Unauthorized! asdf" };
-
-  console.log(dayjs().isAfter(dayjs(session.expires)));
-
-  // if (!writeAllowed.includes(session.user.empRole.roleName))
-  //   return { error: "Unauthorized!" };
+    return { error: "Unauthorized!" };
 
   const parsedValues = DiagnosisSchema.safeParse(values);
 
