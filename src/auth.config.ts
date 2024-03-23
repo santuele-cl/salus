@@ -6,6 +6,7 @@ import { LoginSchema } from "./app/_schemas/zod/schema";
 import { getUserByEmail } from "./app/_data/user";
 
 export default {
+  trustHost: true,
   providers: [
     Credentials({
       name: "Credentials",
