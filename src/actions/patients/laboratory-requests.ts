@@ -78,7 +78,7 @@ export async function postLaboratoryRequest(
   if (
     !session ||
     !session.user.empRole ||
-    !writeAllowed.includes(session.user.empRole.roleName)
+    !writeAllowed.includes(session.user.empRole)
   )
     return { error: "Unauthorized!" };
   const parse = LaboratoryRequestSchema.safeParse(values);
@@ -90,12 +90,12 @@ export async function postLaboratoryRequest(
   const userAgent = headersList.get("user-agent") || "";
 
   const log = await createChartLog({
-    action: "Add laboratory re",
+    action: "Add laboratory request",
     status: "pending",
     userAgent,
     ipAddress,
     employeeId: session?.user.empId,
-    logDescription: "",
+    logDescription: "Add laboratory request",
     patientId: parse.data.patientId,
   });
 
