@@ -9,7 +9,7 @@ export type ExtendedUser = DefaultSession["user"] & {
   username: string;
   email: string;
   empId: string;
-  empRole?: EmployeeRole;
+  empRole?: string;
   patId: string;
 };
 
@@ -25,7 +25,7 @@ declare module "next-auth/jwt" {
       username: string;
     };
     empId: string;
-    empRole?: EmployeeRole;
+    empRole?: string;
     patId: string;
     role: UserRole;
   }
