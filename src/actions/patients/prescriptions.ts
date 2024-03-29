@@ -2,10 +2,16 @@
 
 import { db } from "@/app/_lib/db";
 import { PrescriptionSchema } from "@/app/_schemas/zod/schema";
+import { auth } from "@/auth";
 import { Presciption } from "@prisma/client";
 import { unstable_noStore as noStore } from "next/cache";
+import { headers } from "next/headers";
 
 import { z } from "zod";
+import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = [];
 
 export async function getPrescriptionsByPatientId(patientId: string) {
   noStore();
@@ -31,17 +37,55 @@ export async function getPrescriptionsByPatientId(patientId: string) {
 export async function addPrescription(
   values: z.infer<typeof PrescriptionSchema>
 ) {
+  const session = await auth();
+
+  console.log(session);
+
+  if (
+    !session ||
+    !session.user.empRole ||
+    !writeAllowed.includes(session.user.empRole)
+  )
+    return { error: "Unauthorized!" };
+
   const validatedValues = PrescriptionSchema.safeParse(values);
 
   if (!validatedValues.success) return { error: "Parse error!" };
+
+  const headersList = headers();
+  const ipAddress = headersList.get("x-forwarded-for") || "";
+  const userAgent = headersList.get("user-agent") || "";
+
+  const log = await createChartLog({
+    action: "Add Prescription",
+    status: "pending",
+    userAgent,
+    ipAddress,
+    employeeId: session?.user.empId,
+    logDescription: "",
+    patientId: validatedValues.data.physicianId,
+  });
+
+  if (!log) return { error: "Database error. Log not saved!" };
 
   const prescription = await db.presciption.create({
     data: {
       ...(validatedValues.data && validatedValues.data),
     },
   });
+  if (!prescription) {
+    await updateChartLogStatus({
+      logId: log.data?.id,
+      status: "failed",
+    });
 
-  if (!prescription) return { error: "Error. Prescription not added!" };
+    return { error: "Error. Prescription not added!" };
+  }
+
+  await updateChartLogStatus({
+    logId: log.data?.id,
+    status: "success",
+  });
 
   return { success: "Prescription added!", data: prescription };
 }
@@ -106,3 +150,5 @@ export async function findPrescriptionByTermAndPatientId(
     return { error: "Something went wrong!" };
   }
 }
+
+export async function addDate() {}

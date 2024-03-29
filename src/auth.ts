@@ -75,6 +75,10 @@ export const {
           session.user.empId = token.empId;
         }
 
+        if (token.empRole) {
+          session.user.empRole = token.empRole;
+        }
+
         if (token.patId) {
           session.user.patId = token.patId;
         }
@@ -97,6 +101,8 @@ export const {
       token.email = existingUser.email;
       token.role = existingUser.role;
       token.empId = existingUser.profile?.employee?.id ?? "";
+      token.empRole =
+        existingUser.profile?.employee?.employeeRole?.roleName ?? "";
       token.patId = existingUser.profile?.patient?.id ?? "";
       token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 

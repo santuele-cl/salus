@@ -17,7 +17,7 @@ export const getUserById = async (id: string) => {
       include: {
         profile: {
           include: {
-            employee: true,
+            employee: { include: { employeeRole: true } },
             patient: true,
           },
         },

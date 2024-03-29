@@ -83,7 +83,7 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
   if (
     !session ||
     !session.user.empRole ||
-    !writeAllowed.includes(session.user.empRole.roleName)
+    !writeAllowed.includes(session.user.empRole)
   )
     return { error: "Unauthorized!" };
 
