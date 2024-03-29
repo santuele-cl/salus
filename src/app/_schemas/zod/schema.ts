@@ -108,6 +108,27 @@ export const AllergySchema = z.object({
   patientId: z.string().min(1, "Patiend ID is required"),
 });
 
+export const VaccinationSchema = z.object({
+  vaccineName: z
+  .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  administeredAt: z.coerce.date(),
+  administeredBy: z
+  .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  dosage: z
+  .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  nextDueDate: z.coerce.date(),
+  patientId: z
+  .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input")
+})
+
 export const DrugSchema = z.object({
   id: z
     .string()
