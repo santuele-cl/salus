@@ -63,7 +63,7 @@ export async function addPrescription(
     ipAddress,
     employeeId: session?.user.empId,
     logDescription: "",
-    patientId: validatedValues.data.physicianId,
+    patientId: validatedValues.data.patientId,
   });
 
   if (!log) return { error: "Database error. Log not saved!" };
