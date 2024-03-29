@@ -95,7 +95,7 @@ export async function postLaboratoryRequest(
     userAgent,
     ipAddress,
     employeeId: session?.user.empId,
-    logDescription: "Add laboratory request",
+    logDescription: "",
     patientId: parse.data.patientId,
   });
 
