@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 
 import { z } from "zod";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+import { encryptObjectData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN"];
 const getAllowed = [];
@@ -68,11 +69,19 @@ export async function addPrescription(
 
   if (!log) return { error: "Database error. Log not saved!" };
 
+  const toExcludeEncryptFields: Array<
+    keyof z.infer<typeof PrescriptionSchema>
+  > = ["drugsId", "physicianId", "patientId", "startDate", "endDate"];
+
+  console.log(validatedValues.data);
+  console.log(encryptObjectData(validatedValues.data, toExcludeEncryptFields));
+
   const prescription = await db.presciption.create({
     data: {
       ...(validatedValues.data && validatedValues.data),
     },
   });
+
   if (!prescription) {
     await updateChartLogStatus({
       logId: log.data?.id,

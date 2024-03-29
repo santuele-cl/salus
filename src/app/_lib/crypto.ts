@@ -16,20 +16,18 @@ export function decryptData(data: any) {
   return dencryptedData;
 }
 
-export function encryptObjectData(data: any) {
+export function encryptObjectData(data: any, excluded: any[]) {
   const encryptedObject: Obj = {};
   const encryptedData = Object.keys(data).forEach((item) => {
-    const encryptedValue = encryptData(JSON.stringify(data[item]));
-    encryptedObject[item] = encryptedValue;
+    if (!excluded.includes(item)) {
+      const encryptedValue = encryptData(JSON.stringify(data[item]));
+      encryptedObject[item] = encryptedValue;
+    }
   });
   return encryptedObject;
 }
 
 export function decryptObjectData(data: any) {
-  //   const dencryptedData = AES.decrypt(data, env.AES_KEY!).toString(
-  //     CryptoJS.enc.Utf8
-  //   );
-  //   return dencryptedData;
   const decryptedObject: Obj = {};
   const decryptedData = Object.keys(data).forEach((item) => {
     const decryptedValue = JSON.parse(decryptData(JSON.stringify(data[item])));
