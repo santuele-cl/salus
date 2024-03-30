@@ -2,8 +2,15 @@
 
 import { db } from "@/app/_lib/db";
 import { LaboratoryRequestSchema } from "@/app/_schemas/zod/schema";
+import { auth } from "@/auth";
 import { unstable_noStore as noStore } from "next/cache";
+import { headers } from "next/headers";
 import { z } from "zod";
+import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+import { log } from "console";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = [];
 
 export async function getLaboratoryRequestsByPatientId(patientId: string) {
   noStore();
@@ -62,12 +69,37 @@ export async function getLaboratoryRequestByLaboratoryRequestId(
   }
 }
 
+    
 export async function postLaboratoryRequest(
   values: z.infer<typeof LaboratoryRequestSchema>
 ) {
+  const session = await auth();
+
+  if (
+    !session ||
+    !session.user.empRole ||
+    !writeAllowed.includes(session.user.empRole)
+  )
+    return { error: "Unauthorized!" };
   const parse = LaboratoryRequestSchema.safeParse(values);
 
   if (!parse.success) return { error: "Parse error. Invalid input!" };
+
+  const headersList = headers();
+  const ipAddress = headersList.get("x-forwarded-for") || "";
+  const userAgent = headersList.get("user-agent") || "";
+
+  const log = await createChartLog({
+    action: "Add laboratory request",
+    status: "pending",
+    userAgent,
+    ipAddress,
+    employeeId: session?.user.empId,
+    logDescription: "",
+    patientId: parse.data.patientId,
+  });
+
+  if (!log) return { error: "Database error. Log not saved!" };
 
   const laboratoryRequest = await db.laboratoryRequest.create({
     data: {
@@ -75,10 +107,22 @@ export async function postLaboratoryRequest(
     },
   });
 
-  if (!laboratoryRequest)
-    return { error: "Error. Laboratory request not added!" };
+  if (!laboratoryRequest) {
+    await updateChartLogStatus({
+      logId: log.data?.id,
+      status: "failed",
+    });
 
-  return { success: "Laboratory request added!", data: laboratoryRequest };
+    return { error: "Error. Laboratory Request not added!" };
+  }
+
+  await updateChartLogStatus({
+    logId: log.data?.id,
+    status: "success",
+  });
+
+  // TODO: Use revalidate tag to refresh diagnosis data
+  return { success: "Laboratory Request added!", data: laboratoryRequest };
 }
 
 export async function findLaboratoryRequestsByTermAndPatientId(
