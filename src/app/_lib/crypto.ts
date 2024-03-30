@@ -22,6 +22,8 @@ export function encryptObjectData(data: any, excluded: any[]) {
     if (!excluded.includes(item)) {
       const encryptedValue = encryptData(JSON.stringify(data[item]));
       encryptedObject[item] = encryptedValue;
+    } else {
+      encryptedObject[item] = data[item];
     }
   });
   return encryptedObject;

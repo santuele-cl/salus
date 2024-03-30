@@ -40,7 +40,7 @@ export async function addPrescription(
 ) {
   const session = await auth();
 
-  console.log(session);
+  // console.log(session);
 
   if (
     !session ||
@@ -78,7 +78,8 @@ export async function addPrescription(
 
   const prescription = await db.presciption.create({
     data: {
-      ...(validatedValues.data && validatedValues.data),
+      ...(validatedValues.data &&
+        encryptObjectData(validatedValues.data, toExcludeEncryptFields)),
     },
   });
 
