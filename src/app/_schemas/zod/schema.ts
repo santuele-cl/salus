@@ -175,18 +175,12 @@ export const LaboratoryRequestSchema = z.object({
 
 export const PrescriptionSchema = z.object({
   drugsId: z.string().min(1, "Required field"),
-  dosage: z.coerce.number().refine((value) => value !== 0),
+  dosage: z.coerce.string(),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
-  durationInDays: z.coerce.number().refine((value) => value !== 0),
-  takenEveryHour: z.coerce
-    .number()
-    .refine((value) => value !== 0)
-    .optional(),
-  frequencyPerDay: z.coerce
-    .number()
-    .refine((value) => value !== 0)
-    .optional(),
+  durationInDays: z.coerce.string(),
+  takenEveryHour: z.coerce.string(),
+  frequencyPerDay: z.coerce.string(),
   notes: z.string().optional(),
   physicianId: z.string().min(1, "Required field"),
   patientId: z.string().min(1, "Required field"),

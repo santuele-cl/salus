@@ -13,6 +13,7 @@ import {
 } from "../_data/tpdh/drugs";
 import { SAMPLE_LOGIN_LOGS } from "../_data/tpdh/sample-login-logs";
 import { SAMPLE_CHART_LOGS } from "../_data/tpdh/sample-chart-logs";
+import { encryptData } from "../_lib/crypto";
 
 const db = new PrismaClient();
 
@@ -242,10 +243,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT2",
-                        dosage: 500,
-                        frequencyPerDay: 3,
-                        durationInDays: 7,
-                        notes: "Take with food.",
+                        dosage: encryptData("500"),
+                        frequencyPerDay: encryptData("3"),
+                        takenEveryHour: encryptData("8"),
+                        durationInDays: encryptData("7"),
+                        notes: encryptData("Take with food."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",
@@ -313,10 +315,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT2",
-                        dosage: 10,
-                        frequencyPerDay: 1,
-                        durationInDays: 1,
-                        notes: "Pain relief for surgery.",
+                        dosage: encryptData("10"),
+                        frequencyPerDay: encryptData("1"),
+                        takenEveryHour: encryptData("24"),
+                        durationInDays: encryptData("1"),
+                        notes: encryptData("Pain relief for surgery."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",
@@ -385,10 +388,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT2",
-                        dosage: 500,
-                        frequencyPerDay: 3,
-                        durationInDays: 5,
-                        notes: "For relief of sore throat pain.",
+                        dosage: encryptData("500"),
+                        frequencyPerDay: encryptData("3"),
+                        takenEveryHour: encryptData("8"),
+                        durationInDays: encryptData("5"),
+                        notes: encryptData("For relief of sore throat pain."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",
@@ -567,10 +571,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT3",
-                        dosage: 500,
-                        frequencyPerDay: 3,
-                        durationInDays: 7,
-                        notes: "Take with food.",
+                        dosage: encryptData("500"),
+                        frequencyPerDay: encryptData("3"),
+                        takenEveryHour: encryptData("8"),
+                        durationInDays: encryptData("7"),
+                        notes: encryptData("Take with food."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",
@@ -638,10 +643,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT3",
-                        dosage: 10,
-                        frequencyPerDay: 1,
-                        durationInDays: 1,
-                        notes: "Pain relief for surgery.",
+                        dosage: encryptData("10"),
+                        frequencyPerDay: encryptData("1"),
+                        takenEveryHour: encryptData("24"),
+                        durationInDays: encryptData("1"),
+                        notes: encryptData("Pain relief for surgery."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",
@@ -710,10 +716,11 @@ const seed = async () => {
                     prescriptions: {
                       create: {
                         patientId: "PATIENT3",
-                        dosage: 500,
-                        frequencyPerDay: 3,
-                        durationInDays: 5,
-                        notes: "For relief of sore throat pain.",
+                        dosage: encryptData("500"),
+                        frequencyPerDay: encryptData("3"),
+                        takenEveryHour: encryptData("8"),
+                        durationInDays: encryptData("5"),
+                        notes: encryptData("For relief of sore throat pain."),
                         physicianId: "EMP1",
                         drugsId: "DR100000001",
                         startDate: "2024-03-01T10:00:00Z",

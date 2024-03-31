@@ -4,8 +4,12 @@ import { env } from "process";
 interface Obj {
   [key: string]: string;
 }
+
 export function encryptData(data: string) {
-  const encryptedData = AES.encrypt(data, env.AES_KEY!).toString();
+  const encryptedData = AES.encrypt(
+    JSON.stringify(data),
+    env.AES_KEY!
+  ).toString();
   return encryptedData;
 }
 
@@ -16,20 +20,33 @@ export function decryptData(data: any) {
   return dencryptedData;
 }
 
-export function encryptObjectData(data: any) {
-  const encryptedObject: Obj = {};
-  const encryptedData = Object.keys(data).forEach((item) => {
-    const encryptedValue = encryptData(JSON.stringify(data[item]));
-    encryptedObject[item] = encryptedValue;
-  });
-  return encryptedObject;
-}
+// export function encryptObjectData<T extends object>(data: T, excluded: Array<keyof Partial<T>>) {
+//   const encryptedObject: Partial<T> = data;
+//   const encryptedData = Object.keys(data).forEach((item) => {
+//     if (!excluded.includes(item)) {
+//       const encryptedValue = encryptData(JSON.stringify(data[item]));
+//       encryptedObject[item] = encryptedValue;
+//     } else {
+//       encryptedObject[item] = data[item];
+//     }
+//   });
+//   return encryptedObject;
+// }
+
+// function encryptObjectDat2a<T extends Record<string, any>>(data: T, excluded: Array<keyof T>): T {
+//   const encryptedObject: Partial<T> = {};
+//   Object.keys(data).forEach((item: keyof T) => {
+//     if (!excluded.includes(item)) {
+//       const encryptedValue = encryptData(JSON.stringify(data[item]));
+//       encryptedObject[item] = encryptedValue;
+//     } else {
+//       encryptedObject[item] = data[item];
+//     }
+//   });
+//   return encryptedObject as T;
+// }
 
 export function decryptObjectData(data: any) {
-  //   const dencryptedData = AES.decrypt(data, env.AES_KEY!).toString(
-  //     CryptoJS.enc.Utf8
-  //   );
-  //   return dencryptedData;
   const decryptedObject: Obj = {};
   const decryptedData = Object.keys(data).forEach((item) => {
     const decryptedValue = JSON.parse(decryptData(JSON.stringify(data[item])));

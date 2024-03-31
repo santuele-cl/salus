@@ -102,7 +102,7 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
     ipAddress,
     employeeId: session?.user.empId,
     logDescription: "",
-    patientId: parsedValues.data.physicianId,
+    patientId: parsedValues.data.patientId,
   });
 
   if (!log) return { error: "Database error. Log not saved!" };

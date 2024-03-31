@@ -291,10 +291,10 @@ model Presciption {
   id              String    @id @default(uuid())
   drugs           Drugs?    @relation(fields: [drugsId], references: [id])
   drugsId         String?
-  dosage          Int
-  frequencyPerDay Int?
-  takenEveryHour  Int?
-  durationInDays  Int
+  dosage          String?
+  frequencyPerDay String?
+  takenEveryHour  String?
+  durationInDays  String
   notes           String?
   startDate       DateTime
   endDate         DateTime
