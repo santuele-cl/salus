@@ -13,11 +13,12 @@ import {
   Typography,
 } from "@mui/material";
 import { DatePicker } from "@mui/x-date-pickers";
-import { AllergySeverity } from "@prisma/client";
 import dayjs from "dayjs";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
+
+type AllergySeverity = "LOW" | "MEDIUM" | "HIGH";
 
 const AddAllergyForm = ({
   patientId,
@@ -41,7 +42,7 @@ const AddAllergyForm = ({
     defaultValues: {
       name: "",
       description: "",
-      severity: AllergySeverity.MEDIUM,
+      severity: "",
       //   dateDiagnosed: dayjs().format("YYYY-MM-DD").toString(),
       patientId,
     },

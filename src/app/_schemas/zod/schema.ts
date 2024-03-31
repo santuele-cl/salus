@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  AllergySeverity,
   AppointmentStatus,
   CivilStatus,
   Gender,
@@ -124,7 +123,7 @@ export const AllergySchema = z.object({
   description: z
     .string()
     .regex(new RegExp(/^(?:[a-zA-Z ]*|[ ]*)$/), "Invalid input"),
-  severity: z.nativeEnum(AllergySeverity),
+  severity: z.string(),
   dateDiagnosed: z.coerce.date(),
   patientId: z.string().min(1, "Patiend ID is required"),
 });

@@ -244,13 +244,13 @@ model TestResult {
 }
 
 model Allergies {
-  id            String          @id @default(uuid())
+  id            String   @id @default(uuid())
   name          String
   description   String?
-  severity      AllergySeverity @default(LOW)
+  severity      String
   dateDiagnosed DateTime
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 
   patient   Patient? @relation(fields: [patientId], references: [id])
   patientId String?
