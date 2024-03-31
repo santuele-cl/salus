@@ -162,7 +162,7 @@ const PrescriptionsPage = () => {
                           scope="row"
                           key={id + index}
                         >{`${dayjs(datum[id]).format(
-                          "MMMM d, YYYY"
+                          "MMMM DD, YYYY"
                         )}`}</TableCell>
                       );
 
