@@ -13,7 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { z } from "zod";
+import { number, z } from "zod";
 import { VaccinationSchema } from "@/app/_schemas/zod/schema";
 import { camelCaseToWords } from "@/app/_utils/utils";
 import { addVitals } from "@/actions/patients/vitals";
@@ -27,14 +27,16 @@ interface VaccinationFieldType {
   id: keyof z.infer<typeof VaccinationSchema>;
   label: string;
   type?: string;
+  readonly?: boolean;
 }
 
 const fields: VaccinationFieldType[] = [
+  { id: "patientId", label: "Patient ID", readonly: true },
   { id: "vaccineName", label: "Vaccine Name" },
-  { id: "dosage", label: "Dosage" },
-  { id: "administeredAt", label: "Administered At", type: "date" },
-  { id: "administeredBy", label: "Administered By" },
+  { id: "dosage", label: "Dosage", type: "number" },
+  { id: "administeredAt", label: "Administered Date", type: "date" },
   { id: "nextDueDate", label: "Next appointment", type: "date" },
+  { id: "administeredBy", label: "Administered By" },
 ];
 
 const hiddenFields = [""];
@@ -67,7 +69,7 @@ const VaccinationForm = ({
       dosage: "",
       administeredAt: dayjs().toDate(),
       administeredBy: "",
-      nextDueDate: dayjs().toDate(),
+      nextDueDate: dayjs().add(7, "day").toDate(),
       patientId,
     },
   });
@@ -120,7 +122,7 @@ const VaccinationForm = ({
         {success && <FormStatusText message={success} status="success" />}
       </Stack>
       <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
-        {fields.map(({ id, label, type }, index) => {
+        {fields.map(({ id, label, type, readonly }, index) => {
           if (type === "date") {
             return (
               <Controller
@@ -152,6 +154,11 @@ const VaccinationForm = ({
           }
           return (
             <TextField
+              InputProps={{
+                readOnly: readonly ? true : false,
+                disabled: readonly ? true : false,
+              }}
+              type={type ? type : "text"}
               key={id + index}
               label={label}
               {...register(id)}

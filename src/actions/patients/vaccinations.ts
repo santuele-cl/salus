@@ -70,9 +70,9 @@ export async function postVaccinations(
     ipAddress,
     employeeId: session?.user.empId,
     logDescription: "",
-    patientId: parsedValues.data.physicianId,
+    patientId: parsedValues.data.patientId,
   });
-  
+
   const parse = VaccinationSchema.safeParse(values);
 
   if (!parse.success) return { error: "Parse error. Invalid input!" };
@@ -83,7 +83,7 @@ export async function postVaccinations(
     },
   });
 
-  if (!vaccination){
+  if (!vaccination) {
     await updateChartLogStatus({
       logId: log.data?.id,
       status: "failed",
@@ -96,7 +96,7 @@ export async function postVaccinations(
     logId: log.data?.id,
     status: "success",
   });
-  
+
   return { success: "Vaccination added!", data: vaccination };
 }
 
@@ -115,7 +115,8 @@ export async function findvaccinationsByTermAndPatientId(
         OR: [
           { id: { contains: term, mode: "insensitive" } },
           {
-          vaccineName: { contains: term, mode: "insensitive" } },
+            vaccineName: { contains: term, mode: "insensitive" },
+          },
         ],
       },
     });
@@ -129,4 +130,3 @@ export async function findvaccinationsByTermAndPatientId(
     return { error: "Something went wrong!" };
   }
 }
-
