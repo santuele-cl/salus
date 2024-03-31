@@ -229,7 +229,27 @@ const VisitPage = async ({
                     diagnoses.length &&
                     diagnoses.map((diagnosis, index) => {
                       return (
-                        <Diagnosis diagnosis={diagnosis} key={diagnosis.id} />
+                        <Fragment key={diagnosis.id}>
+                          <Suspense
+                            fallback={
+                              <Stack
+                                sx={{
+                                  width: "100%",
+                                  height: "100%",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                Loading
+                              </Stack>
+                            }
+                          >
+                            <Diagnosis
+                              diagnosisId={diagnosis.id}
+                              key={diagnosis.id}
+                            />
+                          </Suspense>
+                        </Fragment>
                       );
                     })}
                 </Stack>
@@ -286,7 +306,7 @@ const VisitPage = async ({
                     prescriptions.map((prescription, index) => {
                       const drugs = prescription.drugs as Drugs;
                       return (
-                        <Fragment key={index}>
+                        <Fragment key={prescription.id}>
                           <Suspense
                             fallback={
                               <Stack
