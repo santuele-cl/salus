@@ -184,22 +184,25 @@ const seed = async () => {
                 createMany: {
                   data: [
                     {
-                      name: "Peanut Allergy",
-                      description: "Allergic reaction to peanuts",
-                      severity: "HIGH",
+                      name: encryptData("Peanut Allergy"),
+                      description: encryptData("Allergic reaction to peanuts"),
+                      severity: encryptData("HIGH"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
-                      name: "Penicillin Allergy",
-                      description:
-                        "Allergic reaction to penicillin antibiotics",
-                      severity: "MEDIUM",
+                      name: encryptData("Penicillin Allergy"),
+                      description: encryptData(
+                        "Allergic reaction to penicillin antibiotics"
+                      ),
+                      severity: encryptData("MEDIUM"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
-                      name: "Dust Allergy",
-                      description: "Allergic reaction to dust mites",
-                      severity: "LOW",
+                      name: encryptData("Dust Allergy"),
+                      description: encryptData(
+                        "Allergic reaction to dust mites"
+                      ),
+                      severity: encryptData("LOW"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                   ],
@@ -518,22 +521,25 @@ const seed = async () => {
                 createMany: {
                   data: [
                     {
-                      name: "Peanut Allergy",
-                      description: "Allergic reaction to peanuts",
-                      severity: "HIGH",
+                      name: encryptData("Peanut Allergy"),
+                      description: encryptData("Allergic reaction to peanuts"),
+                      severity: encryptData("HIGH"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
-                      name: "Penicillin Allergy",
-                      description:
-                        "Allergic reaction to penicillin antibiotics",
-                      severity: "MEDIUM",
+                      name: encryptData("Penicillin Allergy"),
+                      description: encryptData(
+                        "Allergic reaction to penicillin antibiotics"
+                      ),
+                      severity: encryptData("MEDIUM"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                     {
-                      name: "Dust Allergy",
-                      description: "Allergic reaction to dust mites",
-                      severity: "LOW",
+                      name: encryptData("Dust Allergy"),
+                      description: encryptData(
+                        "Allergic reaction to dust mites"
+                      ),
+                      severity: encryptData("LOW"),
                       dateDiagnosed: "2024-03-01T10:00:00Z",
                     },
                   ],

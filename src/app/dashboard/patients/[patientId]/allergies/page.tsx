@@ -6,6 +6,7 @@ import {
 import {
   Box,
   Button,
+  Chip,
   Divider,
   Drawer,
   IconButton,
@@ -30,7 +31,7 @@ import dayjs from "dayjs";
 
 const columns = [
   { id: "name", label: "Name" },
-  { id: "severity", label: "Severity" },
+  { id: "severity", label: "Severity", type: "special" },
   { id: "createdAt", label: "Date diagnosed", type: "date" },
 ];
 
@@ -162,10 +163,25 @@ const AllergiesPage = () => {
                           scope="row"
                           key={id + index}
                         >{`${dayjs(datum[id]).format(
-                          "MMMM d, YYYY"
+                          "MMMM DD, YYYY"
                         )}`}</TableCell>
                       );
-
+                    case "special":
+                      return (
+                        <TableCell component="th" scope="row" key={id + index}>
+                          <Chip
+                            variant="outlined"
+                            color={
+                              datum[id] === "HIGH"
+                                ? "error"
+                                : datum[id] === "MEDIUM"
+                                ? "warning"
+                                : "success"
+                            }
+                            label={datum[id]}
+                          />
+                        </TableCell>
+                      );
                     default:
                       return (
                         <TableCell component="th" scope="row" key={id + index}>

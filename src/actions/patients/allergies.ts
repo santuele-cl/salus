@@ -3,11 +3,11 @@
 import { db } from "@/app/_lib/db";
 import { AllergySchema } from "@/app/_schemas/zod/schema";
 import { auth } from "@/auth";
-import { AllergySeverity } from "@prisma/client";
 import { unstable_noStore as noStore } from "next/cache";
 import { headers } from "next/headers";
 import { z } from "zod";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+import { decryptData, encryptData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN"];
 const getAllowed = [];
@@ -21,7 +21,18 @@ export async function getAllergiesByPatientId(patientId: string) {
 
     if (!allergies) return { error: "No allergies data found!" };
 
-    return { success: " found!", data: allergies };
+    const decryptedAllergies = allergies.map((allergy) => {
+      return {
+        ...allergy,
+        name: JSON.parse(decryptData(allergy.name)),
+        severity: JSON.parse(decryptData(allergy.severity)),
+        ...(allergy.description && {
+          description: JSON.parse(decryptData(allergy.description)),
+        }),
+      };
+    });
+
+    return { success: " found!", data: decryptedAllergies };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -36,7 +47,16 @@ export async function getAllergyByAllergyId(allergyId: string) {
 
     if (!allergy) return { error: "No allergy data found!" };
 
-    return { success: "Allergy found!", data: allergy };
+    const decryptedAllergy = {
+      ...allergy,
+      name: JSON.parse(decryptData(allergy.name)),
+      severity: JSON.parse(decryptData(allergy.severity)),
+      ...(allergy.description && {
+        description: JSON.parse(decryptData(allergy.description)),
+      }),
+    };
+
+    return { success: "Allergy found!", data: decryptedAllergy };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -72,9 +92,18 @@ export async function addAllergy(values: z.infer<typeof AllergySchema>) {
 
   if (!log) return { error: "Database error. Log not saved!" };
 
+  const encryptedData: z.infer<typeof AllergySchema> = {
+    ...validatedValues.data,
+    name: encryptData(validatedValues.data.name),
+    severity: encryptData(validatedValues.data.severity),
+    ...(validatedValues.data.description && {
+      description: encryptData(validatedValues.data.description),
+    }),
+  };
+
   const allergy = await db.allergies.create({
     data: {
-      ...(validatedValues.data && validatedValues.data),
+      ...(validatedValues.data && encryptedData),
     },
   });
 
@@ -121,7 +150,17 @@ export async function findAllergiesByTermAndPatientId(
     if (!allergies || allergies.length < 1) {
       return { error: "No presciptions found!" };
     } else {
-      return { success: "Fetch successful!", data: allergies };
+      const decryptedAllergies = allergies.map((allergy) => {
+        return {
+          ...allergy,
+          name: JSON.parse(decryptData(allergy.name)),
+          severity: JSON.parse(decryptData(allergy.severity)),
+          ...(allergy.description && {
+            description: JSON.parse(decryptData(allergy.description)),
+          }),
+        };
+      });
+      return { success: "Fetch successful!", data: decryptedAllergies };
     }
   } catch (error) {
     return { error: "Something went wrong!" };
