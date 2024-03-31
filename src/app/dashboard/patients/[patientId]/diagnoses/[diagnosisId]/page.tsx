@@ -26,7 +26,9 @@ const DiagnosisPage = async ({
         <TroubleshootOutlinedIcon sx={{ fontSize: 40 }} />
       </Stack>
       <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
-        <Diagnosis diagnosis={diagnosis!} key={diagnosis?.id} />
+        {diagnosis && (
+          <Diagnosis diagnosisId={diagnosis?.id} key={diagnosis?.id} />
+        )}
       </Stack>
     </Stack>
   );

@@ -171,7 +171,7 @@ const DiagnosisPage = () => {
                     <TableCell align="left">{diagnosis.condition}</TableCell>
                     <TableCell align="left">{`${dayjs(
                       diagnosis.diagnosisDate
-                    ).format("MMMM d, YYYY")}`}</TableCell>
+                    ).format("MMMM DD, YYYY")}`}</TableCell>
                     <TableCell align="left">{`${physician?.employeeRole?.roleName} ${physician?.fname} ${physician?.lname} `}</TableCell>
 
                     <TableCell align="right">
