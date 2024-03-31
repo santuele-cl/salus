@@ -41,6 +41,11 @@ export async function getChartLogs({
         ],
       }),
     },
+    include: {
+      employee: {
+        select: { profile: { include: { user: { select: { id: true } } } } },
+      },
+    },
     // take: ITEMS_PER_PAGE,
     // skip: (Number(page) - 1) * ITEMS_PER_PAGE,
     orderBy: [{ logTime: "desc" }],
