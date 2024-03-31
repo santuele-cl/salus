@@ -9,10 +9,18 @@ import { headers } from "next/headers";
 
 import { z } from "zod";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
-import { encryptObjectData } from "@/app/_lib/crypto";
+import { decryptData, encryptData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN"];
 const getAllowed = [];
+
+const encryptedFields: Array<keyof z.infer<typeof PrescriptionSchema>> = [
+  "dosage",
+  "durationInDays",
+  "frequencyPerDay",
+  "notes",
+  "takenEveryHour",
+];
 
 export async function getPrescriptionsByPatientId(patientId: string) {
   noStore();
@@ -29,18 +37,28 @@ export async function getPrescriptionsByPatientId(patientId: string) {
 
   if (!prescriptions) return { error: "No prescriptions data found!" };
 
-  return { success: " found!", data: prescriptions };
-  //   const chart = await db.chart.findUnique({ where: { i } });
+  const decryptedPrescription = prescriptions.map((item) => {
+    return {
+      ...item,
+      dosage: JSON.parse(decryptData(item.dosage)),
+      durationInDays: JSON.parse(decryptData(item.durationInDays)),
+      frequencyPerDay: JSON.parse(decryptData(item.frequencyPerDay)),
+      takenEveryHour: JSON.parse(decryptData(item.takenEveryHour)),
+      ...(item.notes && {
+        notes: encryptData(item.notes),
+      }),
+    };
+  });
 
-  //   const visit = await db.visit.findFirst({ where: {} });
+  console.log(decryptedPrescription);
+
+  return { success: " found!", data: decryptedPrescription };
 }
 
 export async function addPrescription(
   values: z.infer<typeof PrescriptionSchema>
 ) {
   const session = await auth();
-
-  // console.log(session);
 
   if (
     !session ||
@@ -69,17 +87,20 @@ export async function addPrescription(
 
   if (!log) return { error: "Database error. Log not saved!" };
 
-  const toExcludeEncryptFields: Array<
-    keyof z.infer<typeof PrescriptionSchema>
-  > = ["drugsId", "physicianId", "patientId", "startDate", "endDate"];
-
-  console.log(validatedValues.data);
-  console.log(encryptObjectData(validatedValues.data, toExcludeEncryptFields));
+  const encryptedData: z.infer<typeof PrescriptionSchema> = {
+    ...validatedValues.data,
+    dosage: encryptData(validatedValues.data.dosage),
+    durationInDays: encryptData(validatedValues.data.durationInDays),
+    frequencyPerDay: encryptData(validatedValues.data.frequencyPerDay),
+    takenEveryHour: encryptData(validatedValues.data.takenEveryHour),
+    ...(validatedValues.data.notes && {
+      notes: encryptData(validatedValues.data.notes),
+    }),
+  };
 
   const prescription = await db.presciption.create({
     data: {
-      ...(validatedValues.data &&
-        encryptObjectData(validatedValues.data, toExcludeEncryptFields)),
+      ...(validatedValues.data && encryptedData),
     },
   });
 
@@ -112,7 +133,16 @@ export async function getPrescriptionByPrescriptionId(prescriptionId: string) {
 
     if (!prescription) return { error: "No prescription data found!" };
 
-    return { success: "Prescription found!", data: prescription };
+    const decryptedPrescription = {
+      ...prescription,
+      dosage: JSON.parse(decryptData(prescription.dosage)),
+      durationInDays: JSON.parse(decryptData(prescription.durationInDays)),
+      frequencyPerDay: JSON.parse(decryptData(prescription.frequencyPerDay)),
+      takenEveryHour: JSON.parse(decryptData(prescription.takenEveryHour)),
+      notes: JSON.parse(decryptData(prescription.notes)),
+    };
+
+    return { success: "Prescription found!", data: decryptedPrescription };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -127,7 +157,7 @@ export async function findPrescriptionByTermAndPatientId(
   if (!term) return { error: "No data found!" };
 
   try {
-    const presciptions = await db.presciption.findMany({
+    const prescriptions = await db.presciption.findMany({
       where: {
         ...(patientId && { patientId }),
         OR: [
@@ -151,10 +181,23 @@ export async function findPrescriptionByTermAndPatientId(
       },
     });
 
-    if (!presciptions || presciptions.length < 1) {
-      return { error: "No presciptions found!" };
+    if (!prescriptions || prescriptions.length < 1) {
+      return { error: "No prescriptions found!" };
     } else {
-      return { success: "Fetch successful!", data: presciptions };
+      const decryptedPrescription = prescriptions.map((item) => {
+        return {
+          ...item,
+          dosage: JSON.parse(decryptData(item.dosage)),
+          durationInDays: JSON.parse(decryptData(item.durationInDays)),
+          frequencyPerDay: JSON.parse(decryptData(item.frequencyPerDay)),
+          takenEveryHour: JSON.parse(decryptData(item.takenEveryHour)),
+          ...(item.notes && {
+            notes: encryptData(item.notes),
+          }),
+        };
+      });
+
+      return { success: "Fetch successful!", data: decryptedPrescription };
     }
   } catch (error) {
     return { error: "Something went wrong!" };

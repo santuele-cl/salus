@@ -1,5 +1,5 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
-import { Divider, Stack, TextField, Typography } from "@mui/material";
+import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
 import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -22,6 +22,7 @@ import dayjs from "dayjs";
 import CustomDiagnosisFormDrawer from "./_components/diagnosis/CustomDiagnosisFormDrawer";
 import CustomPrescriptionFormDrawer from "./_components/prescription/CustomPrescriptionFormDrawer";
 import CustomLaboratoryRequestFormDrawer from "./_components/laboratory-request/CustomLaboratoryRequestFormDrawer";
+import { Fragment, Suspense } from "react";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -285,11 +286,29 @@ const VisitPage = async ({
                     prescriptions.map((prescription, index) => {
                       const drugs = prescription.drugs as Drugs;
                       return (
-                        <Prescriptions
-                          drugs={drugs}
-                          data={prescription}
-                          key={prescription.id}
-                        />
+                        <Fragment key={index}>
+                          <Suspense
+                            fallback={
+                              <Stack
+                                sx={{
+                                  width: "100%",
+                                  height: "100%",
+                                  justifyContent: "center",
+                                  alignItems: "center",
+                                }}
+                              >
+                                Loading
+                              </Stack>
+                            }
+                          >
+                            <Prescriptions
+                              prescriptionId={prescription.id}
+                              // drugs={drugs}
+                              // data={prescription}
+                              key={prescription.id}
+                            />
+                          </Suspense>
+                        </Fragment>
                       );
                     })}
                 </Stack>
