@@ -23,7 +23,6 @@ import { postVaccinations } from "@/actions/patients/vaccinations";
 import { DatePicker } from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 
-
 interface VaccinationFieldType {
   id: keyof z.infer<typeof VaccinationSchema>;
   label: string;
@@ -31,12 +30,11 @@ interface VaccinationFieldType {
 }
 
 const fields: VaccinationFieldType[] = [
-    { id: "vaccineName", label: "Vaccine Name" },
-    { id: "dosage", label: "Dosage"},
-    { id: "administeredAt", label: "Administered At", type: "date" },
-    { id: "administeredBy", label: "Administered By" },
-    { id: "nextDueDate", label: "Next appointment", type: "date" },
-
+  { id: "vaccineName", label: "Vaccine Name" },
+  { id: "dosage", label: "Dosage" },
+  { id: "administeredAt", label: "Administered At", type: "date" },
+  { id: "administeredBy", label: "Administered By" },
+  { id: "nextDueDate", label: "Next appointment", type: "date" },
 ];
 
 const hiddenFields = [""];
@@ -62,11 +60,11 @@ const VaccinationForm = ({
     formState: { errors },
     reset,
     control,
-  } = useForm({
+  } = useForm<z.infer<typeof VaccinationSchema>>({
     resolver: zodResolver(VaccinationSchema),
     defaultValues: {
-      vaccinationId: "",
-      dosage: null,
+      vaccineName: "",
+      dosage: "",
       administeredAt: dayjs().toDate(),
       administeredBy: "",
       nextDueDate: dayjs().toDate(),
