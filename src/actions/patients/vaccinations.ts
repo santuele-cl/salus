@@ -55,7 +55,7 @@ export async function postVaccinations(
   )
     return { error: "Unauthorized!" };
 
-  const parsedValues = DiagnosisSchema.safeParse(values);
+  const parsedValues = VaccinationSchema.safeParse(values);
 
   if (!parsedValues.success) return { error: "Parse error!" };
 
