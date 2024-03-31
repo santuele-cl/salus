@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { useSession } from "next-auth/react";
 import { auth } from "@/auth";
 import dayjs from "dayjs";
+import { decryptData, encryptData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN"];
 const getAllowed = [];
@@ -34,7 +35,15 @@ export async function getDiagnosesByPatientId(patientId: string) {
 
   if (!diagnoses) return { error: "No diagnoses found!" };
 
-  return { success: "Diagnoses found!", data: diagnoses };
+  const decryptedDiagnoses = diagnoses.map((item) => {
+    return {
+      ...item,
+      condition: JSON.parse(decryptData(item.condition)),
+      treatment: JSON.parse(decryptData(item.treatment)),
+    };
+  });
+
+  return { success: "Diagnoses found!", data: decryptedDiagnoses };
 }
 
 export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
@@ -71,7 +80,12 @@ export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
 
     if (!diagnosis) return { error: "No diagnosis data found!" };
 
-    return { success: "Diagnosis found!", data: diagnosis };
+    const decryptedDiagnosis = {
+      ...diagnosis,
+      condition: JSON.parse(decryptData(diagnosis.condition)),
+      treatment: JSON.parse(decryptData(diagnosis.treatment)),
+    };
+    return { success: "Diagnosis found!", data: decryptedDiagnosis };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -107,9 +121,15 @@ export async function addDiagnosis(values: z.infer<typeof DiagnosisSchema>) {
 
   if (!log) return { error: "Database error. Log not saved!" };
 
+  const encryptedData: z.infer<typeof DiagnosisSchema> = {
+    ...parsedValues.data,
+    condition: encryptData(parsedValues.data.condition),
+    treatment: encryptData(parsedValues.data.treatment),
+  };
+
   const diagnosis = await db.diagnosis.create({
     data: {
-      ...(parsedValues.data && parsedValues.data),
+      ...(parsedValues.data && encryptedData),
     },
   });
 

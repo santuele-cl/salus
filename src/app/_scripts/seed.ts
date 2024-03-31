@@ -234,9 +234,13 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT2",
-                        condition: "Upper Respiratory Tract Infection",
+                        condition: encryptData(
+                          "Upper Respiratory Tract Infection"
+                        ),
                         diagnosisDate: "2024-03-01T10:00:00Z",
-                        treatment: "Prescribed antibiotics and rest.",
+                        treatment: encryptData(
+                          "Prescribed antibiotics and rest."
+                        ),
                         physicianId: "EMP1",
                       },
                     },
@@ -306,9 +310,9 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT2",
-                        condition: "Appendicitis",
+                        condition: encryptData("Appendicitis"),
                         diagnosisDate: "2024-03-01T11:30:00Z",
-                        treatment: "Emergency surgery required.",
+                        treatment: encryptData("Emergency surgery required."),
                         physicianId: "EMP1",
                       },
                     },
@@ -379,9 +383,11 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT2",
-                        condition: "Pharyngitis",
+                        condition: encryptData("Pharyngitis"),
                         diagnosisDate: "2024-03-01T13:45:00Z",
-                        treatment: "Prescribed analgesics and throat lozenges.",
+                        treatment: encryptData(
+                          "Prescribed analgesics and throat lozenges."
+                        ),
                         physicianId: "EMP1",
                       },
                     },
@@ -562,9 +568,13 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT3",
-                        condition: "Upper Respiratory Tract Infection",
+                        condition: encryptData(
+                          "Upper Respiratory Tract Infection"
+                        ),
                         diagnosisDate: "2024-03-01T10:00:00Z",
-                        treatment: "Prescribed antibiotics and rest.",
+                        treatment: encryptData(
+                          "Prescribed antibiotics and rest."
+                        ),
                         physicianId: "EMP1",
                       },
                     },
@@ -634,9 +644,9 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT3",
-                        condition: "Appendicitis",
+                        condition: encryptData("Appendicitis"),
                         diagnosisDate: "2024-03-01T11:30:00Z",
-                        treatment: "Emergency surgery required.",
+                        treatment: encryptData("Emergency surgery required."),
                         physicianId: "EMP1",
                       },
                     },
@@ -707,9 +717,11 @@ const seed = async () => {
                     diagnosis: {
                       create: {
                         patientId: "PATIENT3",
-                        condition: "Pharyngitis",
+                        condition: encryptData("Pharyngitis"),
                         diagnosisDate: "2024-03-01T13:45:00Z",
-                        treatment: "Prescribed analgesics and throat lozenges.",
+                        treatment: encryptData(
+                          "Prescribed analgesics and throat lozenges."
+                        ),
                         physicianId: "EMP1",
                       },
                     },
