@@ -20,6 +20,8 @@ import { addVitals } from "@/actions/patients/vitals";
 import FormStatusText from "@/app/_ui/auth/FormStatusText";
 import { useSession } from "next-auth/react";
 import { postVaccinations } from "@/actions/patients/vaccinations";
+import { DatePicker } from "@mui/x-date-pickers";
+import dayjs from "dayjs";
 
 
 interface VaccinationFieldType {
@@ -65,11 +67,10 @@ const VaccinationForm = ({
     defaultValues: {
       vaccinationId: "",
       dosage: null,
-      administeredAt: "",
-      administeredBy: null,
-      physicianId: session.data?.user.empId,
+      administeredAt: dayjs().toDate(),
+      administeredBy: "",
+      nextDueDate: dayjs().toDate(),
       patientId,
-      ...(visitId && { visitId }),
     },
   });
 
@@ -120,12 +121,48 @@ const VaccinationForm = ({
         {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}
       </Stack>
-      <Stack
-        component="form"
-        onSubmit={handleSubmit(onSubmit)}
-        spacing={2}
-        sx={{}}
-      >
+      <Stack component="form" onSubmit={handleSubmit(onSubmit)} spacing={2}>
+        {fields.map(({ id, label, type }, index) => {
+          if (type === "date") {
+            return (
+              <Controller
+                key={id + index}
+                control={control}
+                name={id}
+                rules={{ required: true }}
+                render={({ field }) => {
+                  return (
+                    <DatePicker
+                      slotProps={{
+                        textField: {
+                          fullWidth: true,
+                          error: errors[id] ? true : false,
+                          helperText: errors[id]?.message,
+                        },
+                      }}
+                      label={label}
+                      value={dayjs(field.value)}
+                      inputRef={field.ref}
+                      onChange={(date) => {
+                        field.onChange(date?.toDate());
+                      }}
+                    />
+                  );
+                }}
+              />
+            );
+          }
+          return (
+            <TextField
+              key={id + index}
+              label={label}
+              {...register(id)}
+              error={errors[id] ? true : false}
+              helperText={errors[id]?.message}
+              disabled={pending}
+            />
+          );
+        })}
         <Button
           type="submit"
           variant="contained"

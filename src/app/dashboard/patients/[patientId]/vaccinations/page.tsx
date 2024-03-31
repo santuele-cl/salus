@@ -139,6 +139,7 @@ import VaccinationFormDrawer from "../visit-history/[visitId]/_components/vaccin
           >
             <TableHead>
               <TableRow>
+                <TableCell align="left">Vaccine Name</TableCell>
   
                 {columns.map(({ label }, i) => (
                   <TableCell key={label + i}>{label}</TableCell>
@@ -177,6 +178,7 @@ import VaccinationFormDrawer from "../visit-history/[visitId]/_components/vaccin
                       key={datum + i}
                       sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
                     >
+                      {}
   
                       {selected}
                       <TableCell align="right">
