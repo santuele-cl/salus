@@ -1,13 +1,17 @@
 import { getChartLogs } from "@/actions/logs/chart-logs";
 import {
+  Stack,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
+import Link from "next/link";
+import LaunchOutlinedIcon from "@mui/icons-material/LaunchOutlined";
 
 interface TableProps {
   userId?: string;
@@ -94,6 +98,7 @@ export default async function ChartLogsTable(props: TableProps) {
                 employeeId,
                 ipAddress,
                 userAgent,
+                employee,
               } = log;
               return (
                 <TableRow
@@ -111,8 +116,38 @@ export default async function ChartLogsTable(props: TableProps) {
                     "MMMM DD, YYYY hh:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{logDescription}</TableCell>
-                  <TableCell align="left">{patientId}</TableCell>
-                  <TableCell align="left">{employeeId}</TableCell>
+                  <TableCell align="left">
+                    <Stack
+                      sx={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography variant="subtitle2">{patientId}</Typography>
+                      <Link href={`/dashboard/patients/${patientId}/profile`}>
+                        <LaunchOutlinedIcon fontSize="small" />
+                      </Link>
+                    </Stack>
+                  </TableCell>
+                  <TableCell align="left">
+                    <Stack
+                      sx={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        gap: 1,
+                      }}
+                    >
+                      <Typography variant="subtitle2">
+                        {employee?.profile.user.id}
+                      </Typography>
+                      <Link
+                        href={`/dashboard/users/${employee?.profile.user.id}`}
+                      >
+                        <LaunchOutlinedIcon fontSize="small" />
+                      </Link>
+                    </Stack>
+                  </TableCell>
                   <TableCell align="left">{ipAddress}</TableCell>
                   <TableCell align="left" sx={{ textWrap: "pretty" }}>
                     {userAgent}
