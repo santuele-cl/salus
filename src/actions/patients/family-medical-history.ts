@@ -8,7 +8,7 @@ import { auth } from "@/auth";
 import { headers } from "next/headers";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
 
-const writeAllowed = ["PHYSICIAN"];
+const writeAllowed = ["PHYSICIAN", "NURSE"];
 const getAllowed = [];
 
 export async function getFamilyMedicalHistoriesByPatientID(patientId: string) {
@@ -122,8 +122,15 @@ export async function addFamilyMedicalHistory(
     },
   });
 
-  if (!familyMedicalHistory)
-    return { error: "Error. Family medical data not added!" };
+  if (!familyMedicalHistory) {
+    await updateChartLogStatus({
+      logId: log.data?.id,
+      status: "failed",
+    });
+
+    return { error: "Error. Family Medical History not added!" };
+  }
+
   await updateChartLogStatus({
     logId: log.data?.id,
     status: "success",
