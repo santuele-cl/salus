@@ -6,6 +6,21 @@ import {
   PhysicalPart,
 } from "@prisma/client";
 
+export const VaccinationSchema = z.object({
+  vaccineName: z
+    .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  administeredAt: z.coerce.date(),
+  administeredBy: z
+    .string()
+    .min(1, "required")
+    .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
+  dosage: z.coerce.string(),
+  nextDueDate: z.coerce.date(),
+  patientId: z.string().min(1, "required"),
+});
+
 export const RegisterEmployeeSchema = z.object({
   fname: z
     .string()
