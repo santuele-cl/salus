@@ -191,6 +191,13 @@ export async function findDiagnosesByTermAndPatientId(
     if (!diagnoses || diagnoses.length < 1) {
       return { error: "No diagnoses found!" };
     } else {
+      const decryptedDiagnoses = diagnoses.map((diagnosis) => {
+        return {
+          ...diagnosis,
+          condition: JSON.parse(decryptData(diagnosis.condition)),
+          treatment: JSON.parse(decryptData(diagnosis.treatment)),
+        };
+      });
       return { success: "Fetch successful!", data: diagnoses };
     }
   } catch (error) {
