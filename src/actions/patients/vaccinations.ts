@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
-import { DiagnosisSchema, VaccinationSchema } from "@/app/_schemas/zod/schema";
+import { VaccinationSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { string, z } from "zod";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
@@ -54,7 +54,7 @@ export async function getVaccinationsByVaccinationsId(vaccinationId: string) {
       dosage: JSON.parse(decryptData(vaccination.dosage)),
     };
 
-    return { success: "Vaccination found!", data: vaccination };
+    return { success: "Vaccination found!", data: decryptedVaccination };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -147,7 +147,15 @@ export async function findvaccinationsByTermAndPatientId(
     if (!vaccinations || vaccinations.length < 1) {
       return { error: "No vaccinations found!" };
     } else {
-      return { success: "Fetch successful!", data: vaccinations };
+      const decryptedVaccination = vaccinations.map((vaccinations) => {
+        return {
+          ...vaccinations,
+          vaccineName: JSON.parse(decryptData(vaccinations.vaccineName)),
+          administeredBy: JSON.parse(decryptData(vaccinations.administeredBy)),
+          dosage: JSON.parse(decryptData(vaccinations.dosage)),
+        };
+        });
+      return { success: "Fetch successful!", data: decryptedVaccination };
     }
   } catch (error) {
     return { error: "Something went wrong!" };
