@@ -1,7 +1,5 @@
-"use client";
-import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
-import Logo from "../../../../public/tpdh-logo.jpg";
-import { Patient, Prisma } from "@prisma/client";
+import { Visit } from "@prisma/client";
+import { StyleSheet, Text, View } from "@react-pdf/renderer";
 import dayjs from "dayjs";
 
 export const styles = StyleSheet.create({
@@ -16,64 +14,47 @@ export const styles = StyleSheet.create({
   },
   itemContainer: {
     padding: "4px",
-    flex: "1 0 25%",
+    flex: "1 0 50%",
     gap: "3px",
-    border: "1px solid rgba(0,0,0,0.2)",
+    border: "1px solid gray",
   },
-  item: {
-    fontSize: "10px",
+
+  heading: { fontWeight: 900, fontSize: "10px" },
+  body: {
+    fontSize: "8px",
     color: "rgba(0,0,0,0.8)",
     textTransform: "uppercase",
   },
-  itemHeading: {
-    fontWeight: "bold",
-    fontSize: "9px",
-  },
-  image: {
-    width: "50px",
-    height: "50px",
-  },
-  heading: { fontWeight: 900, fontSize: "14px" },
-  body: { fontSize: "10px" },
 });
 
-type Visit = Prisma.VisitGetPayload<{
-  include: {
-    patient: true;
-    vitals: true;
-    diagnosis: {
-      include: {
-        physician: true;
-      };
-    };
-    prescriptions: {
-      include: { drugs: true; physician: true };
-    };
-    laboratoryRequest: {
-      include: {
-        laboratoryProcedure: true;
-        requestingPhysician: {
-          include: {
-            profile: {
-              select: {
-                employee: {
-                  select: {
-                    fname: true;
-                    lname: true;
-                    employeeRole: { select: { roleName: true } };
-                  };
-                };
-              };
-            };
-          };
-        };
-      };
-    };
-    physicalExamination: true;
-    serviceDepartment: true;
-  };
-}>;
-
-export default function PDFCheckupInfo({ visitData }: { visitData: any }) {
-  return <View style={styles.container}></View>;
+export default function PDFCheckupInfo({ visit }: { visit: Partial<Visit> }) {
+  return (
+    <View style={styles.container}>
+      <View style={styles.itemContainer}>
+        <Text style={styles.heading}>Checkup Date</Text>
+        <Text style={styles.body}>
+          {visit.createdAt ? dayjs(visit.createdAt).format("MMM DD, YYYY") : ""}
+        </Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={styles.heading}>Chief Complaint</Text>
+        <Text style={styles.body}>{visit.chiefComplaint}</Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={styles.heading}>HPI</Text>
+        <Text
+          style={{
+            fontSize: "8px",
+            color: "rgba(0,0,0,0.8)",
+          }}
+        >
+          {visit.hpi}
+        </Text>
+      </View>
+      <View style={styles.itemContainer}>
+        <Text style={styles.heading}>Accompanied By</Text>
+        <Text style={styles.body}>{visit.accompaniedBy}</Text>
+      </View>
+    </View>
+  );
 }

@@ -43,7 +43,7 @@ const PhysicalExaminations = ({
                   <Typography variant="subtitle2">{label}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     physicalExamination[field]
-                  ).format("MMMM d, YYYY")}`}</Typography>
+                  ).format("MMMM DD, YYYY")}`}</Typography>
                 </Stack>
               );
             }

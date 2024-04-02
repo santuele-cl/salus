@@ -56,7 +56,7 @@ const Prescriptions = async ({
                   </Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     response.data[field]
-                  ).format("MMMM d, YYYY")}`}</Typography>
+                  ).format("MMMM DD, YYYY")}`}</Typography>
                 </Stack>
               );
             }

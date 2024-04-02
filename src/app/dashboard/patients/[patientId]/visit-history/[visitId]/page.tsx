@@ -1,4 +1,5 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
+import FindInPageOutlinedIcon from "@mui/icons-material/FindInPageOutlined";
 import {
   Box,
   Button,
@@ -48,7 +49,12 @@ const VisitPage = async ({
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
 
-  console.log(visit);
+  console.log("visit", visit);
+  console.log("profile", profile);
+  console.log("prescriptions", prescriptions);
+  console.log("physicalExaminations", physicalExaminations);
+  console.log("laboratoryRequests", laboratoryRequests);
+  console.log("diagnoses", diagnoses);
 
   return (
     <div>
@@ -57,14 +63,18 @@ const VisitPage = async ({
           sx={{
             justifyContent: "space-between",
             alignItems: "center",
+            p: 1,
+            borderRadius: 1,
+            bgcolor: "primary.light",
+            color: "primary.contrastText",
             flexDirection: { xs: "column", md: "row" },
           }}
         >
           <Typography variant="body1" fontWeight={400}>
             Visit details for
-            <Typography variant="h6" component="span">{`${dayjs(
+            <Typography variant="h6" sx={{ ml: 1 }} component="span">{`${dayjs(
               visit.data?.createdAt
-            ).format("MMMM d, YYYY h:mm a")}`}</Typography>
+            ).format("MMM DD, YYYY hh:mm a")}`}</Typography>
           </Typography>
           <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
             <Stack direction="row">
@@ -73,7 +83,7 @@ const VisitPage = async ({
                 Updated :
                 <Typography component="span" variant="subtitle2">{`${dayjs(
                   visit.data?.updatedAt
-                ).format("MMMM d, YYYY h:mm a")}`}</Typography>
+                ).format("MMM DD, YYYY hh:mm a")}`}</Typography>
               </Typography>
             </Stack>
             <Stack>
@@ -81,9 +91,17 @@ const VisitPage = async ({
               {vitals &&
                 prescriptions &&
                 laboratoryRequests &&
+                visit &&
                 physicalExaminations &&
                 profile && (
                   <PDFDownload
+                    visit={{
+                      accompaniedBy: visit.data?.accompaniedBy ?? "",
+                      chiefComplaint: visit.data?.chiefComplaint ?? "",
+                      hpi: visit.data?.hpi ?? "",
+                      id: visit.data?.id ?? "",
+                      createdAt: visit.data?.createdAt ?? undefined,
+                    }}
                     profile={profile}
                     vitals={vitals && vitals}
                     prescriptions={prescriptions}
@@ -210,9 +228,10 @@ const VisitPage = async ({
                 <Stack sx={{ p: 3 }}>
                   <AccessibilityIcon sx={{ fontSize: 40 }} />
                 </Stack>
-                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
-                  {physicalExaminations &&
-                    physicalExaminations.length &&
+                <Stack
+                  sx={{ flexGrow: "1", p: 2, gap: 2, position: "relative" }}
+                >
+                  {physicalExaminations && !!physicalExaminations.length ? (
                     physicalExaminations.map((physicalExamination, index) => {
                       return (
                         <PhysicalExaminations
@@ -220,11 +239,22 @@ const VisitPage = async ({
                           key={physicalExamination.id}
                         />
                       );
-                    })}
+                    })
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "rgba(0,0,0,0.6)",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
+                      }}
+                    >{`No record(s)`}</Typography>
+                  )}
                 </Stack>
               </Stack>
             </Grid2>
-            {/* DIAGNOSIS */}0
+            {/* DIAGNOSIS */}
             <Grid2 xs={12}>
               <Stack
                 sx={{
@@ -256,9 +286,15 @@ const VisitPage = async ({
                 <Stack sx={{ p: 3 }}>
                   <MedicalInformationOutlinedIcon sx={{ fontSize: 40 }} />
                 </Stack>
-                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
-                  {diagnoses &&
-                    diagnoses.length &&
+                <Stack
+                  sx={{
+                    flexGrow: "1",
+                    p: 2,
+                    gap: 2,
+                    position: "relative",
+                  }}
+                >
+                  {diagnoses && !!diagnoses.length ? (
                     diagnoses.map((diagnosis, index) => {
                       return (
                         <Fragment key={diagnosis.id}>
@@ -283,7 +319,18 @@ const VisitPage = async ({
                           </Suspense>
                         </Fragment>
                       );
-                    })}
+                    })
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "rgba(0,0,0,0.6)",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
+                      }}
+                    >{`No record(s)`}</Typography>
+                  )}
                 </Stack>
               </Stack>
             </Grid2>
@@ -332,9 +379,10 @@ const VisitPage = async ({
                     </Typography>
                   </Typography>
                 </Stack>
-                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
-                  {prescriptions &&
-                    prescriptions.length &&
+                <Stack
+                  sx={{ flexGrow: "1", p: 2, gap: 2, position: "relative" }}
+                >
+                  {prescriptions && !!prescriptions.length ? (
                     prescriptions.map((prescription, index) => {
                       const drugs = prescription.drugs as Drugs;
                       return (
@@ -362,7 +410,18 @@ const VisitPage = async ({
                           </Suspense>
                         </Fragment>
                       );
-                    })}
+                    })
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "rgba(0,0,0,0.6)",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
+                      }}
+                    >{`No record(s)`}</Typography>
+                  )}
                 </Stack>
               </Stack>
             </Grid2>
@@ -398,9 +457,10 @@ const VisitPage = async ({
                 <Stack sx={{ p: 3 }}>
                   <BiotechOutlinedIcon sx={{ fontSize: 40 }} />
                 </Stack>
-                <Stack sx={{ flexGrow: "1", p: 2, gap: 2 }}>
-                  {laboratoryRequests &&
-                    laboratoryRequests.length &&
+                <Stack
+                  sx={{ flexGrow: "1", p: 2, gap: 2, position: "relative" }}
+                >
+                  {laboratoryRequests && !!laboratoryRequests.length ? (
                     laboratoryRequests.map((laboratoryRequest, index) => {
                       return (
                         <LaboratoryRequest
@@ -414,7 +474,18 @@ const VisitPage = async ({
                           key={laboratoryRequest.id}
                         />
                       );
-                    })}
+                    })
+                  ) : (
+                    <Typography
+                      sx={{
+                        color: "rgba(0,0,0,0.6)",
+                        position: "absolute",
+                        top: "50%",
+                        left: "50%",
+                        transform: "translate(-50%,-50%)",
+                      }}
+                    >{`No record(s)`}</Typography>
+                  )}
                 </Stack>
               </Stack>
             </Grid2>

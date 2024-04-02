@@ -81,10 +81,10 @@ export default async function ServiceDepartmentsTable() {
                   <TableCell align="left">{head}</TableCell>
                   <TableCell align="left">{description}</TableCell>
                   <TableCell align="left">{`${dayjs(createdAt).format(
-                    "MMMM d, YYYY"
+                    "MMMM DD, YYYY"
                   )}`}</TableCell>
                   <TableCell align="left">{`${dayjs(updatedAt).format(
-                    "MMMM d, YYYY"
+                    "MMMM DD, YYYY"
                   )}`}</TableCell>
                   <TableCell align="right">
                     <Stack

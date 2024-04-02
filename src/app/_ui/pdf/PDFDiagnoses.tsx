@@ -1,13 +1,15 @@
 import { Diagnosis } from "@prisma/client";
 import { Image, StyleSheet, Text, View } from "@react-pdf/renderer";
+import dayjs from "dayjs";
+
 export const styles = StyleSheet.create({
   itemContainer: {
     padding: "4px",
     gap: "3px",
   },
   physicalExamBox: { display: "flex", flexDirection: "row", gap: "8px" },
-  partBox: { flex: "1 0 30%" },
-  contextBox: { flex: "1 1 70%" },
+  partBox: { flex: "1 0 40%" },
+  contextBox: { flex: "1 1 60%" },
   item: {
     fontSize: "10px",
     color: "rgba(0,0,0,0.8)",
@@ -18,6 +20,7 @@ export const styles = StyleSheet.create({
     fontSize: "9px",
   },
 });
+
 export default function PDFDiagnoses({
   diagnoses,
 }: {
@@ -38,6 +41,12 @@ export default function PDFDiagnoses({
                 <View style={styles.contextBox}>
                   <Text style={styles.itemHeading}>treatment</Text>
                   <Text style={styles.item}>{treatment}</Text>
+                </View>
+                <View style={styles.contextBox}>
+                  <Text style={styles.itemHeading}>Date Diagnosed</Text>
+                  <Text style={styles.item}>
+                    {dayjs(diagnosisDate).format("MMMM DD, YYYY")}
+                  </Text>
                 </View>
               </View>
             </View>

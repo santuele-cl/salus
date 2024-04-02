@@ -50,7 +50,7 @@ const VisitHistoryPage = async ({
                     {visit.id}
                   </TableCell>
                   <TableCell align="left">{`${dayjs(visit.createdAt).format(
-                    "MMMM d, YYYY h:mm a"
+                    "MMMM DD, YYYY h:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{visit.chiefComplaint}</TableCell>
                   <TableCell align="right">

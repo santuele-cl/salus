@@ -34,7 +34,7 @@ const Vital = ({ vitals }: { vitals: Vitals }) => {
             content = (
               <Box sx={{ marginLeft: "auto", fontStyle: "italic" }}>{`${dayjs(
                 vitals[id]
-              ).format("MMMM d, YYYY h:mm a")}`}</Box>
+              ).format("MMMM DD, YYYY h:mm a")}`}</Box>
             );
           } else {
             content = (

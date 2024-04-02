@@ -146,7 +146,7 @@ const FindPageLayout = ({ children }: { children: React.ReactNode }) => {
                       <TableCell align="right">{mname}</TableCell>
                       <TableCell align="right">{lname}</TableCell>
                       <TableCell align="right">{`${dayjs(bdate).format(
-                        "MMMM d, YYYY"
+                        "MMMM DD, YYYY"
                       )}`}</TableCell>
                       <TableCell
                         align="right"

@@ -32,7 +32,7 @@ const TestPage = () => {
       {/* <PDFDownloadLink document={<PDFFile />} fileName="sample-pdf">
         {({ loading }) => (loading ? "Loading" : "Download")}
       </PDFDownloadLink> */}
-      <PDFFile />
+      {/* <PDFFile/> */}
     </div>
   );
 };

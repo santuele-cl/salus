@@ -83,7 +83,7 @@ const Diagnosis = async ({ diagnosisId }: { diagnosisId: string }) => {
                   <Typography variant="subtitle2">{label}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     diagnosis[field]
-                  ).format("MMMM d, YYYY")}`}</Typography>
+                  ).format("MMMM DD, YYYY")}`}</Typography>
                 </Stack>
               );
             }

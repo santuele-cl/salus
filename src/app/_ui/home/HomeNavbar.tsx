@@ -70,6 +70,15 @@ const HomeNavbar = () => {
                   Home
                 </Button>
                 <Button
+                  variant={"text"}
+                  LinkComponent={Link}
+                  href="/dashboard/patients"
+                  sx={{}}
+                  onClick={() => setActiveLink("")}
+                >
+                  Dashboard
+                </Button>
+                <Button
                   variant={activeLink === "about" ? "contained" : "text"}
                   LinkComponent={Link}
                   href="#about"

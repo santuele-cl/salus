@@ -1,5 +1,6 @@
 "use server";
 
+import { decryptData } from "@/app/_lib/crypto";
 import { db } from "@/app/_lib/db";
 import { VisitSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore } from "next/cache";
@@ -18,12 +19,13 @@ export async function getVisitsByProfileId(profileId: string) {
 }
 
 export async function getVisityByVisitId(visitId: string) {
+  noStore();
   try {
     const visit = await db.visit.findUnique({
       where: { id: visitId },
       include: {
         patient: true,
-        vitals: true,
+        vitals: { include: { checkedBy: true } },
         diagnosis: {
           include: {
             physician: true,
@@ -59,7 +61,23 @@ export async function getVisityByVisitId(visitId: string) {
 
     if (!visit) return { error: "Visit not found!" };
 
-    return { success: "Visit found!", data: visit };
+    const decryptVisit = {
+      ...visit,
+      prescriptions: visit.prescriptions.map((item) => ({
+        ...item,
+        dosage: JSON.parse(decryptData(item.dosage)),
+        frequencyPerDay: JSON.parse(decryptData(item.frequencyPerDay)),
+        takenEveryHour: JSON.parse(decryptData(item.takenEveryHour)),
+        durationInDays: JSON.parse(decryptData(item.durationInDays)),
+        notes: JSON.parse(decryptData(item.notes)),
+      })),
+      diagnosis: visit.diagnosis.map((item) => ({
+        ...item,
+        condition: JSON.parse(decryptData(item.condition)),
+        treatment: JSON.parse(decryptData(item.treatment)),
+      })),
+    };
+    return { success: "Visit found!", data: decryptVisit };
   } catch (error) {
     return { error: "Something went wrong!" };
   }

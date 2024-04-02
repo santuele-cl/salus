@@ -22,63 +22,13 @@ import {
   Patient,
   PhysicalExamination,
   Presciption,
+  Prisma,
+  Visit,
   Vitals,
 } from "@prisma/client";
 import PDFDiagnoses from "./PDFDiagnoses";
-
-const SAMPLE_VISIT = {
-  id: "g5AfWsLxA_EPMAaT",
-  accompaniedBy: "Parent",
-  chiefComplaint: "Fever and Cough",
-  hpi: "Patient has been experiencing fever and cough for the past three days. No improvement with over-the-counter medications.",
-  createdAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-  updatedAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-  serviceDepartmentId: "SD1003",
-  patientId: "PATIENT2",
-  patient: {
-    id: "PATIENT2",
-    createdAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-    updatedAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-    fname: "clyde",
-    mname: "arrogante",
-    lname: "santuele",
-    nameSuffix: null,
-    gender: "MALE",
-    age: 23,
-    bdate: dayjs("2023-12-27T10:48:22.000Z").toDate(),
-    bplace: "makati",
-    civilStatus: "SINGLE",
-    occupation: "Software engineer",
-    profileId: "PROFILE1",
-  },
-  vitals: {
-    id: "pZMvWtPmFGctXgbB",
-    heightInCm: 170,
-    weightInKg: 70,
-    bloodPressure: "120/80",
-    pulseRate: "90",
-    respiratoryRate: "20",
-    bodyTemperatureInCelsius: 38,
-    oxygenSaturation: "98%",
-    createdAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-    updatedAt: dayjs("2024-03-31T05:14:25.193Z").toDate(),
-    checkedById: "EMP1",
-    visitId: "g5AfWsLxA_EPMAaT",
-    patientId: null,
-  },
-  diagnosis: [[Object]],
-  prescriptions: [[Object]],
-  laboratoryRequest: [[Object]],
-  physicalExamination: [[Object]],
-  serviceDepartment: {
-    id: "SD1003",
-    name: "Outpatient Department",
-    head: "Pascual Pattaui, MD",
-    description: null,
-    createdAt: dayjs("2024-03-31T05:14:25.115Z").toDate(),
-    updatedAt: dayjs("2024-03-31T05:14:25.115Z").toDate(),
-  },
-};
+import PDFPrescription from "./PDFPrescription";
+import PDFLaboratoryRequest from "./PDFLaboratoryRequest";
 
 export const styles = StyleSheet.create({
   page: {
@@ -99,6 +49,10 @@ export const styles = StyleSheet.create({
   },
   sectionHeading: {
     fontSize: "14px",
+    marginVertical: "8px",
+  },
+  subSectionHeading: {
+    fontSize: "12px",
     marginVertical: "6px",
   },
   dateText: {
@@ -111,16 +65,53 @@ export const styles = StyleSheet.create({
   },
 });
 
+type PrescriptionWithDrugs = Prisma.PresciptionGetPayload<{
+  include: { drugs: true; physician: true };
+}>;
+
+type LaboratoryRequestWithInclude = Prisma.LaboratoryRequestGetPayload<{
+  include: {
+    laboratoryProcedure: true;
+    requestingPhysician: {
+      include: {
+        profile: {
+          select: {
+            employee: {
+              select: {
+                fname: true;
+                lname: true;
+                employeeRole: { select: { roleName: true } };
+              };
+            };
+          };
+        };
+      };
+    };
+  };
+}>;
+
+type DiagnosisWithPhysician = Prisma.DiagnosisGetPayload<{
+  include: {
+    physician: true;
+  };
+}>;
+
+type VitalsWithCheckBy = Prisma.VitalsGetPayload<{
+  include: { checkedBy: true };
+}>;
+
 interface PDFFileProps {
-  vitals?: Vitals;
-  prescriptions?: Presciption[];
-  diagnoses?: Diagnosis[];
-  laboratoryRequests?: LaboratoryRequest[];
+  visit: Partial<Visit>;
+  vitals?: VitalsWithCheckBy;
+  prescriptions?: PrescriptionWithDrugs[];
+  diagnoses?: DiagnosisWithPhysician[];
+  laboratoryRequests?: LaboratoryRequestWithInclude[];
   physicalExaminations?: PhysicalExamination[];
   profile: Patient;
 }
 
 export default function PDFFile({
+  visit,
   vitals,
   prescriptions,
   diagnoses,
@@ -129,23 +120,39 @@ export default function PDFFile({
   profile,
 }: PDFFileProps) {
   return (
-    <Document>
-      <Page size="A4" style={styles.page}>
+    <Document title={`checkup-record-${visit.id}`}>
+      <Page size="LETTER" style={styles.page}>
         <PDFHeader />
-        <Text style={styles.dateText}>{`Date generated: ${dayjs().format(
-          "MMMM DD, YYYY"
-        )}`}</Text>
+        <View
+          style={{
+            display: "flex",
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.dateText}>{`Date generated: ${dayjs().format(
+            "MMMM DD, YYYY"
+          )}`}</Text>
+          <Text style={styles.dateText}>{`Checkup date: ${dayjs(
+            visit.createdAt
+          ).format("MMMM DD, YYYY")}`}</Text>
+        </View>
         <View>
           <Text style={styles.sectionHeading}>Patient Information</Text>
         </View>
+
         <PDFProfile profile={profile} />
-        <PDFCheckupInfo visitData={SAMPLE_VISIT} />
         <View>
-          <Text style={styles.sectionHeading}>Vitals Signs</Text>
+          <Text style={styles.sectionHeading}>Checkup Record</Text>
+        </View>
+        <PDFCheckupInfo visit={visit} />
+        <View>
+          <Text style={styles.subSectionHeading}>Vitals Signs</Text>
         </View>
         <PDFVitals vitals={vitals} />
         <View>
-          <Text style={styles.sectionHeading}>Physical Examination</Text>
+          <Text style={styles.subSectionHeading}>Physical Examination</Text>
         </View>
         {physicalExaminations && physicalExaminations.length && (
           <PDFPhysicalExaminations
@@ -153,18 +160,58 @@ export default function PDFFile({
           />
         )}
         <View>
-          <Text style={styles.sectionHeading}>Diagnosis</Text>
+          <Text style={styles.subSectionHeading}>Diagnosis</Text>
         </View>
         {diagnoses && diagnoses.length && (
           <PDFDiagnoses diagnoses={diagnoses} />
         )}
         <View>
-          <Text>________________</Text>
-          <Text style={styles.nameText}>Attending nurse</Text>
+          <Text style={styles.subSectionHeading}>Prescription</Text>
         </View>
+        {prescriptions && prescriptions.length && (
+          <PDFPrescription prescriptions={prescriptions} />
+        )}
         <View>
-          <Text>________________</Text>
-          <Text style={styles.nameText}>Attending physician</Text>
+          <Text style={styles.subSectionHeading}>Laboratory Request</Text>
+        </View>
+        {laboratoryRequests && laboratoryRequests.length && (
+          <PDFLaboratoryRequest laboratoryRequests={laboratoryRequests} />
+        )}
+        <View style={{ marginTop: "20px" }}>
+          {/* <View>
+            <Text
+              style={{
+                textTransform: "uppercase",
+                textDecoration: "underline",
+                fontSize: "11px",
+                marginTop: "8px",
+              }}
+            >
+              {vitals &&
+                vitals &&
+                `${vitals.checkedBy.fname} ${vitals.checkedBy.lname} `}
+            </Text>
+            <Text style={{ fontSize: "10px", color: "rgba(0,0,0,0.8)" }}>
+              Attending nurse
+            </Text>
+          </View> */}
+          <View>
+            <Text
+              style={{
+                textTransform: "uppercase",
+                textDecoration: "underline",
+                fontSize: "11px",
+                marginTop: "8px",
+              }}
+            >
+              {diagnoses &&
+                diagnoses.length &&
+                `${diagnoses[0].physician?.fname} ${diagnoses[0].physician?.lname} `}
+            </Text>
+            <Text style={{ fontSize: "8px", color: "rgba(0,0,0,0.8)" }}>
+              Attending physician
+            </Text>
+          </View>
         </View>
         <Text
           style={styles.pageNumber}
