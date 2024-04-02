@@ -54,7 +54,7 @@ const LaboratoryRequest = ({
                   <Typography variant="subtitle2">{field}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     laboratoryRequest[field]
-                  ).format("MMMM d, YYYY")}`}</Typography>
+                  ).format("MMMM DD, YYYY")}`}</Typography>
                 </Stack>
               );
             }

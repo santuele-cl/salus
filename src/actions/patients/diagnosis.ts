@@ -46,6 +46,37 @@ export async function getDiagnosesByPatientId(patientId: string) {
   return { success: "Diagnoses found!", data: decryptedDiagnoses };
 }
 
+export async function getDiagnosesByVisitId(visitId: string) {
+  noStore();
+  const diagnoses = await db.diagnosis.findMany({
+    where: { visitId: visitId },
+    include: {
+      physician: {
+        select: {
+          fname: true,
+          lname: true,
+          employeeRole: {
+            select: {
+              roleName: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!diagnoses) return { error: "No diagnoses found!" };
+
+  const decryptedDiagnoses = diagnoses.map((item) => {
+    return {
+      ...item,
+      condition: JSON.parse(decryptData(item.condition)),
+      treatment: JSON.parse(decryptData(item.treatment)),
+    };
+  });
+
+  return { success: "Diagnoses found!", data: decryptedDiagnoses };
+}
 export async function getDiagnosisByDiagnosisId(diagnosisId: string) {
   noStore();
   try {

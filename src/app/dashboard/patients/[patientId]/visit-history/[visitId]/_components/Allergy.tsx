@@ -35,7 +35,7 @@ const Allergy = ({ allergy }: { allergy: Allergies }) => {
                   <Typography variant="subtitle2">{field}</Typography>
                   <Typography sx={{ fontStyle: "italic" }}>{`${dayjs(
                     allergy[field]
-                  ).format("MMMM d, YYYY")}`}</Typography>
+                  ).format("MMMM DD, YYYY")}`}</Typography>
                 </Stack>
               );
             }

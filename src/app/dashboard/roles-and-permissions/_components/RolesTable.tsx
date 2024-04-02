@@ -67,10 +67,10 @@ const RolesTable = async () => {
                   </TableCell>
                   <TableCell align="left">{roleName}</TableCell>
                   <TableCell align="left">{`${dayjs(createdAt).format(
-                    "MMMM d, YYYY hh:mm a"
+                    "MMMM DD, YYYY hh:mm a"
                   )}`}</TableCell>
                   <TableCell align="left">{`${dayjs(updatedAt).format(
-                    "MMMM d, YYYY hh:mm a"
+                    "MMMM DD, YYYY hh:mm a"
                   )}`}</TableCell>
                   <TableCell align="right">
                     <Stack

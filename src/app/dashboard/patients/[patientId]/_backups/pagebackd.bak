@@ -146,7 +146,7 @@
 //                       <TableCell align="right">{lname}</TableCell>
 //                       <TableCell align="right">{`${format(
 //                         bdate,
-//                         " MMMM d, yyyy"
+//                         " MMMM DD, yyyy"
 //                       )}`}</TableCell>
 //                       <TableCell
 //                         align="right"

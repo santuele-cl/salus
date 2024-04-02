@@ -72,7 +72,7 @@ const ProfilePage = async ({
           <Grid2 xs={12} md={6}>
             <TextField
               label="Birth date"
-              defaultValue={`${dayjs(data?.bdate).format("MMMM d, YYYY")}`}
+              defaultValue={`${dayjs(data?.bdate).format("MMMM DD, YYYY")}`}
               InputProps={{ readOnly: true }}
               fullWidth
             />

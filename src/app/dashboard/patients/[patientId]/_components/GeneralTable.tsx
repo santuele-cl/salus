@@ -50,7 +50,7 @@ const GeneralTable = ({ data, columns, baseUrl }: GeneralTableType) => {
                       component="th"
                       scope="row"
                       key={id + index}
-                    >{`${dayjs(datum[id]).format("MMMM d, YYYY")}`}</TableCell>
+                    >{`${dayjs(datum[id]).format("MMMM DD, YYYY")}`}</TableCell>
                   );
 
                 default:

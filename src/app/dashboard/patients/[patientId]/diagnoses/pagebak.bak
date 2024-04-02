@@ -43,7 +43,7 @@ const DiagnosisPage = async ({
                   <TableCell align="left">{diagnosis.condition}</TableCell>
                   <TableCell align="left">{`${format(
                     diagnosis.diagnosisDate,
-                    " MMMM d, yyyy"
+                    " MMMM DD, yyyy"
                   )}`}</TableCell>
                   <TableCell align="left">{`${physician?.employeeRole?.roleName} ${physician?.fname} ${physician?.lname} `}</TableCell>
 
