@@ -22,6 +22,7 @@ export async function getVisityByVisitId(visitId: string) {
     const visit = await db.visit.findUnique({
       where: { id: visitId },
       include: {
+        patient: true,
         vitals: true,
         diagnosis: {
           include: {

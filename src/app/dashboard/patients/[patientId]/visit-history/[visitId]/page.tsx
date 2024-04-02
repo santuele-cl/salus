@@ -1,5 +1,12 @@
 import { getVisityByVisitId } from "@/actions/patients/visits";
-import { Box, Divider, Stack, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Divider,
+  Stack,
+  TextField,
+  Typography,
+} from "@mui/material";
 import UpdateIcon from "@mui/icons-material/Update";
 import LibraryAddOutlinedIcon from "@mui/icons-material/LibraryAddOutlined";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
@@ -23,6 +30,10 @@ import CustomDiagnosisFormDrawer from "./_components/diagnosis/CustomDiagnosisFo
 import CustomPrescriptionFormDrawer from "./_components/prescription/CustomPrescriptionFormDrawer";
 import CustomLaboratoryRequestFormDrawer from "./_components/laboratory-request/CustomLaboratoryRequestFormDrawer";
 import { Fragment, Suspense } from "react";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import PDFFile from "@/app/_ui/pdf/PDFFile";
+import PDFDownload from "../../../../../_ui/pdf/PDFDownload";
+import PDFData from "../../../../../_ui/pdf/PDFData";
 
 const VisitPage = async ({
   params: { visitId, patientId },
@@ -30,11 +41,13 @@ const VisitPage = async ({
   params: { visitId: string; patientId: string };
 }) => {
   const visit = await getVisityByVisitId(visitId);
+  const profile = visit.data?.patient;
   const vitals = visit.data?.vitals;
   const prescriptions = visit.data?.prescriptions;
   const physicalExaminations = visit.data?.physicalExamination;
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
+
   console.log(visit);
 
   return (
@@ -53,14 +66,33 @@ const VisitPage = async ({
               visit.data?.createdAt
             ).format("MMMM d, YYYY h:mm a")}`}</Typography>
           </Typography>
-          <Stack direction="row">
-            <UpdateIcon sx={{ fontSize: 22 }} />
-            <Typography component="span">
-              Updated :
-              <Typography component="span" variant="subtitle2">{`${dayjs(
-                visit.data?.updatedAt
-              ).format("MMMM d, YYYY h:mm a")}`}</Typography>
-            </Typography>
+          <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 2 }}>
+            <Stack direction="row">
+              <UpdateIcon sx={{ fontSize: 22 }} />
+              <Typography component="span">
+                Updated :
+                <Typography component="span" variant="subtitle2">{`${dayjs(
+                  visit.data?.updatedAt
+                ).format("MMMM d, YYYY h:mm a")}`}</Typography>
+              </Typography>
+            </Stack>
+            <Stack>
+              {/* <PDFData v/> */}
+              {vitals &&
+                prescriptions &&
+                laboratoryRequests &&
+                physicalExaminations &&
+                profile && (
+                  <PDFDownload
+                    profile={profile}
+                    vitals={vitals && vitals}
+                    prescriptions={prescriptions}
+                    diagnoses={diagnoses}
+                    laboratoryRequests={laboratoryRequests}
+                    physicalExaminations={physicalExaminations}
+                  />
+                )}
+            </Stack>
           </Stack>
         </Stack>
         <Divider sx={{ my: 1 }} />
