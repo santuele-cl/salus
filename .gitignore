@@ -13,6 +13,9 @@
 /.next/
 /out/
 
+# prisma
+prisma/migrations
+
 # production
 /build
 
@@ -27,7 +30,7 @@ yarn-error.log*
 
 # local env files
 .env*.local
-
+.env
 # vercel
 .vercel
 

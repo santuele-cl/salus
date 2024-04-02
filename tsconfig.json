@@ -21,6 +21,17 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts",
+    "src/components/auth/LoginForm copy.bak",
+    "src/app/dashboard/patients/pagebakb.bak",
+    "src/app/dashboard/patients/pagebackd.bak",
+    "src/app/dashboard/patients/layoutback.bak",
+    "src/app/dashboard/patients/[patientId]/visit-history/layoutbak.bak",
+    "src/app/dashboard/page.tsx"
+  ],
   "exclude": ["node_modules"]
 }

@@ -1,0 +1,58 @@
+// import {
+//   Box,
+//   Button,
+//   Paper,
+//   Stack,
+//   TextField,
+//   Typography,
+// } from "@mui/material";
+
+// const PatientsPage = () => {
+//   return (
+//     <Stack spacing={2}>
+//       <Paper elevation={1} sx={{ p: 2 }}>
+//         <Stack
+//           direction="row"
+//           sx={{
+//             height: "55px",
+//             // bgcolor: "orange",
+//             alignItems: "center",
+//             justifyContent: "space-between",
+//           }}
+//         >
+//           <Stack>
+//             <Typography variant="h6" gap={0}>
+//               Patients
+//             </Typography>
+//             <Typography variant="body1" sx={{ mt: "-4px" }}>
+//               View patient information
+//             </Typography>
+//           </Stack>
+//           <Stack
+//             direction="row"
+//             component="form"
+//             spacing={2}
+//             sx={{
+//               alignItems: "center",
+//               justifyContent: "center",
+//             }}
+//           >
+//             <TextField label="Patient ID" size="small" />
+//             <Button
+//               type="submit"
+//               variant="contained"
+//               sx={{ alignSelf: "stretch" }}
+//             >
+//               Search
+//             </Button>
+//           </Stack>
+//         </Stack>
+//       </Paper>
+//       <Paper elevation={1} sx={{ p: 2 }}>
+//         <Stack>Down</Stack>
+//       </Paper>
+//     </Stack>
+//   );
+// };
+
+// export default PatientsPage;
