@@ -79,17 +79,21 @@ export default auth(async (req) => {
   }
 
   if (isAdminRoute) {
-    if (user?.empRole !== "ADMIN") {
-      return Response.redirect(new URL("/unauthorized", nextUrl));
-    }
-    return;
+    if (isLoggedIn) {
+      if (user?.empRole !== "ADMIN") {
+        return Response.redirect(new URL("/unauthorized", nextUrl));
+      }
+      return;
+    } else return Response.redirect(new URL(`/auth/login`, nextUrl));
   }
 
   if (isMedicalProfessionalRoute) {
-    if (user?.empRole === "ADMIN") {
-      return Response.redirect(new URL("/unauthorized", nextUrl));
-    }
-    return;
+    if (isLoggedIn) {
+      if (user?.empRole === "ADMIN") {
+        return Response.redirect(new URL("/unauthorized", nextUrl));
+      }
+      return;
+    } else return Response.redirect(new URL(`/auth/login`, nextUrl));
   }
 
   if (!isLoggedIn && !isPublicRoute) {
