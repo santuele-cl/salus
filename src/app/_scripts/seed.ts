@@ -127,13 +127,13 @@ const seed = async () => {
                 createMany: {
                   data: [
                     {
-                      condition: "Cancer",
-                      relationship: "Sibling",
+                      condition: encryptData("Cancer"),
+                      relationship: encryptData("Sibling"),
                       ageOfOnset: 40,
                     },
                     {
-                      condition: "Hypertension",
-                      relationship: "Grandparent",
+                      condition: encryptData("Hypertension"),
+                      relationship: encryptData("Grandparent"),
                       ageOfOnset: 70,
                     },
                   ],
