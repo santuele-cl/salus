@@ -45,11 +45,12 @@ export async function login(
   const userAgent = headersList.get("user-agent") || "";
 
   unstable_noStore();
-  const validatedCredentials = LoginSchema.safeParse(credentials);
+  // const validatedCredentials = LoginSchema.safeParse(credentials);
 
-  if (!validatedCredentials.success) return { error: "Invalid data." };
+  // if (!validatedCredentials.success) return { error: "Invalid data." };
 
-  const { email, password, code } = validatedCredentials.data;
+  // const { email, password, code } = validatedCredentials.data;
+  const { email, password, code } = credentials;
 
   const existingUser = await getUserByEmail(email);
 
@@ -116,7 +117,7 @@ export async function login(
     status: "failed",
   });
 
-  if (!loginLog) console.log("Database error. Log not saved!");
+  if (!loginLog) return { error: "Log error." };
 
   try {
     await signIn("credentials", {
@@ -125,6 +126,7 @@ export async function login(
       // redirectTo: callbackUrl || "/",
     });
   } catch (error) {
+    console.log(error);
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -141,9 +143,9 @@ export async function login(
     status: "success",
   });
 
-  if (!udpatedLog) console.log("Database error. Log not saved!");
+  if (!udpatedLog) return { error: "Log error." };
 
-  revalidatePath("/dashboard/logs/login");
+  // revalidatePath("/dashboard/logs/login");
 
   return { success: "Login successful." };
 }
