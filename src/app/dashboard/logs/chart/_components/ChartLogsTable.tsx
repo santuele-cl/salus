@@ -24,8 +24,6 @@ export default async function ChartLogsTable(props: TableProps) {
   const { userId, query, page, patientId } = props;
   const propsKey = Object.keys(props);
 
-  console.log("propsKey", propsKey);
-
   const response = await getChartLogs({
     userId: userId,
     patientId: patientId,

@@ -70,7 +70,6 @@ export default function EditDrugForm({
     setSuccess("");
     try {
       const res = await updateDrug(drug.id, data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

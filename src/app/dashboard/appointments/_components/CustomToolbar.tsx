@@ -79,12 +79,12 @@ const CustomToolbar = ({
           >
             Day
           </Button>
-          <Button
+          {/* <Button
             variant={view === "agenda" ? "contained" : "outlined"}
             onClick={() => onView("agenda")}
           >
             Agenda
-          </Button>
+          </Button> */}
         </ButtonGroup>
       </Stack>
     </Stack>

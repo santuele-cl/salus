@@ -3,8 +3,8 @@
 import { db } from "@/app/_lib/db";
 import { Patient } from "@prisma/client";
 
-export async function findPatient(term: string) {
-  if (!term) return { error: "No search term found!" };
+export async function findPatient(term?: string) {
+  // if (!term) return { error: "No search term found!" };
 
   try {
     const patient = await db.patient.findMany({
@@ -69,10 +69,12 @@ export async function getTotalPatientsCount() {
 
 export async function getPatientsIds() {
   try {
-    const ids = await db.patient.findMany({select: {id: true,fname: true, lname: true}})
-    if(!ids || ids.length < 1) return {error: "No patients found!"}
-    return {success: "Fetch successful!", data: ids}
+    const ids = await db.patient.findMany({
+      select: { id: true, fname: true, lname: true },
+    });
+    if (!ids || ids.length < 1) return { error: "No patients found!" };
+    return { success: "Fetch successful!", data: ids };
   } catch (error) {
-    return { error: "An errors has occured. Fetch unsuccessful!"}
+    return { error: "An errors has occured. Fetch unsuccessful!" };
   }
 }

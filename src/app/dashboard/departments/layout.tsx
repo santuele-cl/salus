@@ -16,7 +16,6 @@ const TABS = [
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  console.log(pathname);
 
   return (
     <Stack

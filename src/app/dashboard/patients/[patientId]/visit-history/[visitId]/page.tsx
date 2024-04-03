@@ -35,12 +35,14 @@ import { PDFDownloadLink } from "@react-pdf/renderer";
 import PDFFile from "@/app/_ui/pdf/PDFFile";
 import PDFDownload from "../../../../../_ui/pdf/PDFDownload";
 import PDFData from "../../../../../_ui/pdf/PDFData";
+import { auth } from "@/auth";
 
 const VisitPage = async ({
   params: { visitId, patientId },
 }: {
   params: { visitId: string; patientId: string };
 }) => {
+  const session = await auth();
   const visit = await getVisityByVisitId(visitId);
   const profile = visit.data?.patient;
   const vitals = visit.data?.vitals;
@@ -48,13 +50,6 @@ const VisitPage = async ({
   const physicalExaminations = visit.data?.physicalExamination;
   const laboratoryRequests = visit.data?.laboratoryRequest;
   const diagnoses = visit.data?.diagnosis;
-
-  console.log("visit", visit);
-  console.log("profile", profile);
-  console.log("prescriptions", prescriptions);
-  console.log("physicalExaminations", physicalExaminations);
-  console.log("laboratoryRequests", laboratoryRequests);
-  console.log("diagnoses", diagnoses);
 
   return (
     <div>
@@ -269,10 +264,12 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Diagnosis
                 </Typography>
-                <CustomDiagnosisFormDrawer
-                  patientId={patientId}
-                  visitId={visitId}
-                />
+                {session?.user.empRole === "PHYSICIAN" && (
+                  <CustomDiagnosisFormDrawer
+                    patientId={patientId}
+                    visitId={visitId}
+                  />
+                )}
               </Stack>
               <Stack
                 sx={{
@@ -357,10 +354,12 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Prescriptions
                 </Typography>
-                <CustomPrescriptionFormDrawer
-                  visitId={visitId}
-                  patientId={patientId}
-                />
+                {session?.user.empRole === "PHYSICIAN" && (
+                  <CustomPrescriptionFormDrawer
+                    visitId={visitId}
+                    patientId={patientId}
+                  />
+                )}
               </Stack>
               <Stack
                 sx={{
@@ -440,10 +439,12 @@ const VisitPage = async ({
                 <Typography variant="h6" sx={{ fontSize: "14px" }}>
                   Laboratory Request
                 </Typography>
-                <CustomLaboratoryRequestFormDrawer
-                  visitId={visitId}
-                  patientId={patientId}
-                />
+                {session?.user.empRole === "PHYSICIAN" && (
+                  <CustomLaboratoryRequestFormDrawer
+                    visitId={visitId}
+                    patientId={patientId}
+                  />
+                )}
               </Stack>
               <Stack
                 sx={{

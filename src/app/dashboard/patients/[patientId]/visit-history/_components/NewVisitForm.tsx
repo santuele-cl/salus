@@ -42,7 +42,6 @@ const NewVisitForm = ({
     setSuccess("");
     try {
       const res = await createVisit(patientId, data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

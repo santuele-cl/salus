@@ -119,13 +119,9 @@ const sidebarLinks: SidebarLinks[] = [
 ];
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
-  // setOpen(prev => {return {...prev, asdlfk: true}})
-
   const pathname = usePathname();
   const session = useSession();
-  // console.log(pathname);
-  // console.log(pathname.startsWith("/dashboard/logs"));
-  console.log("sidebar", pathname.startsWith("/dashboard/logs"!));
+
   return (
     <List
       sx={{

@@ -47,9 +47,6 @@ const FamilyMedicalHistories = () => {
   >(null);
   const [error, setError] = useState("");
 
-  console.log(searchTerm);
-  console.log(familyMedicalHistories);
-
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const fetchFamilyMedicalHistory = async () => {
@@ -62,7 +59,6 @@ const FamilyMedicalHistories = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findFamilyMedicalHistoryByTermAndPatientId(

@@ -20,7 +20,6 @@ export const styles = StyleSheet.create({
 });
 
 export default function PDFHeader() {
-  console.log(Logo);
   return (
     <View style={styles.header}>
       <Image src={Logo.src} style={styles.image} />

@@ -149,7 +149,7 @@ model Appointments {
   createdAt  DateTime          @default(now())
   updatedAt  DateTime          @updatedAt
   title      String
-  status     AppointmentStatus
+  status     AppointmentStatus @default(SCHEDULED)
   room       String
   reason     String
   startDate  DateTime

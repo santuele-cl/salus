@@ -25,7 +25,6 @@ const LaboratoryResults = async ({
   const response = await getLaboratoryResultsByPatientId(patientId);
   const laboratoryResults = response.data;
 
-  console.log(laboratoryResults);
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">

@@ -67,7 +67,6 @@ const PhysicalExamForm = ({
   console.log("physical exam errors", errors);
 
   const onSubmit = async (data: any) => {
-    // console.log(data);
     setError("");
     setSuccess("");
 
@@ -90,11 +89,22 @@ const PhysicalExamForm = ({
     }
   };
 
+  useEffect(() => {
+    if (session.data?.user.empRole !== "PHYSICIAN")
+      setError("Forbidden. Action not allowed!");
+  }, []);
+
   return (
     <Box sx={{ p: 3, width: 450 }}>
       <Typography variant="h6">Physical Examination</Typography>
       <Divider sx={{ my: 2 }} />
-      <Stack>
+      <Stack sx={{ my: 1 }}>
+        {/* {session.data?.user.empRole !== "PHYSICIAN" && (
+          <FormStatusText
+            message="Forbidden. Action not allowed!"
+            status="error"
+          />
+        )} */}
         {error && <FormStatusText message={error} status="error" />}
         {success && <FormStatusText message={success} status="success" />}
       </Stack>

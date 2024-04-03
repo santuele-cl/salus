@@ -57,9 +57,6 @@ const DiagnosisPage = () => {
   >(null);
   const [error, setError] = useState("");
 
-  console.log(searchTerm);
-  console.log(diagnoses);
-
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const fetchDiagnosis = async () => {
@@ -70,7 +67,6 @@ const DiagnosisPage = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findDiagnosesByTermAndPatientId(

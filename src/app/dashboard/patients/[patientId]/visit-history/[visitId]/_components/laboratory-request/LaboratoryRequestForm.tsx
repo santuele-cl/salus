@@ -43,7 +43,6 @@ const LaboratoryRequestForm = ({
   setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
-  console.log(session);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [labProcedures, setLabProcedures] = useState<
@@ -102,7 +101,6 @@ const LaboratoryRequestForm = ({
   }, []);
 
   console.log("form error", errors);
-  console.log(labProcedures);
 
   return (
     <Box sx={{ p: 3, width: 450 }}>

@@ -78,7 +78,6 @@ const VitalSignsForm = ({
   // console.log("register errors", errors);
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setError("");
     setSuccess("");
 

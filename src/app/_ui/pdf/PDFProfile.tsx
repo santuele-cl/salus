@@ -51,7 +51,7 @@ export default function PDFProfile({ profile }: { profile: Patient }) {
     civilStatus,
     occupation,
   } = profile;
-  console.log(Logo);
+
   return (
     <View style={styles.container}>
       <View style={styles.itemContainer}>

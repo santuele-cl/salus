@@ -59,7 +59,6 @@ export default function AddDrugForm({
     setSuccess("");
     try {
       const res = await addDrug(data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

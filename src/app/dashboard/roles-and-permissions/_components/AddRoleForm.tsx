@@ -45,7 +45,6 @@ const AddRoleForm = ({
     setSuccess("");
     try {
       const res = await addRole(data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

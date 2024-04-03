@@ -51,7 +51,6 @@ export default function EditClinicalDeparmentForm({
     setSuccess("");
     try {
       const res = await updateClinicalDepartment(clinicalDepartment.id, data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

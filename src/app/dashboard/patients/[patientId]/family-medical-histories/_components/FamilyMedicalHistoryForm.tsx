@@ -60,9 +60,6 @@ const FamilyMedicalHistoryForm = ({
   const onSubmit = async (values: any) => {
     const parse = FamilyMedicalHistorySchema.safeParse(values);
 
-    if (!parse.success) console.log("parse error");
-    else console.log("parse data", parse.data);
-
     setError("");
     setSuccess("");
 
@@ -84,8 +81,6 @@ const FamilyMedicalHistoryForm = ({
       setPending(false);
     }
   };
-
-  console.log("form error", errors);
 
   return (
     <Box sx={{ p: 3, width: 450 }}>

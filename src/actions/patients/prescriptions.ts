@@ -50,8 +50,6 @@ export async function getPrescriptionsByPatientId(patientId: string) {
     };
   });
 
-  console.log(decryptedPrescription);
-
   return { success: " found!", data: decryptedPrescription };
 }
 

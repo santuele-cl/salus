@@ -55,7 +55,6 @@ const LaboratoryRequestPage = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findLaboratoryRequestsByTermAndPatientId(

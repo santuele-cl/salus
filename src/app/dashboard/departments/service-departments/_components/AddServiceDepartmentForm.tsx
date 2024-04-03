@@ -43,7 +43,6 @@ export default function AddServiceDepartmentsForm({
     setSuccess("");
     try {
       const res = await addServiceDepartment(data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

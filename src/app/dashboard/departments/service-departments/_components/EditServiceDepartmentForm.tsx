@@ -50,7 +50,6 @@ export default function EditServiceDepartmentForm({
     setSuccess("");
     try {
       const res = await updateServiceDepartment(serviceDepartment.id, data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

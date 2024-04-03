@@ -48,7 +48,6 @@ const EditRoleForm = ({
     setSuccess("");
     try {
       const res = await updateRole(role.id, data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

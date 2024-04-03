@@ -46,9 +46,6 @@ const PrescriptionsPage = () => {
   );
   const [error, setError] = useState("");
 
-  console.log(searchTerm);
-  console.log(prescriptions);
-
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const fetchPrescriptions = async () => {
@@ -59,7 +56,6 @@ const PrescriptionsPage = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findPrescriptionByTermAndPatientId(

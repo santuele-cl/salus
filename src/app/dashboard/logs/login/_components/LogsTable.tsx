@@ -23,8 +23,6 @@ export default async function LogsTable(props: TableProps) {
   const { userId, query, page } = props;
   const propsKey = Object.keys(props);
 
-  console.log("propsKey", propsKey);
-
   const response = await getLoginLogs({
     userId: userId,
     query: query,
