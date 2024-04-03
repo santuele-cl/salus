@@ -7,6 +7,7 @@ import { FamilyMedicalHistorySchema } from "@/app/_schemas/zod/schema";
 import { auth } from "@/auth";
 import { headers } from "next/headers";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
+import { decryptData, encryptData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN", "NURSE"];
 const getAllowed = [];
@@ -21,10 +22,15 @@ export async function getFamilyMedicalHistoriesByPatientID(patientId: string) {
     if (!familyMedicalHistories)
       return { error: "No family medical histories found!" };
 
-    return {
-      success: "Family medical historiess found!",
-      data: familyMedicalHistories,
-    };
+      const decryptedFamilyMedicalHistories = familyMedicalHistories.map((familyMedicalHistories) => {
+        return {
+          ...familyMedicalHistories,
+          condition: JSON.parse(decryptData(familyMedicalHistories.condition)),
+          relationship: JSON.parse(decryptData(familyMedicalHistories.relationship)),
+          }
+      });
+  
+      return { success: " found!", data: decryptedFamilyMedicalHistories };
   } catch (error) {
     return {
       error: "Something went wrong!",
@@ -105,7 +111,7 @@ export async function addFamilyMedicalHistory(
   const userAgent = headersList.get("user-agent") || "";
 
   const log = await createChartLog({
-    action: "add family medical history",
+    action: "Add family medical history",
     status: "pending",
     userAgent,
     ipAddress,
@@ -116,9 +122,15 @@ export async function addFamilyMedicalHistory(
 
   if (!log) return { error: "Database error Log not saved!" };
 
+  const encryptedData: z.infer<typeof FamilyMedicalHistorySchema> = {
+    ...validatedValues.data,
+    condition: encryptData(validatedValues.data.condition),
+    relationship: encryptData(validatedValues.data.relationship),
+  };
+
   const familyMedicalHistory = await db.familyMedicalHistory.create({
     data: {
-      ...(validatedValues.data && validatedValues.data),
+      ...(validatedValues.data && encryptedData),
     },
   });
 

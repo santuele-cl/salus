@@ -1,7 +1,7 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
-import { DiagnosisSchema, VaccinationSchema } from "@/app/_schemas/zod/schema";
+import { VaccinationSchema } from "@/app/_schemas/zod/schema";
 import { unstable_noStore as noStore, revalidatePath } from "next/cache";
 import { string, z } from "zod";
 import { createChartLog, updateChartLogStatus } from "../logs/chart-logs";
@@ -9,6 +9,7 @@ import { headers } from "next/headers";
 import { useSession } from "next-auth/react";
 import { auth } from "@/auth";
 import dayjs from "dayjs";
+import { decryptData, encryptData } from "@/app/_lib/crypto";
 
 const writeAllowed = ["PHYSICIAN", "NURSE"];
 const getAllowed = [];
@@ -21,8 +22,17 @@ export async function getVaccinationsByPatientId(patientId: string) {
     });
 
     if (!vaccination) return { error: "No vaccination data found!" };
+    
+    const decryptedVaccination = vaccination.map((vaccination) => {
+      return {
+        ...vaccination,
+        vaccineName: JSON.parse(decryptData(vaccination.vaccineName)),
+        administeredBy: JSON.parse(decryptData(vaccination.administeredBy)),
+        dosage: JSON.parse(decryptData(vaccination.dosage)),
+      };
+    });
 
-    return { success: " found!", data: vaccination };
+    return { success: " found!", data: decryptedVaccination };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -37,7 +47,14 @@ export async function getVaccinationsByVaccinationsId(vaccinationId: string) {
 
     if (!vaccination) return { error: "No vaccination data found!" };
 
-    return { success: "Vaccination found!", data: vaccination };
+    const decryptedVaccination = {
+      ...vaccination,
+      vaccineName: JSON.parse(decryptData(vaccination.vaccineName)),
+      administeredBy: JSON.parse(decryptData(vaccination.administeredBy)),
+      dosage: JSON.parse(decryptData(vaccination.dosage)),
+    };
+
+    return { success: "Vaccination found!", data: decryptedVaccination };
   } catch (error) {
     return { error: "Something went wrong!" };
   }
@@ -76,10 +93,16 @@ export async function postVaccinations(
   const parse = VaccinationSchema.safeParse(values);
 
   if (!parse.success) return { error: "Parse error. Invalid input!" };
+  const encryptedData: z.infer<typeof VaccinationSchema> = {
+    ...parsedValues.data,
+    vaccineName: encryptData(parsedValues.data.vaccineName),
+    administeredBy: encryptData(parsedValues.data.administeredBy),
+    dosage: encryptData(parsedValues.data.dosage),
+  };
 
   const vaccination = await db.vaccination.create({
     data: {
-      ...(parse.data && parse.data),
+      ...(parse.data && encryptedData),
     },
   });
 
@@ -124,7 +147,15 @@ export async function findvaccinationsByTermAndPatientId(
     if (!vaccinations || vaccinations.length < 1) {
       return { error: "No vaccinations found!" };
     } else {
-      return { success: "Fetch successful!", data: vaccinations };
+      const decryptedVaccination = vaccinations.map((vaccinations) => {
+        return {
+          ...vaccinations,
+          vaccineName: JSON.parse(decryptData(vaccinations.vaccineName)),
+          administeredBy: JSON.parse(decryptData(vaccinations.administeredBy)),
+          dosage: JSON.parse(decryptData(vaccinations.dosage)),
+        };
+        });
+      return { success: "Fetch successful!", data: decryptedVaccination };
     }
   } catch (error) {
     return { error: "Something went wrong!" };
