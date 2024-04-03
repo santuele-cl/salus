@@ -29,16 +29,19 @@ export const authRoutes = [
 export const apiRoutePrefix = "/api/auth";
 
 export const adminRoutes = [
-  "/users",
-  "/departments/service-departments",
-  "/departments/clinical-departments",
-  "/drugs",
-  "/roles-and-permissions",
-  "/logs/login",
-  "/logs/chart",
+  "/dashboard/users",
+  "/dashboard/departments/service-departments",
+  "/dashboard/departments/clinical-departments",
+  "/dashboard/drugs",
+  "/dashboard/roles-and-permissions",
+  "/dashboard/logs/login",
+  "/dashboard/logs/chart",
 ];
 
-export const medicalProfessionalRoutes = ["/patients", "/settings"];
+export const medicalProfessionalRoutes = [
+  "/dashboard/patients",
+  "/dashboard/settings",
+];
 
 /**
  * The default redirect route after loggin in
