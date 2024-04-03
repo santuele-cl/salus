@@ -58,7 +58,7 @@ const LoginForm = () => {
         setSuccess(res.success);
       }
 
-      if (res.twoFactor) setShowTwoFactorInput(true);
+      if (res?.twoFactor) setShowTwoFactorInput(true);
     } catch (error) {
       console.log(error);
     }

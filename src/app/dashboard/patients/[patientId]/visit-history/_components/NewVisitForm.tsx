@@ -68,11 +68,11 @@ const NewVisitForm = ({
         sx={{}}
       >
         <TextField
-          label="Accompanied by"
-          {...register("accompaniedBy")}
-          error={errors.accompaniedBy ? true : false}
-          helperText={errors.accompaniedBy?.message}
-          // placeholder="123456"
+          label="Chief Complaint"
+          {...register("chiefComplaint")}
+          error={errors.chiefComplaint ? true : false}
+          helperText={errors.chiefComplaint?.message}
+          placeholder="123456"
           disabled={pending}
         />
         <TextField
@@ -83,11 +83,11 @@ const NewVisitForm = ({
           disabled={pending}
         />
         <TextField
-          label="Chief Complaint"
-          {...register("chiefComplaint")}
-          error={errors.chiefComplaint ? true : false}
-          helperText={errors.chiefComplaint?.message}
-          placeholder="123456"
+          label="Accompanied by"
+          {...register("accompaniedBy")}
+          error={errors.accompaniedBy ? true : false}
+          helperText={errors.accompaniedBy?.message}
+          // placeholder="123456"
           disabled={pending}
         />
         <Button

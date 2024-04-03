@@ -145,7 +145,7 @@ const VaccinationPage = () => {
           </TableHead>
           <TableBody>
             {vaccination &&
-              vaccination.length &&
+              !!vaccination.length &&
               vaccination.map((datum: any, i: number) => {
                 const selected = columns.map(({ id, type }, index: number) => {
                   switch (type) {
