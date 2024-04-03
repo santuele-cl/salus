@@ -45,12 +45,12 @@ export async function login(
   const userAgent = headersList.get("user-agent") || "";
 
   unstable_noStore();
-  // const validatedCredentials = LoginSchema.safeParse(credentials);
+  const validatedCredentials = LoginSchema.safeParse(credentials);
 
-  // if (!validatedCredentials.success) return { error: "Invalid data." };
+  if (!validatedCredentials.success) return { error: "Invalid data." };
 
-  // const { email, password, code } = validatedCredentials.data;
-  const { email, password, code } = credentials;
+  const { email, password, code } = validatedCredentials.data;
+  // const { email, password, code } = credentials;
 
   const existingUser = await getUserByEmail(email);
 
@@ -110,12 +110,12 @@ export async function login(
     }
   }
 
-  // const loginLog = await createLoginLog({
-  //   ipAddress,
-  //   userAgent,
-  //   userId: existingUser.id,
-  //   status: "failed",
-  // });
+  const loginLog = await createLoginLog({
+    ipAddress,
+    userAgent,
+    userId: existingUser.id,
+    status: "failed",
+  });
 
   // if (!loginLog) return { error: "Log error." };
 
@@ -134,8 +134,6 @@ export async function login(
     // if (!udpatedLog) return { error: "Log error." };
 
     // revalidatePath("/dashboard/logs/login");
-
-    return { success: "Login successful." };
   } catch (error) {
     console.log(error);
     if (error instanceof AuthError) {
@@ -148,6 +146,15 @@ export async function login(
     }
     throw error;
   }
+  const udpatedLog = await updateLoginLogStatus({
+    logId: loginLog.data?.id,
+    status: "success",
+  });
+
+  // if (!udpatedLog) ;
+
+  // revalidatePath("/dashboard/logs/login");
+  return { success: "Login successful." };
 }
 
 export async function logout() {
