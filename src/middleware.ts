@@ -37,11 +37,11 @@ export default auth(async (req) => {
   // console.log(nextUrl.pathname.replace("/dashboard", ""));
 
   const isAdminRoute = adminRoutes.some((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
   );
 
   const isMedicalProfessionalRoute = medicalProfessionalRoutes.some((route) =>
-    nextUrl.pathname.startsWith(route)
+    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
   );
 
   if (isApiAuthRoute) return;
@@ -54,12 +54,13 @@ export default auth(async (req) => {
           return Response.redirect(
             new URL(DEFAULT_ADMIN_LOGIN_REDIRECT, nextUrl)
           );
-        } else if (user.empRole === "PHYSICIAN" || user.empRole === "NURSE") {
+        } else {
           return Response.redirect(
             new URL(DEFAULT_PROFESSIONAL_LOGIN_REDIRECT, nextUrl)
           );
         }
       }
+      return;
       // if (user?.role) {
       //   if (user.role === "EMPLOYEE") {
       //     return Response.redirect(

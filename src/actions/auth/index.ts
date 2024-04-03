@@ -123,7 +123,7 @@ export async function login(
     await signIn("credentials", {
       email,
       password,
-      // redirectTo: callbackUrl || "/",
+      redirectTo: "/",
     });
 
     // const udpatedLog = await updateLoginLogStatus({

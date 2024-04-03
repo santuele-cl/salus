@@ -52,6 +52,61 @@ const seed = async () => {
     data: SAMPLE_DRUGS,
   });
 
+  const EMP_ADMIN_0 = await db.user.upsert({
+    where: { id: "U00000099" },
+    update: {},
+    create: {
+      id: "U00000099",
+      username: "clyde03",
+      email: "santuele.cl@gmail.com",
+      password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
+      role: "EMPLOYEE",
+      consent: true,
+      // emailVerified: dayjs().toDate(),
+      isTwoFactorEnabled: true,
+      profile: {
+        create: {
+          id: "P00000099",
+          isEmployee: true,
+          isPatient: false,
+          employee: {
+            create: {
+              id: "P00000099",
+              fname: "clyde",
+              mname: "arrogante",
+              lname: "santuele",
+              gender: "MALE",
+              bdate: "2000-11-03T10:48:22Z",
+              age: 23,
+              contactInfo: {
+                create: {
+                  email: "santuele.cl@gmail.com",
+                  phone: "09777775346",
+                  address: {
+                    create: {
+                      houseNumber: "43",
+                      street: "Abbot",
+                      barangay: "Post Proper Southside",
+                      city: "Taguig",
+                      province: "Metro manila",
+                      region: "NCR",
+                      country: "Philippines",
+                      zipCode: "1207",
+                      id: "ADDR00000099",
+                    },
+                  },
+                },
+              },
+              clinicalDepartmentId: "CD2001",
+              serviceDepartmentId: "SD1003",
+              employeeRoleId: "R1001",
+            },
+          },
+        },
+      },
+    },
+  });
+
   const EMP_ADMIN_1 = await db.user.upsert({
     where: { id: "U00000001" },
     update: {},
@@ -62,7 +117,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "EMPLOYEE",
       consent: true,
-      // emailVerified: dayjs().toDate(),
+      emailVerified: dayjs().toDate(),
       profile: {
         create: {
           id: "P00000001",
@@ -116,7 +171,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "EMPLOYEE",
       consent: true,
-      // emailVerified: "2024-03-07T11:08:20.692Z",
+      emailVerified: dayjs().toDate(),
       profile: {
         create: {
           id: "P00000002",
@@ -170,7 +225,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "EMPLOYEE",
       consent: true,
-      // emailVerified: dayjs().toDate(),
+      emailVerified: dayjs().toDate(),
       profile: {
         create: {
           id: "P00000003",
@@ -224,7 +279,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "PATIENT",
       consent: true,
-      // emailVerified: "2024-03-07T11:08:20.692Z",
+      emailVerified: dayjs().toDate(),
       profile: {
         create: {
           id: "P10000004",
@@ -561,7 +616,7 @@ const seed = async () => {
       password: "$2a$10$ib5/DxaL4moUGxl66UXdw.2E5QxVktgSvLy6qAihoBg.Fle3waMhy",
       role: "PATIENT",
       consent: true,
-      // emailVerified: "2024-03-07T11:08:20.692Z",
+      emailVerified: dayjs().toDate(),
       profile: {
         create: {
           id: "P10000005",
