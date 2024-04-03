@@ -1,10 +1,22 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { auth } from "@/auth";
 import { Patient } from "@prisma/client";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = ["PHYSICIAN", "NURSE"];
 
 export async function findPatient(term?: string) {
   // if (!term) return { error: "No search term found!" };
+  const session = await auth();
+
+  if (
+    !session ||
+    !session.user.empRole ||
+    !getAllowed.includes(session.user.empRole)
+  )
+    return { error: "Unauthorized!" };
 
   try {
     const patient = await db.patient.findMany({
