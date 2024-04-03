@@ -125,6 +125,17 @@ export async function login(
       password,
       // redirectTo: callbackUrl || "/",
     });
+
+    const udpatedLog = await updateLoginLogStatus({
+      logId: loginLog.data?.id,
+      status: "success",
+    });
+
+    if (!udpatedLog) return { error: "Log error." };
+
+    // revalidatePath("/dashboard/logs/login");
+
+    return { success: "Login successful." };
   } catch (error) {
     console.log(error);
     if (error instanceof AuthError) {
@@ -137,17 +148,6 @@ export async function login(
     }
     throw error;
   }
-
-  const udpatedLog = await updateLoginLogStatus({
-    logId: loginLog.data?.id,
-    status: "success",
-  });
-
-  if (!udpatedLog) return { error: "Log error." };
-
-  // revalidatePath("/dashboard/logs/login");
-
-  return { success: "Login successful." };
 }
 
 export async function logout() {
