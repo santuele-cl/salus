@@ -110,14 +110,14 @@ export async function login(
     }
   }
 
-  const loginLog = await createLoginLog({
-    ipAddress,
-    userAgent,
-    userId: existingUser.id,
-    status: "failed",
-  });
+  // const loginLog = await createLoginLog({
+  //   ipAddress,
+  //   userAgent,
+  //   userId: existingUser.id,
+  //   status: "failed",
+  // });
 
-  if (!loginLog) return { error: "Log error." };
+  // if (!loginLog) return { error: "Log error." };
 
   try {
     await signIn("credentials", {
@@ -126,12 +126,12 @@ export async function login(
       // redirectTo: callbackUrl || "/",
     });
 
-    const udpatedLog = await updateLoginLogStatus({
-      logId: loginLog.data?.id,
-      status: "success",
-    });
+    // const udpatedLog = await updateLoginLogStatus({
+    //   logId: loginLog.data?.id,
+    //   status: "success",
+    // });
 
-    if (!udpatedLog) return { error: "Log error." };
+    // if (!udpatedLog) return { error: "Log error." };
 
     // revalidatePath("/dashboard/logs/login");
 

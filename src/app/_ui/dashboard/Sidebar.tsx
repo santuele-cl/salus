@@ -121,7 +121,6 @@ const sidebarLinks: SidebarLinks[] = [
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
   const pathname = usePathname();
   const session = useSession();
-
   return (
     <List
       sx={{
@@ -138,7 +137,13 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
       {sidebarLinks.map(({ label, links }, i) => {
         return (
           <Box key={label + String(i)}>
-            {label && <ListSubheader component="div">{label}</ListSubheader>}
+            {label && (
+              <ListSubheader component="div">
+                {label === "Content Management"
+                  ? session?.data?.user?.empRole === "ADMIN" && label
+                  : label}
+              </ListSubheader>
+            )}
 
             {links.map(({ label, icon, path, access }, i) => {
               if (!access?.includes(session.data?.user.empRole!)) return;
