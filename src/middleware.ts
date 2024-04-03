@@ -37,11 +37,11 @@ export default auth(async (req) => {
   // console.log(nextUrl.pathname.replace("/dashboard", ""));
 
   const isAdminRoute = adminRoutes.some((route) =>
-    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
+    nextUrl.pathname.startsWith(route)
   );
 
   const isMedicalProfessionalRoute = medicalProfessionalRoutes.some((route) =>
-    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
+    nextUrl.pathname.startsWith(route)
   );
 
   if (isApiAuthRoute) return;
@@ -77,16 +77,18 @@ export default auth(async (req) => {
     return;
   }
 
-  if (isMedicalProfessionalRoute) {
-    if (user?.empRole === "ADMIN") {
-      return Response.redirect(new URL("/unauthorized", nextUrl));
-    }
-  }
-
   if (isAdminRoute) {
     if (user?.empRole !== "ADMIN") {
       return Response.redirect(new URL("/unauthorized", nextUrl));
     }
+    return;
+  }
+
+  if (isMedicalProfessionalRoute) {
+    if (user?.empRole === "ADMIN") {
+      return Response.redirect(new URL("/unauthorized", nextUrl));
+    }
+    return;
   }
 
   if (!isLoggedIn && !isPublicRoute) {
