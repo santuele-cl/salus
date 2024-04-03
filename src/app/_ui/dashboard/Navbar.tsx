@@ -21,7 +21,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import SearchIcon from "@mui/icons-material/Search";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Dispatch, SetStateAction } from "react";
-
+import LogoutIcon from "@mui/icons-material/Logout";
 // import Logo from "../common/Logo";
 import Link from "next/link";
 import Logo from "./Logo";
@@ -104,13 +104,13 @@ export default function Navbar({
             <Grow in={!isXsScreen}>
               <Stack direction="row">
                 {/* MESSAGES */}
-                <IconButton onClick={() => setShowTemporarySidebar(true)}>
+                {/* <IconButton onClick={() => setShowTemporarySidebar(true)}>
                   <MessageOutlinedIcon />
-                </IconButton>
+                </IconButton> */}
                 {/* NOTIFICATION */}
-                <IconButton onClick={() => setShowTemporarySidebar(true)}>
+                {/* <IconButton onClick={() => setShowTemporarySidebar(true)}>
                   <NotificationsNoneOutlinedIcon />
-                </IconButton>
+                </IconButton> */}
                 <Stack direction="row" alignItems="center" gap={1} p="5px">
                   {/* USER ICON */}
                   <Avatar
@@ -123,16 +123,24 @@ export default function Navbar({
                     {session?.name && session?.name[0]}
                   </Avatar>
                   {/* USER NAME */}
-                  <Typography>
-                    {session?.name ? session.name : session?.email}
-                  </Typography>
+                  <Stack>
+                    <Typography>
+                      {session?.name ? session.name : session?.email}
+                    </Typography>
+                    <Typography fontSize={11} color="green">
+                      {session?.empRole}
+                    </Typography>
+                  </Stack>
                 </Stack>
                 {/* LOG OUT BUTTON */}
-                <Button onClick={() => logout()}>Logout</Button>
-                {/* USER MORE INFO */}
-                <IconButton onClick={() => setShowTemporarySidebar(true)}>
-                  <ExpandMoreIcon />
+                <IconButton onClick={() => logout()}>
+                  <LogoutIcon fontSize="medium" color="error" />
                 </IconButton>
+                {/* <Button onClick={() => logout()}>Logout</Button> */}
+                {/* USER MORE INFO */}
+                {/* <IconButton onClick={() => setShowTemporarySidebar(true)}>
+                  <ExpandMoreIcon />
+                </IconButton> */}
               </Stack>
             </Grow>
           )}

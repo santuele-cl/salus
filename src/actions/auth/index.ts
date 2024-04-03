@@ -34,6 +34,7 @@ import { CivilStatus, Gender } from "@prisma/client";
 import { createLoginLog, updateLoginLogStatus } from "../logs/login-logs";
 import { revalidatePath, unstable_noStore } from "next/cache";
 import { headers } from "next/headers";
+import dayjs from "dayjs";
 
 export async function login(
   credentials: z.infer<typeof LoginSchema>,
@@ -165,7 +166,6 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     lname,
     nameSuffix,
     gender,
-    age,
     bdate,
     bplace,
     civilStatus,
@@ -208,7 +208,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
               lname,
               nameSuffix,
               gender: gender as Gender,
-              age,
+              age: dayjs().diff(dayjs(bdate), "year"),
               bdate,
               bplace,
               civilStatus: civilStatus as CivilStatus,
@@ -260,7 +260,6 @@ export async function createEmployee(
     mname,
     lname,
     gender,
-    age,
     bdate,
     phone,
     houseNumber,
@@ -306,7 +305,7 @@ export async function createEmployee(
               clinicalDepartmentId,
               lname,
               gender: gender as Gender,
-              age,
+              age: dayjs().diff(dayjs(bdate), "year"),
               bdate,
               contactInfo: {
                 create: {

@@ -4,7 +4,7 @@
  * @type {string[]}
  */
 
-export const publicRoutes = ["/", "/auth/new-verification", "/unauthorized"];
+export const publicRoutes = ["/auth/new-verification", "/patient-onboarding"];
 
 /**
  * An array of routes that are used for authentication
@@ -13,6 +13,7 @@ export const publicRoutes = ["/", "/auth/new-verification", "/unauthorized"];
  */
 
 export const authRoutes = [
+  "/",
   "/auth/login",
   "/auth/register",
   "/auth/error",
@@ -28,26 +29,20 @@ export const authRoutes = [
 export const apiRoutePrefix = "/api/auth";
 
 export const adminRoutes = [
-  "/dashboard/users",
-  "/dashboard/departments/clinical-departments",
-  "/dashboard/deparments/clinical-departments",
-  "/dashboard/drugs",
-  "/dashboard/appointments",
-  "/dashboard/roles-and-permissions",
-  "/dashboard/logs/login",
-  "/dashboard/logs/chart",
+  "/users",
+  "/departments/service-departments",
+  "/deparments/clinical-departments",
+  "/drugs",
+  // "/appointments",
+  "/roles-and-permissions",
+  "/logs/login",
+  "/logs/chart",
 ];
 
-export const physicianRoutes = [
-  "/dashboard/patients",
-  "/dashboard/appointments",
-  "/dashboard/settings",
-];
-
-export const nurseRoutes = [
-  "/dashboard/patients",
-  "/dashboard/appointments",
-  "/dashboard/settings",
+export const medicalProfessionalRoutes = [
+  "/patients",
+  // "/appointments",
+  "/settings",
 ];
 
 /**
@@ -57,6 +52,8 @@ export const nurseRoutes = [
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
 
 export const DEFAULT_EMPLOYEE_LOGIN_REDIRECT = "/dashboard/patients";
+export const DEFAULT_ADMIN_LOGIN_REDIRECT = "/dashboard/users";
+export const DEFAULT_PROFESSIONAL_LOGIN_REDIRECT = "/dashboard/patients";
 export const DEFAULT_PATIENT_LOGIN_REDIRECT = "/";
 
 export const roleRoute = {

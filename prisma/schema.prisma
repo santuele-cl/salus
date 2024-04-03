@@ -577,8 +577,6 @@ enum LivingConditions {
 enum Gender {
   MALE
   FEMALE
-  PREFER_NOT_TO_SAY
-  OTHER
 }
 
 enum CivilStatus {

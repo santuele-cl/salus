@@ -14,7 +14,7 @@ const UsersTableHeader = () => {
           </Suspense>
         </Stack>
       </Paper>
-      <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+      {/* <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
         <Stack direction="row" gap={5}>
           <Suspense fallback={<h1>Loading...</h1>}>
             <TotalActiveUser />
@@ -27,7 +27,7 @@ const UsersTableHeader = () => {
             <TotalInactiveUser />
           </Suspense>
         </Stack>
-      </Paper>
+      </Paper> */}
     </Stack>
   );
 };

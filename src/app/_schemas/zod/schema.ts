@@ -33,7 +33,6 @@ export const RegisterEmployeeSchema = z.object({
     .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   gender: z.nativeEnum(Gender),
   bdate: z.coerce.date(),
-  age: z.coerce.number(),
   // CONTACT
   phone: z
     .string()
@@ -297,7 +296,6 @@ export const RegisterSchema = z.object({
     .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   nameSuffix: z.optional(z.string()),
   gender: z.nativeEnum(Gender),
-  age: z.coerce.number(),
   bdate: z.coerce.date(),
   bplace: z
     .string()

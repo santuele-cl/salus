@@ -39,7 +39,7 @@ export default async function ChartLogsTable(props: TableProps) {
         <TableHead>
           <TableRow>
             <TableCell sx={{ fontWeight: 600, fontSize: "0.9rem" }}>
-              LOG ID
+              ID
             </TableCell>
 
             <TableCell
@@ -52,14 +52,14 @@ export default async function ChartLogsTable(props: TableProps) {
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
-              LOG TIME
+              DATE TIME
             </TableCell>
-            <TableCell
+            {/* <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
             >
               DESCRIPTION
-            </TableCell>
+            </TableCell> */}
             <TableCell
               sx={{ fontWeight: 600, fontSize: "0.9rem" }}
               align="left"
@@ -115,7 +115,7 @@ export default async function ChartLogsTable(props: TableProps) {
                   <TableCell align="left">{`${dayjs(logTime).format(
                     "MMMM DD, YYYY hh:mm a"
                   )}`}</TableCell>
-                  <TableCell align="left">{logDescription}</TableCell>
+                  {/* <TableCell align="left">{logDescription}</TableCell> */}
                   <TableCell align="left">
                     <Stack
                       sx={{

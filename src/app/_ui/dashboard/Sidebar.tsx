@@ -57,44 +57,50 @@ const sidebarLinks: SidebarLinks[] = [
     links: [
       {
         label: "Patients",
-        path: "patients",
+        path: "/dashboard/patients",
         icon: () => <FamilyRestroomIcon />,
         access: ["PHYSICIAN", "NURSE"],
       },
       {
         label: "Users",
-        path: "users",
+        path: "/dashboard/users",
         icon: () => <GroupIcon />,
         access: ["ADMIN"],
       },
       {
         label: "Appointments",
-        path: "appointments",
+        path: "/dashboard/appointments",
         icon: () => <CalendarMonthIcon />,
         access: ["PHYSICIAN", "NURSE"],
       },
+
+      {
+        label: "Audit Trails",
+        icon: () => <ArticleOutlinedIcon />,
+        path: "/dashboard/logs/login",
+        access: ["ADMIN"],
+      },
+    ],
+  },
+  {
+    label: "Content Management",
+    links: [
       {
         label: "Departments",
-        path: "departments/clinical-departments",
+        path: "/dashboard/departments/clinical-departments",
         icon: () => <DomainIcon />,
         access: ["ADMIN"],
       },
       {
         label: "Drugs",
-        path: "drugs",
+        path: "/dashboard/drugs",
         icon: () => <MedicationIcon />,
         access: ["ADMIN"],
       },
       {
         label: "Roles and permissions",
-        path: "roles-and-permissions",
+        path: "/dashboard/roles-and-permissions",
         icon: () => <LockPersonIcon />,
-        access: ["ADMIN"],
-      },
-      {
-        label: "Logs",
-        icon: () => <ArticleOutlinedIcon />,
-        path: "logs/login",
         access: ["ADMIN"],
       },
     ],
@@ -114,10 +120,12 @@ const sidebarLinks: SidebarLinks[] = [
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
   // setOpen(prev => {return {...prev, asdlfk: true}})
-  const segments = usePathname().split("/");
-  const session = useSession();
-  console.log(session);
 
+  const pathname = usePathname();
+  const session = useSession();
+  // console.log(pathname);
+  // console.log(pathname.startsWith("/dashboard/logs"));
+  console.log("sidebar", pathname.startsWith("/dashboard/logs"!));
   return (
     <List
       sx={{
@@ -153,9 +161,9 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
                     };
                   }}
                   key={label + String(i)}
-                  selected={segments[2] === toKebabCase(label)}
+                  selected={pathname.startsWith(path!)}
                   LinkComponent={Link}
-                  href={`/dashboard/${path}`}
+                  href={`${path}`}
                 >
                   <ListItemIcon
                     sx={{

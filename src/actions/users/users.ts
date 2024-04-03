@@ -6,7 +6,7 @@ import { unstable_noStore as noStore } from "next/cache";
 export async function findUser(term: string) {
   noStore();
 
-  if (!term) return { error: "No search term found!" };
+  // if (!term) return { error: "No search term found!" };
 
   try {
     const users = await db.user.findMany({

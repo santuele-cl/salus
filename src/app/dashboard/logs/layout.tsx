@@ -4,14 +4,14 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const TABS = [
-  { label: "Login Logs", href: "/dashboard/logs/login" },
-  { label: "Chart Logs", href: "/dashboard/logs/chart" },
-  { label: "Error Logs", href: "/dashboard/logs/error" },
+  { label: "Login", href: "/dashboard/logs/login" },
+  { label: "Chart", href: "/dashboard/logs/chart" },
+  // { label: "Error", href: "/dashboard/logs/error" },
 ];
 
 const Layout = ({ children }: { children: React.ReactNode }) => {
   const pathname = usePathname();
-  console.log(pathname);
+  // console.log(pathname);
 
   return (
     <Stack

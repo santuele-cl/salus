@@ -23,7 +23,7 @@ export default async function LoginLogsPage({
         }}
       >
         <Typography variant="h4" sx={{ my: 2 }}>
-          Login Logs
+          Login Trails
         </Typography>
         <Paper sx={{ py: 2, px: 3 }} elevation={1}>
           <SearchLogs placeholder="Search..." />

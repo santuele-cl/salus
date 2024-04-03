@@ -32,7 +32,6 @@ const currentStepDetails: RegisterEmployeeStep = {
       ],
     },
     { id: "bdate", label: "Birthdate", type: "date" },
-    { id: "age", label: "Age", type: "number" },
   ],
 };
 
