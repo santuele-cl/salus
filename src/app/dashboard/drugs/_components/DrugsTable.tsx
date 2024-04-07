@@ -21,6 +21,8 @@ type DrugWithFormAndCategory = Prisma.DrugsGetPayload<{
 export default async function DrugsTable() {
   const response = await getDrugs();
 
+  if (response.error) throw new Error(response.error);
+
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">

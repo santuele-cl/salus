@@ -5,14 +5,36 @@ import { DrugSchema } from "@/app/_schemas/zod/schema";
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
-export async function getDrugs() {
+export async function getDrug(drugId: string) {
   noStore();
+
+  return { error: "missing" };
+  const drugs = await db.drugs.findUnique({
+    where: { id: drugId },
+  });
+
+  if (!drugs) return { error: "Error. Cannot fetch drugs!" };
+
+  return {
+    success: "Fetch successful",
+    data: drugs,
+  };
+}
+
+export async function getDrugs(drugTest?: string) {
+  noStore();
+
+  const randomInt = Math.floor(Math.random() * 2);
+
+  if (randomInt === 1) throw new Error("Failed to fetch drugs.");
+  // if (!drugTest) throw new Error("Failed to fetch drugs.");
+
   const drugs = await db.drugs.findMany({
     include: { drugForm: true, drugCategory: true },
   });
 
-  if (!drugs) return { error: "Error. Cannot fetch drugs!" };
-  if (!drugs.length) return { error: "There is no drugs in database!" };
+  if (!drugs) return { error: "Something went wrong. Fetch unsuccessful!" };
+  // if (!drugs.length) return { error: "There is no drugs in database!" };
 
   return {
     success: "Fetch successful",

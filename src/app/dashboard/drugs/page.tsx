@@ -5,7 +5,7 @@ import DrugsTable from "./_components/DrugsTable";
 import AddDrugFormModal from "./_components/AddDrugFormModal";
 import SearchDrug from "./_components/SearchDrug";
 
-export default async function DrugsPage({
+export default function DrugsPage({
   searchParams: { query = "", page = "1" },
 }: {
   searchParams: {
