@@ -41,7 +41,7 @@ const VisitHistoryPage = async ({
           <TableBody>
             {visits &&
               visits?.data &&
-              visits.data.visits.map((visit) => (
+              visits.data.map((visit) => (
                 <TableRow
                   key={visit.id}
                   sx={{ "&:last-child td, &:last-child th": { border: 0 } }}

@@ -143,6 +143,16 @@ const VisitPage = async ({
                 fullWidth
               />
             </Grid2>
+            <Grid2 xs={12} md={6}>
+              <TextField
+                defaultValue={`${visit.data?.physician.fname} ${visit.data?.physician.mname} ${visit.data?.physician.lname}`}
+                InputProps={{
+                  readOnly: true,
+                }}
+                label="Assign to"
+                fullWidth
+              />
+            </Grid2>
           </Grid2>
         </Stack>
         <Stack

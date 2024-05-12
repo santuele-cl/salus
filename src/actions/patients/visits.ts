@@ -3,14 +3,24 @@
 import { decryptData } from "@/app/_lib/crypto";
 import { db } from "@/app/_lib/db";
 import { VisitSchema } from "@/app/_schemas/zod/schema";
+import { auth } from "@/auth";
 import { unstable_noStore as noStore } from "next/cache";
 import { z } from "zod";
 
 export async function getVisitsByProfileId(profileId: string) {
   noStore();
-  const visit = await db.patient.findUnique({
-    where: { id: profileId },
-    select: { id: true, visits: true },
+  const session = await auth();
+  if (!session) return { error: "Unauthenticated" };
+  if (session.user.role !== "EMPLOYEE") return { error: "Unauthorized" };
+
+  const visit = await db.visit.findMany({
+    where: {
+      patientId: profileId,
+      OR: [
+        { physicianId: { equals: session.user.empId } },
+        { nurseId: { equals: session.user.empId } },
+      ],
+    },
   });
 
   if (!visit) return { error: "No visits found!" };
@@ -24,6 +34,7 @@ export async function getVisityByVisitId(visitId: string) {
     const visit = await db.visit.findUnique({
       where: { id: visitId },
       include: {
+        physician: true,
         patient: true,
         vitals: { include: { checkedBy: true } },
         diagnosis: {
@@ -91,14 +102,10 @@ export async function createVisit(
 
   if (!validatedFields.success) return { error: "Invalid data!" };
 
-  const { hpi, accompaniedBy, chiefComplaint } = validatedFields.data;
-
   const visit = await db.visit.create({
     data: {
       patientId,
-      hpi,
-      chiefComplaint,
-      accompaniedBy,
+      ...validatedFields.data,
     },
   });
 

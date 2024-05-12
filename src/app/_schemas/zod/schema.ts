@@ -247,6 +247,8 @@ export const VisitSchema = z.object({
   accompaniedBy: z.string().optional(),
   chiefComplaint: z.string().min(1, "Required field"),
   hpi: z.string().min(1, "Required field"),
+  physicianId: z.string().min(1, "Required field"),
+  nurseId: z.string().min(1, "Required field"),
 });
 
 export const VitalsSchema = z.object({

@@ -1,7 +1,9 @@
 "use client";
 
 import { createVisit } from "@/actions/patients/visits";
+import { getPhysicianIds } from "@/actions/users/users";
 import { VisitSchema } from "@/app/_schemas/zod/schema";
+import AutoComplete from "@/app/_ui/AutoComplete";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Box,
@@ -11,7 +13,9 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
-import { Dispatch, SetStateAction, useState } from "react";
+import { Prisma } from "@prisma/client";
+import { useSession } from "next-auth/react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -22,6 +26,7 @@ const NewVisitForm = ({
   patientId: string;
   setShowVisitForm: Dispatch<SetStateAction<boolean>>;
 }) => {
+  const session = useSession();
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -31,12 +36,21 @@ const NewVisitForm = ({
     handleSubmit,
     formState: { errors },
     reset,
+    control,
   } = useForm({
     resolver: zodResolver(VisitSchema),
-    defaultValues: { accompaniedBy: "", chiefComplaint: "", hpi: "" },
+    defaultValues: {
+      accompaniedBy: "",
+      chiefComplaint: "",
+      hpi: "",
+      physicianId: "",
+      nurseId: session.data?.user.empId!,
+    },
   });
 
   const onSubmit = async (data: z.infer<typeof VisitSchema>) => {
+    // console.log("form data : ", data);
+
     setPending(true);
     setError("");
     setSuccess("");
@@ -56,6 +70,20 @@ const NewVisitForm = ({
       setPending(false);
     }
   };
+
+  const [employees, setEmployees] = useState<{ name: string; id: string }[]>(
+    []
+  );
+
+  useEffect(() => {
+    async function fetchEmployees() {
+      const res = await getPhysicianIds();
+      if (res?.data) setEmployees(res.data);
+    }
+    fetchEmployees();
+  }, []);
+  console.log("form errors : ", errors);
+
   return (
     <Box sx={{ p: 3, width: 450 }}>
       <Typography variant="h6">Checkup Information</Typography>
@@ -86,8 +114,23 @@ const NewVisitForm = ({
           {...register("accompaniedBy")}
           error={errors.accompaniedBy ? true : false}
           helperText={errors.accompaniedBy?.message}
-          // placeholder="123456"
           disabled={pending}
+        />
+        {/* <TextField
+          label="Assign to"
+          {...register("physicianId")}
+          error={errors.physicianId ? true : false}
+          helperText={errors.physicianId?.message}
+          disabled={pending}
+        /> */}
+        <AutoComplete
+          // required={required}
+          control={control}
+          name="physicianId"
+          options={employees}
+          labelIdentifier="name"
+          valueIdentifier="id"
+          fieldLabel="Assign to"
         />
         <Button
           variant="outlined"

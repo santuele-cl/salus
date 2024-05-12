@@ -76,6 +76,9 @@ model Employee {
   employeeRole         EmployeeRole?       @relation(fields: [employeeRoleId], references: [id])
   employeeRoleId       String?
   ChartLogs            ChartLogs[]
+  Visit                Visit[]
+  visitNurses          Visit[]             @relation(name: "visit-nurse")
+  visitPhysicians      Visit[]             @relation(name: "visit-physician")
 }
 
 model Patient {
@@ -380,6 +383,10 @@ model Visit {
   accompaniedBy       String?
   chiefComplaint      String
   hpi                 String
+  physician           Employee              @relation(fields: [physicianId], references: [id], name: "visit-physician")
+  physicianId         String
+  nurse               Employee              @relation(fields: [nurseId], references: [id], name: "visit-nurse")
+  nurseId             String
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
   vitals              Vitals?
@@ -391,6 +398,8 @@ model Visit {
   serviceDepartmentId String?
   patient             Patient?              @relation(fields: [patientId], references: [id], onDelete: Cascade)
   patientId           String?
+  Employee            Employee?             @relation(fields: [employeeId], references: [id])
+  employeeId          String?
 }
 
 model PhysicalExamination {

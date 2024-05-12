@@ -23,7 +23,7 @@ CREATE TYPE "DietHabits" AS ENUM ('HEALTHY', 'BALANCED', 'UNHEALTHY');
 CREATE TYPE "LivingConditions" AS ENUM ('URBAN', 'RURAL', 'HOMELESS', 'INSTITUTIONALIZED', 'OTHER');
 
 -- CreateEnum
-CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE', 'PREFER_NOT_TO_SAY', 'OTHER');
+CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE');
 
 -- CreateEnum
 CREATE TYPE "CivilStatus" AS ENUM ('SINGLE', 'MARRIED', 'DIVORCED', 'WIDOWED', 'SEPARATED', 'OTHER');
@@ -153,7 +153,7 @@ CREATE TABLE "Appointments" (
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "title" TEXT NOT NULL,
-    "status" "AppointmentStatus" NOT NULL,
+    "status" "AppointmentStatus" NOT NULL DEFAULT 'SCHEDULED',
     "room" TEXT NOT NULL,
     "reason" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
@@ -396,10 +396,13 @@ CREATE TABLE "Visit" (
     "accompaniedBy" TEXT,
     "chiefComplaint" TEXT NOT NULL,
     "hpi" TEXT NOT NULL,
+    "physicianId" TEXT NOT NULL,
+    "nurseId" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
     "serviceDepartmentId" TEXT,
     "patientId" TEXT,
+    "employeeId" TEXT,
 
     CONSTRAINT "Visit_pkey" PRIMARY KEY ("id")
 );
@@ -702,10 +705,19 @@ ALTER TABLE "Address" ADD CONSTRAINT "Address_contactInfoId_fkey" FOREIGN KEY ("
 ALTER TABLE "ProfessionInfo" ADD CONSTRAINT "ProfessionInfo_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
+ALTER TABLE "Visit" ADD CONSTRAINT "Visit_physicianId_fkey" FOREIGN KEY ("physicianId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Visit" ADD CONSTRAINT "Visit_nurseId_fkey" FOREIGN KEY ("nurseId") REFERENCES "Employee"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
 ALTER TABLE "Visit" ADD CONSTRAINT "Visit_serviceDepartmentId_fkey" FOREIGN KEY ("serviceDepartmentId") REFERENCES "ServiceDepartment"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "Visit" ADD CONSTRAINT "Visit_patientId_fkey" FOREIGN KEY ("patientId") REFERENCES "Patient"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Visit" ADD CONSTRAINT "Visit_employeeId_fkey" FOREIGN KEY ("employeeId") REFERENCES "Employee"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "PhysicalExamination" ADD CONSTRAINT "PhysicalExamination_visitId_fkey" FOREIGN KEY ("visitId") REFERENCES "Visit"("id") ON DELETE CASCADE ON UPDATE CASCADE;

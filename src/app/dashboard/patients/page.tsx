@@ -65,8 +65,8 @@ const PatientsPage = () => {
 
   return (
     <Stack spacing={2}>
-      <Stack direction="row" gap={3} sx={{}}>
-        <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+      {/* <Stack direction="row" gap={3} sx={{}}> */}
+      {/* <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
           <Stack direction="row" gap={5}>
             <Stack direction="column">
               <Typography variant="h4" sx={{ color: "common.black" }}>
@@ -80,8 +80,8 @@ const PatientsPage = () => {
               />
             </Stack>
           </Stack>
-        </Paper>
-        {/* <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+        </Paper> */}
+      {/* <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
           <Stack direction="row" gap={5}>
             <Stack direction="column">
               <Typography variant="h4" sx={{ color: "common.black" }}>
@@ -96,7 +96,7 @@ const PatientsPage = () => {
             </Stack>
           </Stack>
         </Paper> */}
-      </Stack>
+      {/* </Stack> */}
       <Paper elevation={1} sx={{ p: 2 }}>
         <Stack
           direction="row"

@@ -378,6 +378,8 @@ const seed = async () => {
                     accompaniedBy: "Parent",
                     chiefComplaint: "Fever and Cough",
                     hpi: "Patient has been experiencing fever and cough for the past three days. No improvement with over-the-counter medications.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 170,
@@ -454,6 +456,8 @@ const seed = async () => {
                     accompaniedBy: "Spouse",
                     chiefComplaint: "Abdominal Pain",
                     hpi: "Patient presents with severe abdominal pain localized to the right lower quadrant. Pain started two days ago and has been progressively worsening.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 165,
@@ -526,6 +530,8 @@ const seed = async () => {
                     accompaniedBy: "Sibling",
                     chiefComplaint: "Sore Throat",
                     hpi: "Patient complains of a sore throat with difficulty swallowing. No fever or cough reported.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 175,
@@ -715,6 +721,8 @@ const seed = async () => {
                     accompaniedBy: "Parent",
                     chiefComplaint: "Fever and Cough",
                     hpi: "Patient has been experiencing fever and cough for the past three days. No improvement with over-the-counter medications.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 170,
@@ -791,6 +799,8 @@ const seed = async () => {
                     accompaniedBy: "Spouse",
                     chiefComplaint: "Abdominal Pain",
                     hpi: "Patient presents with severe abdominal pain localized to the right lower quadrant. Pain started two days ago and has been progressively worsening.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 165,
@@ -863,6 +873,8 @@ const seed = async () => {
                     accompaniedBy: "Sibling",
                     chiefComplaint: "Sore Throat",
                     hpi: "Patient complains of a sore throat with difficulty swallowing. No fever or cough reported.",
+                    nurseId: "E00000003",
+                    physicianId: "E00000002",
                     vitals: {
                       create: {
                         heightInCm: 175,

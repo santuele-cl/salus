@@ -128,3 +128,38 @@ export async function toggleUserIsActive(userId: string) {
     return { error: "Something went wrong!" };
   }
 }
+
+export async function getPhysicianIds() {
+  noStore();
+
+  try {
+    const physicians = await db.user.findMany({
+      where: {
+        role: "EMPLOYEE",
+        profile: { employee: { employeeRoleId: "R1002" } },
+      },
+      select: {
+        profile: {
+          select: {
+            employee: {
+              select: { id: true, fname: true, mname: true, lname: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!physicians) return { error: "Fetch unsuccessful!" };
+
+    const processedPhysicians = physicians.map((physician) => {
+      return {
+        id: physician.profile?.employee?.id!,
+        name: `${physician.profile?.employee?.fname} ${physician.profile?.employee?.mname} ${physician.profile?.employee?.lname}`,
+      };
+    });
+
+    return { success: "Fetch successful!", data: processedPhysicians };
+  } catch (error) {
+    return { error: JSON.stringify(error) };
+  }
+}

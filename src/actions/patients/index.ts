@@ -21,6 +21,7 @@ export async function findPatient(term?: string) {
   try {
     const patient = await db.patient.findMany({
       where: {
+        visits: { some: { physicianId: session.user.empId } },
         OR: [
           { id: { contains: term, mode: "insensitive" } },
           {
