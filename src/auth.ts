@@ -8,19 +8,14 @@ import { getUserById } from "./app/_data/user";
 import { getTwoFactorConfirmationByUserId } from "./app/_data/two-factor";
 import { getAccountByUserId } from "./app/_data/account";
 
-export const {
-  handlers: { GET, POST },
-  auth,
-  signIn,
-  signOut,
-} = NextAuth({
+export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
     signIn: "/auth/login",
     error: "/auth/error",
   },
   callbacks: {
     async signIn({ user, account }) {
-      // console.log("user", user, "account: ", account);
+      console.log("user", user, "account: ", account);
 
       if (account?.provider !== "credentials") return true;
 
@@ -30,9 +25,9 @@ export const {
       if (!existingUser?.isActive) return false;
 
       // Prevent signin user does not exist and without email verification
-      if (!existingUser || !existingUser.emailVerified) return false;
+      if (!existingUser || !existingUser?.emailVerified) return false;
 
-      if (existingUser.isTwoFactorEnabled) {
+      if (existingUser?.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
           existingUser.id
         );

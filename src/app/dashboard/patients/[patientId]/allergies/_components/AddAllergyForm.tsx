@@ -48,16 +48,12 @@ const AddAllergyForm = ({
     },
   });
 
-  console.log(dayjs().format("YYYY-MM-DD").toString());
-  console.log(errors);
-
   const onSubmit = async (data: z.infer<typeof AllergySchema>) => {
     setPending(true);
     setError("");
     setSuccess("");
     try {
       const res = await addAllergy(data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

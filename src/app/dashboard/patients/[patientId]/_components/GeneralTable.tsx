@@ -27,7 +27,6 @@ interface GeneralTableType {
 }
 
 const GeneralTable = ({ data, columns, baseUrl }: GeneralTableType) => {
-  console.log(data);
   return (
     <TableContainer>
       <Table sx={{ minWidth: 650, overflow: "auto" }} aria-label="simple table">

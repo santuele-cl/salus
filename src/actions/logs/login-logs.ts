@@ -15,7 +15,6 @@ export async function getLoginLogs({
   userId?: string;
 }) {
   noStore();
-  console.log("quqery", query);
   const logs = await db.loginLogs.findMany({
     where: {
       ...(userId && { userId }),
@@ -55,7 +54,6 @@ interface LoginLogType {
   status: string;
 }
 export async function createLoginLog(logData: LoginLogType) {
-  console.log("login log called");
   const { userId, ipAddress, userAgent, status } = logData;
   if (!userId || !ipAddress || !userAgent || !status)
     return { error: "Missing data!" };

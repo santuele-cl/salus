@@ -2,13 +2,25 @@
 
 import { db } from "@/app/_lib/db";
 import { PhysicalExaminationSchema } from "@/app/_schemas/zod/schema";
+import { auth } from "@/auth";
 import { unstable_noStore } from "next/cache";
 import { z } from "zod";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = [];
 
 export async function addPhysicalExamination(
   values: z.infer<typeof PhysicalExaminationSchema>
 ) {
   unstable_noStore();
+  const session = await auth();
+
+  if (
+    !session ||
+    !session.user.empRole ||
+    !writeAllowed.includes(session.user.empRole)
+  )
+    return { error: "Unauthorized!" };
 
   const parsedValue = PhysicalExaminationSchema.safeParse(values);
 

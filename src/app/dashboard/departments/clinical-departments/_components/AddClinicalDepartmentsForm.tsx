@@ -46,7 +46,6 @@ const AddClinicalDepartmentsForm = ({
     setSuccess("");
     try {
       const res = await addClinicalDepartment(data);
-      console.log("res", res);
       if (res?.error) {
         reset();
         setError(res.error);

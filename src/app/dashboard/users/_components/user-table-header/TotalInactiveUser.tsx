@@ -11,7 +11,7 @@ const TotalInactiveUser = async () => {
         <Typography variant="h4" sx={{ color: "common.black" }}>
           {usersTotalInactive.data}
         </Typography>
-        <Typography variant="subtitle1">Inactive users</Typography>
+        <Typography variant="subtitle1">Deactivated users</Typography>
       </Stack>
       <Stack>
         <PersonOffIcon sx={{ fontSize: 40, color: "error.main" }} />

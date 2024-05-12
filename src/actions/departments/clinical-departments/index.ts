@@ -8,7 +8,6 @@ import { z } from "zod";
 export const getClinicalDepartments = async () => {
   noStore();
 
-  console.log("getclinical");
   const res = await db.clinicalDepartment.findMany();
 
   if (!res) return { error: "Fetch unsuccesful!" };

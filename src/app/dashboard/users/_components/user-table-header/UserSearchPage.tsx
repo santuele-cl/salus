@@ -53,6 +53,16 @@ const UserSearchPage = () => {
     setIsSearching(false);
   };
 
+  useEffect(() => {
+    const fetchUser = async () => {
+      setIsSearching(true);
+      const user: UsersResponseType = await findUser(searchTerm);
+      setUsers(user.data);
+      setIsSearching(false);
+    };
+    fetchUser();
+  }, []);
+
   return (
     <Paper elevation={1} sx={{ p: 2 }}>
       <Stack

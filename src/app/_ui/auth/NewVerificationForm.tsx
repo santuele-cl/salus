@@ -83,7 +83,7 @@ const NewVerificationForm = () => {
           {error && (
             <FormStatusText message={error || "Error"} status="error" />
           )}
-          {(success || error) && (
+          {/* {(success || error) && (
             <Button
               LinkComponent={Link}
               href="/auth/login"
@@ -92,7 +92,7 @@ const NewVerificationForm = () => {
             >
               Login
             </Button>
-          )}
+          )} */}
         </Stack>
       </Paper>
     </Container>

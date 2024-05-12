@@ -26,6 +26,7 @@ import { DateTimePicker } from "@mui/x-date-pickers";
 import { AppointmentSchema } from "@/app/_schemas/zod/schema";
 import AutorenewOutlinedIcon from "@mui/icons-material/AutorenewOutlined";
 import { AppointmentStatus } from "@prisma/client";
+import { useSession } from "next-auth/react";
 
 const AppointmentStatusOption = Object.keys(
   AppointmentStatus
@@ -48,6 +49,7 @@ const CreateAppointmentFormModal = ({
   setShowCreateAppointmentModal: Dispatch<SetStateAction<boolean>>;
   handleCloseAppointmentForm: () => void;
 }) => {
+  const session = useSession();
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -62,13 +64,13 @@ const CreateAppointmentFormModal = ({
     resolver: zodResolver(AppointmentSchema),
     defaultValues: {
       title: "",
-      status: AppointmentStatus.SCHEDULED as AppointmentStatus,
+      // status: AppointmentStatus.SCHEDULED as AppointmentStatus,
       room: "",
       reason: "",
       startDate: selectStartDate.toDate(),
       endDate: selectEndDate.toDate(),
       patientId: "",
-      employeeId: "",
+      employeeId: session.data?.user.empId || "",
     },
   });
 
@@ -144,7 +146,7 @@ const CreateAppointmentFormModal = ({
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <PersonOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
-                placeholder="patient id or email"
+                placeholder="patient "
                 sx={{ flex: "1" }}
                 size="small"
                 {...register("patientId")}
@@ -156,7 +158,7 @@ const CreateAppointmentFormModal = ({
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <AssignmentIndOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
-                placeholder="Physician id or email"
+                placeholder="Assign to "
                 sx={{ flex: "1" }}
                 size="small"
                 {...register("employeeId")}
@@ -165,7 +167,7 @@ const CreateAppointmentFormModal = ({
                 disabled={pending}
               />
             </Stack>
-            <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
+            {/* <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <AutorenewOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
                 select
@@ -182,11 +184,11 @@ const CreateAppointmentFormModal = ({
                   </MenuItem>
                 ))}
               </TextField>
-            </Stack>
+            </Stack> */}
             <Stack sx={{ flexDirection: "row", alignItems: "center", gap: 4 }}>
               <BadgeOutlinedIcon sx={{ color: "rgba(0,0,0,0.3)" }} />
               <TextField
-                placeholder="room number"
+                placeholder="room "
                 sx={{ flex: "1" }}
                 {...register("room")}
                 error={errors.room ? true : false}

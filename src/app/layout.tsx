@@ -9,7 +9,7 @@ import { CssBaseline } from "@mui/material";
 import { auth } from "@/auth";
 
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import MuiXDateProvider from "@/providers/MuiXDateProvider";
+import MuiXDateProvider from "@/_providers/MuiXDateProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 

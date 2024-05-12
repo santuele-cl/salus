@@ -42,9 +42,6 @@ const VaccinationPage = () => {
   const [vaccination, setVaccination] = useState<Vaccination[] | null>(null);
   const [error, setError] = useState("");
 
-  console.log(searchTerm);
-  console.log(vaccination);
-
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const fetchVaccination = async () => {
@@ -55,7 +52,6 @@ const VaccinationPage = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findvaccinationsByTermAndPatientId(
@@ -145,7 +141,7 @@ const VaccinationPage = () => {
           </TableHead>
           <TableBody>
             {vaccination &&
-              vaccination.length &&
+              !!vaccination.length &&
               vaccination.map((datum: any, i: number) => {
                 const selected = columns.map(({ id, type }, index: number) => {
                   switch (type) {

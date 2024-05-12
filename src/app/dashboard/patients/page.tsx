@@ -41,12 +41,12 @@ const PatientsPage = () => {
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const handleSearch = async () => {
-    if (!insufficientSearchTerm) {
-      setIsSearching(true);
-      const patient: PatientsType = await findPatient(searchTerm);
-      if (patient.data && patient.data.length > 0) setPatients(patient.data);
-      setIsSearching(false);
-    }
+    // if (!insufficientSearchTerm) {
+    setIsSearching(true);
+    const patient: PatientsType = await findPatient(searchTerm);
+    if (patient.data && patient.data.length > 0) setPatients(patient.data);
+    setIsSearching(false);
+    // }
   };
 
   const handleSelectPatient = (patientId: string) => {
@@ -60,6 +60,7 @@ const PatientsPage = () => {
       setPatientsCount(count.data);
     };
     getCount();
+    handleSearch();
   }, []);
 
   return (
@@ -71,7 +72,7 @@ const PatientsPage = () => {
               <Typography variant="h4" sx={{ color: "common.black" }}>
                 {patientsCount}
               </Typography>
-              <Typography variant="subtitle1">All patients</Typography>
+              <Typography variant="subtitle1">Total patients</Typography>
             </Stack>
             <Stack>
               <PeopleOutlinedIcon
@@ -80,7 +81,7 @@ const PatientsPage = () => {
             </Stack>
           </Stack>
         </Paper>
-        <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
+        {/* <Paper sx={{ alignSelf: "flex-start", p: 3 }}>
           <Stack direction="row" gap={5}>
             <Stack direction="column">
               <Typography variant="h4" sx={{ color: "common.black" }}>
@@ -94,7 +95,7 @@ const PatientsPage = () => {
               />
             </Stack>
           </Stack>
-        </Paper>
+        </Paper> */}
       </Stack>
       <Paper elevation={1} sx={{ p: 2 }}>
         <Stack

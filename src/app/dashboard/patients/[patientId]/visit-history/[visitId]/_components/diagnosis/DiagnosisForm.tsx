@@ -44,7 +44,6 @@ const DiagnosisForm = ({
   setShowDiagnosisFormDrawer: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
-  console.log(session);
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -68,8 +67,6 @@ const DiagnosisForm = ({
   });
 
   const onSubmit = async (values: any) => {
-    console.log("values", values);
-    console.log("prescription values", values);
     const parse = DiagnosisSchema.safeParse(values);
 
     if (!parse.success) return setError("Parse Error");
@@ -95,8 +92,6 @@ const DiagnosisForm = ({
       setPending(false);
     }
   };
-
-  console.log("form error", errors);
 
   return (
     <Box sx={{ p: 3, width: 450 }}>

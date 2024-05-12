@@ -8,6 +8,10 @@ import {
   DEFAULT_EMPLOYEE_LOGIN_REDIRECT,
   DEFAULT_PATIENT_LOGIN_REDIRECT,
   roleRoute,
+  adminRoutes,
+  medicalProfessionalRoutes,
+  DEFAULT_ADMIN_LOGIN_REDIRECT,
+  DEFAULT_PROFESSIONAL_LOGIN_REDIRECT,
 } from "./routes";
 import { getToken } from "next-auth/jwt";
 
@@ -21,6 +25,8 @@ export default auth(async (req) => {
     // salt: process.env.AUTH_SECRET!,
   });
 
+  // console.log("middleware user : ", user);
+
   const { nextUrl } = req;
   const isLoggedIn = !!req?.auth;
 
@@ -28,27 +34,67 @@ export default auth(async (req) => {
   const isPublicRoute = publicRoutes.includes(nextUrl.pathname);
   const isAuthRoute = authRoutes.includes(nextUrl.pathname);
 
+  // console.log(nextUrl.pathname.replace("/dashboard", ""));
+
+  const isAdminRoute = adminRoutes.some((route) =>
+    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
+  );
+
+  const isMedicalProfessionalRoute = medicalProfessionalRoutes.some((route) =>
+    nextUrl.pathname.replace("/dashboard", "").startsWith(route)
+  );
+
   if (isApiAuthRoute) return;
 
   if (isAuthRoute) {
     if (isLoggedIn) {
       // Pass nextUrl as 2nd argument to make an absolute url
-      if (user?.role) {
-        if (user.role === "EMPLOYEE") {
+      if (user?.empRole) {
+        if (user.empRole === "ADMIN") {
           return Response.redirect(
-            new URL(DEFAULT_EMPLOYEE_LOGIN_REDIRECT, nextUrl)
+            new URL(DEFAULT_ADMIN_LOGIN_REDIRECT, nextUrl)
           );
         } else {
           return Response.redirect(
-            new URL(DEFAULT_PATIENT_LOGIN_REDIRECT, nextUrl)
+            new URL(DEFAULT_PROFESSIONAL_LOGIN_REDIRECT, nextUrl)
           );
         }
-      } else {
-        return Response.redirect(new URL("/", nextUrl));
       }
+      return;
+      // if (user?.role) {
+      //   if (user.role === "EMPLOYEE") {
+      //     return Response.redirect(
+      //       new URL(DEFAULT_EMPLOYEE_LOGIN_REDIRECT, nextUrl)
+      //     );
+      //   } else {
+      //     return Response.redirect(
+      //       new URL(DEFAULT_PATIENT_LOGIN_REDIRECT, nextUrl)
+      //     );
+      //   }
+      // } else {
+      //   return Response.redirect(new URL("/", nextUrl));
+      // }
     }
     return;
   }
+
+  // if (isAdminRoute) {
+  //   if (isLoggedIn) {
+  //     if (user?.empRole !== "ADMIN") {
+  //       return Response.redirect(new URL("/unauthorized", nextUrl));
+  //     }
+  //     return;
+  //   } else return Response.redirect(new URL(`/auth/login`, nextUrl));
+  // }
+
+  // if (isMedicalProfessionalRoute) {
+  //   if (isLoggedIn) {
+  //     if (user?.empRole === "ADMIN") {
+  //       return Response.redirect(new URL("/unauthorized", nextUrl));
+  //     }
+  //     return;
+  //   } else return Response.redirect(new URL(`/auth/login`, nextUrl));
+  // }
 
   if (!isLoggedIn && !isPublicRoute) {
     return Response.redirect(new URL(`/auth/login`, nextUrl));

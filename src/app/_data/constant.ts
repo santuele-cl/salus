@@ -25,11 +25,8 @@ export const STEPS: Step[] = [
         options: [
           { value: "MALE", label: "Male" },
           { value: "FEMALE", label: "Female" },
-          { value: "PREFER_NOT_TO_SAY", label: "Prefer not to say" },
         ],
       },
-      { id: "age", label: "Age", type: "number" },
-
       { id: "bdate", label: "Birthdate", type: "date" },
       { id: "bplace", label: "Birthplace" },
       { id: "civilStatus", label: "Civil Status" },
@@ -93,11 +90,9 @@ export const EMP_STEPS: RegisterEmployeeStep[] = [
         options: [
           { value: "MALE", label: "Male" },
           { value: "FEMALE", label: "Female" },
-          { value: "PREFER_NOT_TO_SAY", label: "Prefer not to say" },
         ],
       },
       { id: "bdate", label: "Birthdate", type: "date" },
-      { id: "age", label: "Age", type: "number" },
     ],
   },
   {

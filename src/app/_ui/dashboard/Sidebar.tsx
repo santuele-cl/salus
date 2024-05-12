@@ -36,11 +36,14 @@ import Link from "next/link";
 import { toKebabCase } from "@/app/_utils/utils";
 import { useState } from "react";
 import FiberManualRecordIcon from "@mui/icons-material/FiberManualRecord";
+import { useSession } from "next-auth/react";
+import { EmployeeRole } from "@prisma/client";
 
 type SidebarLink = {
   label: string;
   path?: string;
   icon: () => React.ReactNode;
+  access: string[];
 };
 
 type SidebarLinks = {
@@ -54,38 +57,51 @@ const sidebarLinks: SidebarLinks[] = [
     links: [
       {
         label: "Patients",
-        path: "patients",
+        path: "/dashboard/patients",
         icon: () => <FamilyRestroomIcon />,
+        access: ["PHYSICIAN", "NURSE"],
       },
       {
         label: "Users",
-        path: "users",
+        path: "/dashboard/users",
         icon: () => <GroupIcon />,
+        access: ["ADMIN"],
       },
       {
         label: "Appointments",
-        path: "appointments",
+        path: "/dashboard/appointments",
         icon: () => <CalendarMonthIcon />,
+        access: ["PHYSICIAN", "NURSE"],
       },
+
+      {
+        label: "Audit Trails",
+        icon: () => <ArticleOutlinedIcon />,
+        path: "/dashboard/logs/login",
+        access: ["ADMIN"],
+      },
+    ],
+  },
+  {
+    label: "Content Management",
+    links: [
       {
         label: "Departments",
-        path: "departments/clinical-departments",
+        path: "/dashboard/departments/clinical-departments",
         icon: () => <DomainIcon />,
+        access: ["ADMIN"],
       },
       {
         label: "Drugs",
-        path: "drugs",
+        path: "/dashboard/drugs",
         icon: () => <MedicationIcon />,
+        access: ["ADMIN"],
       },
       {
         label: "Roles and permissions",
-        path: "roles-and-permissions",
+        path: "/dashboard/roles-and-permissions",
         icon: () => <LockPersonIcon />,
-      },
-      {
-        label: "Logs",
-        icon: () => <ArticleOutlinedIcon />,
-        path: "logs/login",
+        access: ["ADMIN"],
       },
     ],
   },
@@ -96,20 +112,20 @@ const sidebarLinks: SidebarLinks[] = [
         label: "Settings",
         path: "settings",
         icon: () => <SettingsIcon />,
+        access: ["PHYSICIAN", "NURSE", "ADMIN"],
       },
     ],
   },
 ];
 
 export default function Sidebar({ children }: { children?: React.ReactNode }) {
-  // setOpen(prev => {return {...prev, asdlfk: true}})
-  const segments = usePathname().split("/");
-
+  const pathname = usePathname();
+  const session = useSession();
   return (
     <List
       sx={{
         height: "100%",
-        width: 330,
+        width: 300,
 
         p: 2,
       }}
@@ -121,9 +137,16 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
       {sidebarLinks.map(({ label, links }, i) => {
         return (
           <Box key={label + String(i)}>
-            {label && <ListSubheader component="div">{label}</ListSubheader>}
+            {label && (
+              <ListSubheader component="div">
+                {label === "Content Management"
+                  ? session?.data?.user?.empRole === "ADMIN" && label
+                  : label}
+              </ListSubheader>
+            )}
 
-            {links.map(({ label, icon, path }, i) => {
+            {links.map(({ label, icon, path, access }, i) => {
+              if (!access?.includes(session.data?.user.empRole!)) return;
               return (
                 <ListItemButton
                   sx={() => {
@@ -139,9 +162,9 @@ export default function Sidebar({ children }: { children?: React.ReactNode }) {
                     };
                   }}
                   key={label + String(i)}
-                  selected={segments[2] === toKebabCase(label)}
+                  selected={pathname.startsWith(path!)}
                   LinkComponent={Link}
-                  href={`/dashboard/${path}`}
+                  href={`${path}`}
                 >
                   <ListItemIcon
                     sx={{

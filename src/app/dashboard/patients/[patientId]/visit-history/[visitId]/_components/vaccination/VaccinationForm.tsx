@@ -51,7 +51,6 @@ const VaccinationForm = ({
   setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
-  console.log(session);
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -75,12 +74,7 @@ const VaccinationForm = ({
   });
 
   const onSubmit = async (values: any) => {
-    // console.log("values", values);
-    console.log("vaccination values", values);
     const parse = VaccinationSchema.safeParse(values);
-
-    if (!parse.success) console.log("parse error");
-    else console.log("parse data", parse.data);
 
     setError("");
     setSuccess("");

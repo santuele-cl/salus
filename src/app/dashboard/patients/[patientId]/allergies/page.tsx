@@ -46,9 +46,6 @@ const AllergiesPage = () => {
 
   const [showAddAllergyForm, setShowAddAllergyForm] = useState(false);
 
-  console.log(searchTerm);
-  console.log(allergies);
-
   const handleChange = (searchTerm: string) => setSearchTerm(searchTerm);
 
   const fetchAllergies = async () => {
@@ -59,7 +56,6 @@ const AllergiesPage = () => {
   };
 
   const handleSearch = async (e: FormEvent) => {
-    console.log("searching");
     e.preventDefault();
     setIsSearching(true);
     const response = await findAllergiesByTermAndPatientId(

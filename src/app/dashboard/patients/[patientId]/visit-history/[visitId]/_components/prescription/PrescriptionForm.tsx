@@ -52,14 +52,12 @@ const PrescriptionForm = ({
   setShow: Dispatch<SetStateAction<boolean>>;
 }) => {
   const session = useSession();
-  console.log(session);
   const [pending, setPending] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
   const [drugs, setDrugs] = useState<Drugs[] | undefined>([]);
 
   const [options, setOptions] = useState<string[] | []>([]);
-  console.log("drugs", drugs);
 
   const {
     register,
@@ -85,12 +83,7 @@ const PrescriptionForm = ({
   });
 
   const onSubmit = async (values: any) => {
-    // console.log("values", values);
-    console.log("prescription values", values);
     const parse = PrescriptionSchema.safeParse(values);
-
-    if (!parse.success) console.log("parse error");
-    else console.log("parse data", parse.data);
 
     setError("");
     setSuccess("");

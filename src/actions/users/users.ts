@@ -1,12 +1,25 @@
 "use server";
 
 import { db } from "@/app/_lib/db";
+import { auth } from "@/auth";
 import { unstable_noStore as noStore } from "next/cache";
+
+const writeAllowed = ["PHYSICIAN"];
+const getAllowed = ["ADMIN"];
 
 export async function findUser(term: string) {
   noStore();
 
-  if (!term) return { error: "No search term found!" };
+  // if (!term) return { error: "No search term found!" };
+
+  const session = await auth();
+
+  if (
+    !session ||
+    !session.user.empRole ||
+    !getAllowed.includes(session.user.empRole)
+  )
+    return { error: "Unauthorized!" };
 
   try {
     const users = await db.user.findMany({

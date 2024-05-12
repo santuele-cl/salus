@@ -4,7 +4,7 @@
  * @type {string[]}
  */
 
-export const publicRoutes = ["/", "/auth/new-verification"];
+export const publicRoutes = ["/auth/new-verification", "/patient-onboarding"];
 
 /**
  * An array of routes that are used for authentication
@@ -13,6 +13,7 @@ export const publicRoutes = ["/", "/auth/new-verification"];
  */
 
 export const authRoutes = [
+  "/",
   "/auth/login",
   "/auth/register",
   "/auth/error",
@@ -27,6 +28,18 @@ export const authRoutes = [
  */
 export const apiRoutePrefix = "/api/auth";
 
+export const adminRoutes = [
+  "/users",
+  "/departments/service-departments",
+  "/departments/clinical-departments",
+  "/drugs",
+  "/roles-and-permissions",
+  "/logs/login",
+  "/logs/chart",
+];
+
+export const medicalProfessionalRoutes = ["/patients", "/settings"];
+
 /**
  * The default redirect route after loggin in
  * @type {string}
@@ -34,6 +47,8 @@ export const apiRoutePrefix = "/api/auth";
 export const DEFAULT_LOGIN_REDIRECT = "/dashboard";
 
 export const DEFAULT_EMPLOYEE_LOGIN_REDIRECT = "/dashboard/patients";
+export const DEFAULT_ADMIN_LOGIN_REDIRECT = "/dashboard/users";
+export const DEFAULT_PROFESSIONAL_LOGIN_REDIRECT = "/dashboard/patients";
 export const DEFAULT_PATIENT_LOGIN_REDIRECT = "/";
 
 export const roleRoute = {

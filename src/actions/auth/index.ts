@@ -34,6 +34,7 @@ import { CivilStatus, Gender } from "@prisma/client";
 import { createLoginLog, updateLoginLogStatus } from "../logs/login-logs";
 import { revalidatePath, unstable_noStore } from "next/cache";
 import { headers } from "next/headers";
+import dayjs from "dayjs";
 
 export async function login(
   credentials: z.infer<typeof LoginSchema>,
@@ -49,6 +50,7 @@ export async function login(
   if (!validatedCredentials.success) return { error: "Invalid data." };
 
   const { email, password, code } = validatedCredentials.data;
+  // const { email, password, code } = credentials;
 
   const existingUser = await getUserByEmail(email);
 
@@ -115,15 +117,25 @@ export async function login(
     status: "failed",
   });
 
-  if (!loginLog) console.log("Database error. Log not saved!");
+  // if (!loginLog) return { error: "Log error." };
 
   try {
     await signIn("credentials", {
       email,
       password,
-      // redirectTo: callbackUrl || "/",
+      redirectTo: "/",
     });
+
+    // const udpatedLog = await updateLoginLogStatus({
+    //   logId: loginLog.data?.id,
+    //   status: "success",
+    // });
+
+    // if (!udpatedLog) return { error: "Log error." };
+
+    // revalidatePath("/dashboard/logs/login");
   } catch (error) {
+    console.log(error);
     if (error instanceof AuthError) {
       switch (error.type) {
         case "CredentialsSignin":
@@ -134,16 +146,14 @@ export async function login(
     }
     throw error;
   }
-
   const udpatedLog = await updateLoginLogStatus({
     logId: loginLog.data?.id,
     status: "success",
   });
 
-  if (!udpatedLog) console.log("Database error. Log not saved!");
+  // if (!udpatedLog) ;
 
-  revalidatePath("/dashboard/logs/login");
-
+  // revalidatePath("/dashboard/logs/login");
   return { success: "Login successful." };
 }
 
@@ -165,7 +175,6 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
     lname,
     nameSuffix,
     gender,
-    age,
     bdate,
     bplace,
     civilStatus,
@@ -208,7 +217,7 @@ export async function createUser(registerData: z.infer<typeof RegisterSchema>) {
               lname,
               nameSuffix,
               gender: gender as Gender,
-              age,
+              age: dayjs().diff(dayjs(bdate), "year"),
               bdate,
               bplace,
               civilStatus: civilStatus as CivilStatus,
@@ -260,7 +269,6 @@ export async function createEmployee(
     mname,
     lname,
     gender,
-    age,
     bdate,
     phone,
     houseNumber,
@@ -306,7 +314,7 @@ export async function createEmployee(
               clinicalDepartmentId,
               lname,
               gender: gender as Gender,
-              age,
+              age: dayjs().diff(dayjs(bdate), "year"),
               bdate,
               contactInfo: {
                 create: {

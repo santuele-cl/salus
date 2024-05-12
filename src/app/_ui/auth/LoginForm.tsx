@@ -58,7 +58,7 @@ const LoginForm = () => {
         setSuccess(res.success);
       }
 
-      if (res.twoFactor) setShowTwoFactorInput(true);
+      if (res?.twoFactor) setShowTwoFactorInput(true);
     } catch (error) {
       console.log(error);
     }
@@ -142,9 +142,7 @@ const LoginForm = () => {
                 />
               </>
             )}
-            <Stack direction="row" justifyContent="flex-end">
-              <Link href="/auth/reset-password">Forgot Password?</Link>
-            </Stack>
+
             <Button
               type="submit"
               variant="contained"
@@ -153,10 +151,13 @@ const LoginForm = () => {
             >
               {showTwoFactorInput ? "Confirm" : "Login"}
             </Button>
+            <Stack direction="row" justifyContent="center">
+              <Link href="/auth/reset-password">Forgot Password?</Link>
+            </Stack>
           </Stack>
 
           {/* FOOTER */}
-          <Stack
+          {/* <Stack
             direction="row"
             spacing={1}
             alignItems="center"
@@ -165,7 +166,7 @@ const LoginForm = () => {
             <Typography>Don&apos;t have an account yet?</Typography>
 
             <Link href="/auth/register">Sign up</Link>
-          </Stack>
+          </Stack> */}
 
           {/* FORM STATUS */}
           {success && (

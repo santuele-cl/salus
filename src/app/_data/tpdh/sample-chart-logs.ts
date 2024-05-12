@@ -4,14 +4,14 @@ import dayjs from "dayjs";
 export const SAMPLE_CHART_LOGS: ChartLogs[] = [
   {
     id: "1Sdz6gDqPcjfGw3p",
-    action: "Login",
+    action: "Delete",
     logTime: dayjs("2024-03-21T08:15:32Z").toDate(),
-    logDescription: "User logged in successfully.",
+    logDescription: "",
     ipAddress: "192.168.1.10",
     userAgent:
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.9000.0 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000005",
+    employeeId: "E00000003",
     status: "failed",
   },
   {
@@ -22,8 +22,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.15",
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000005",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
@@ -34,20 +34,20 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.20",
     userAgent:
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.9999.99 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000005",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
     id: "4Pqs9dLfTr3xKw7y",
-    action: "Logout",
+    action: "Update",
     logTime: dayjs("2024-03-21T11:55:10Z").toDate(),
     logDescription: "User logged out.",
     ipAddress: "192.168.1.25",
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_6_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000004",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
@@ -58,8 +58,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.30",
     userAgent:
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000004",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
@@ -70,8 +70,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.35",
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.9000.0 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000004",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
@@ -82,8 +82,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.40",
     userAgent:
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.102 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000004",
+    employeeId: "E00000002",
     status: "failed",
   },
   {
@@ -94,8 +94,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.45",
     userAgent:
       "Mozilla/5.0 (Macintosh; Intel Mac OS X 11_6_3) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.3 Safari/605.1.15",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000005",
+    employeeId: "E00000003",
     status: "failed",
   },
   {
@@ -106,8 +106,8 @@ export const SAMPLE_CHART_LOGS: ChartLogs[] = [
     ipAddress: "192.168.1.50",
     userAgent:
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36",
-    patientId: "PATIENT2",
-    employeeId: "EMP1",
+    patientId: "PP10000005",
+    employeeId: "E00000003",
     status: "failed",
   },
 ];

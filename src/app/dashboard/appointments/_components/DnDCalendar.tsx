@@ -1,9 +1,14 @@
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import dayjs, { Dayjs } from "dayjs";
-import { Calendar, ToolbarProps, dayjsLocalizer } from "react-big-calendar";
+import {
+  Calendar,
+  EventProps,
+  ToolbarProps,
+  dayjsLocalizer,
+} from "react-big-calendar";
 import { Appointments } from "@prisma/client";
-import { Box } from "@mui/material";
+import { Box, Modal } from "@mui/material";
 
 import withDragAndDrop from "react-big-calendar/lib/addons/dragAndDrop";
 
@@ -12,25 +17,32 @@ import { getAppointments, updateAppointment } from "@/actions/appointment";
 import CreateAppointmentFormModal from "./CreateAppointmentFormModal";
 
 import "react-big-calendar/lib/addons/dragAndDrop/styles.css";
+import CustomWeekEvent from "./CustomWeekEvent";
+import EventModal from "./EventModal";
+import { useSession } from "next-auth/react";
 
 const localizer = dayjsLocalizer(dayjs);
 
 const DragAndDropCalendar = withDragAndDrop(Calendar);
 
 export default function DnDCalendar() {
+  const session = useSession();
+  console.log("appt empID", session.data?.user.empId);
   const [selectStartDate, setSelectStartDate] = useState<Dayjs>(dayjs());
   const [selectEndDate, setSelectEndDate] = useState<Dayjs>(
     dayjs().add(1, "hour")
   );
-  console.log(selectEndDate, selectStartDate);
   const [showCreateAppointmentModal, setShowCreateAppointmentModal] =
     useState(false);
+  const [showEventModal, setShowEventModal] = useState(false);
+  const [selectedEvent, setSelectedEvent] = useState<any>(null);
   const [step, setStep] = useState(30);
   const [timeSlots, setTimeSlots] = useState(2);
   const [appointments, setAppointments] = useState<Appointments[]>([]);
 
   const fetchAppointments = async () => {
-    const response = await getAppointments();
+    const response = await getAppointments(session.data?.user?.empId);
+    console.log(response);
     if (response.success) return setAppointments(response.data);
   };
 
@@ -49,6 +61,10 @@ export default function DnDCalendar() {
             />
           );
         },
+        // event: (props: EventProps) => {
+        //   const { event } = props;
+        //   return <CustomWeekEvent event={event} />;
+        // },
       },
     }),
     []
@@ -81,6 +97,11 @@ export default function DnDCalendar() {
     setShowCreateAppointmentModal((prev) => !prev);
   };
 
+  const handleEventClick = (event: any) => {
+    setSelectedEvent(event);
+    setShowEventModal((prev) => !prev);
+  };
+
   useEffect(() => {
     fetchAppointments();
   }, []);
@@ -103,6 +124,13 @@ export default function DnDCalendar() {
           handleCloseAppointmentForm={handleCloseAppointmentForm}
         />
       )}
+      {showEventModal && (
+        <EventModal
+          showEventModal={showEventModal}
+          setShowEventModal={setShowEventModal}
+          selectedEvent={selectedEvent}
+        />
+      )}
       <DragAndDropCalendar
         onSelectSlot={handleEventSelect}
         selectable={true}
@@ -110,6 +138,9 @@ export default function DnDCalendar() {
         onEventResize={handleEventResize}
         timeslots={timeSlots}
         step={step}
+        onSelectEvent={(event) => {
+          handleEventClick(event);
+        }}
         components={components}
         localizer={localizer}
         events={appointments}

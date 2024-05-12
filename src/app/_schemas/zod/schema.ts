@@ -33,7 +33,6 @@ export const RegisterEmployeeSchema = z.object({
     .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   gender: z.nativeEnum(Gender),
   bdate: z.coerce.date(),
-  age: z.coerce.number(),
   // CONTACT
   phone: z
     .string()
@@ -162,7 +161,7 @@ export const DiagnosisSchema = z.object({
 
 export const AppointmentSchema = z.object({
   title: z.string().min(1, "Required field"),
-  status: z.nativeEnum(AppointmentStatus),
+  // status: z.nativeEnum(AppointmentStatus),
   room: z.string().min(1, "Required field"),
   reason: z.string().min(1, "Required field"),
   startDate: z.coerce.date(),
@@ -297,7 +296,6 @@ export const RegisterSchema = z.object({
     .regex(new RegExp(/^[a-zA-Z .]+$/), "Invalid input"),
   nameSuffix: z.optional(z.string()),
   gender: z.nativeEnum(Gender),
-  age: z.coerce.number(),
   bdate: z.coerce.date(),
   bplace: z
     .string()
