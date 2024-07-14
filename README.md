@@ -4,8 +4,6 @@ Here's a README for your Salus app:
 
 # Salus
 
-![Salus Logo](link-to-your-logo)
-
 ## Introduction
 
 **Salus** is an advanced electronic health record (EHR) system designed to digitalize the traditional paper-based systems in hospitals. Built with modern web technologies, Salus ensures efficient, secure, and streamlined management of patient records.
